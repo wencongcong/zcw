@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.businness.mapper.ProdDaoMapper">
+    <select id="queryAll" resultType="com.businness.entity.ProdEX">
+        select * from prod
+        <trim prefixOverrides="and|or" prefix="where">
+            <if test="otime!=null and otime!=''">
+                and otime  BETWEEN CONCAT(#{otime},' 00:00:00') AND CONCAT(#{otime},' 23:59:59')
+            </if>
+            <if test="productsName!=null and productsName!=''">
+                and productsName like concat('%',#{productsName},'%')
+            </if>
+        </trim>
+    </select>
+
+    <select id="chaAcceptName" resultType="int">
+         select * from prod where  productsName=#{productsName} and depaname=#{depaname}
+    </select>
+</mapper>

@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.service.mapper.WorkMapper">
+
+    <insert id="insertOneWork" parameterType="com.service.entity.Work">
+        INSERT workinfo(`workid`,`custid`,`acceptid`,`remark`,`serviceName`,`uploginName`,`assigneeName`,`broadband`,`status`,`statos`,`historyid`,`hang`,`verify`,`cancel`,`completedtime`,`appointmenttime`,`financeverify`,`soundverify`,`timepayment`,`paymentamount`,`orderid`,`workserved`,`xdtime`,`jsonstr`,`prodjson`,`reminder`,`channl`)
+        VALUE(#{workid},#{custid},#{acceptid},#{remark},#{serviceName},#{uploginName},#{assigneeName},#{broadband},#{status},#{statos},#{historyid},#{hang},#{verify},#{cancel},#{completedtime},#{appointmenttime},#{financeverify},#{soundverify},#{timepayment},#{paymentamount},#{orderid},#{workserved},#{xdtime},#{jsonstr},#{prodjson},0,#{channl})
+    </insert>
+
+    <insert id="sgchar">
+       INSERT INTO workinfo(`workid`,`custid`,`serviceName`,`acceptid`,`status`,`orderid`,`broadband`,`remark`,`appointmenttime`,`paymentamount`,`xdtime`,`reminder`,`channl`,`settlementstatus`,`workserved`)VALUES(#{workid},#{custid},#{serviceName},#{acceptid},#{status},#{orderid},#{broadband},#{remark},#{appointmenttime},#{paymentamount},#{xdtime},0,#{channl},#{settlementstatus},#{workserved})
+    </insert>
+
+    <select id="chaChong" resultType="int">
+        select count(1) from workinfo where workid=#{workid}
+    </select>
+
+    <select id="queryAll" resultMap="Works">
+        SELECT w.id,w.*,h.id,h.historys,p.id,p.otime,p.ptime,p.productsName,p.slname,c.id,c.cid,c.custname,c.custremark,c.custphone,c.custidcard,c.custaddress,c.custarea,o.id,o.* FROM `workinfo` w
+        INNER JOIN customerinfo c on w.custid=c.cid
+        INNER JOIN prod p on w.acceptid=p.id
+        LEFT JOIN history h on w.historyid=h.id
+        LEFT JOIN orderinfo o on w.orderid=o.id
+        <trim prefixOverrides="and|or" prefix="where">
+            <if test="status!=null and status!=''">
+                w.status=#{status}
+            </if>
+            <if test="otime!=null and otime!=''">
+                and `c`.custcreatertime BETWEEN CONCAT(#{otime},' 00:00:00') AND CONCAT(#{ptime},' 23:59:59')
+            </if>
+            <if test="workid!=null and workid!=''">
+                and w.workid=#{workid}
+            </if>
+            <if test="custcreate!=null and custcreate!=''">
+                and `c`.custcreate LIKE CONCAT('%',#{custcreate},'%')
+            </if>
+            <if test="serviceName!=null and serviceName!=''">
+                and w.serviceName LIKE CONCAT('%',#{serviceName},'%')
+            </if>
+            <if test="ostats!=null and ostats!=''">
+                and o.ostats=#{ostats}
+            </if>
+            <if test="orderNo!=null and orderNo!=''">
+                and o.orderNo=#{orderNo}
+            </if>
+            <if test="custidcard!=null and custidcard!=''">
+                and `c`.custidcard=#{custidcard}
+            </if>
+            <if test="custphone!=null and custphone!=''">
+                and `c`.custphone=#{custphone}
+            </if>
+            <if test="custarea!=null and custarea!=''">
+                and `c`.custarea LIKE CONCAT('%',#{custarea},'%')
+            </if>
+            <if test="productsName!=null and productsName!=''">
+                and p.productsName LIKE CONCAT('%',#{productsName},'%')
+            </if>
+            <if test="custname!=null and custname!=''">
+                and `c`.custname LIKE CONCAT('%',#{custname},'%')
+            </if>
+            <if test="broadband!=null and broadband!=''">
+                and w.broadband=#{broadband}
+            </if>
+        </trim>
+    </select>
+    <resultMap id="Works" type="com.service.entity.Work">
+        <id property="id" column="w.id" />
+            <result column="id" property="id"></result>
+            <result column="workid" property="workid"></result>
+            <result column="acceptid" property="acceptid"></result>
+            <result column="custid" property="custid"></result>
+            <result column="orderid" property="orderid"></result>
+            <result column="historyid" property="historyid"></result>
+            <result column="status" property="status"></result>
+            <result column="statos" property="statos"></result>
+            <result column="appointmenttime" property="appointmenttime"></result>
+            <result column="xdtime" property="xdtime"></result>
+            <result column="serviceName" property="serviceName"></result>
+            <result column="uploginName" property="uploginName"></result>
+            <result column="assigneeName" property="assigneeName"></result>
+            <result column="broadband" property="broadband"></result>
+            <result column="channl" property="channl"></result>
+            <result column="remark" property="remark"></result>
+            <result column="paymentamount" property="paymentamount"></result>
+            <result column="reminder" property="reminder"></result>
+            <result column="workserved" property="workserved"></result>
+        <association property="cid" javaType="com.service.entity.Cust">
+            <id property="id" column="c.id"></id>
+            <result column="custid" property="id"></result>
+            <result column="custname" property="custname"></result>
+            <result column="custphone" property="custphone"></result>
+            <result column="custidcard" property="custidcard"></result>
+            <result column="custaddress" property="custaddress"></result>
+            <result column="custarea" property="custarea"></result>
+            <result column="custremark" property="custremark"></result>
+        </association>
+        <association property="pid" javaType="com.service.entity.Prod">
+            <id property="id" column="p.id"></id>
+            <result column="acceptid" property="id"></result>
+            <result column="otime" property="otime"></result>
+            <result column="ptime" property="ptime"></result>
+            <result column="productsName" property="productsName"></result>
+            <result column="slname" property="slname"></result>
+        </association>
+        <association property="oid" javaType="com.service.entity.OrderInfo">
+            <id property="id" column="o.id"></id>
+            <result column="orderid" property="id"></result>
+            <result column="orderNo" property="orderNo"></result>
+            <result column="ostats" property="ostats"></result>
+            <result column="chargemethod" property="chargemethod"></result>
+            <result column="acceptchannal" property="acceptchannal"></result>
+            <result column="cwangno" property="cwangno"></result>
+            <result column="cwangstatos" property="cwangstatos"></result>
+            <result column="guwangno" property="guwangno"></result>
+            <result column="guwangstatos" property="guwangstatos"></result>
+            <result column="yuandanno" property="yuandanno"></result>
+            <result column="yuandanstatos" property="yuandanstatos"></result>
+            <result column="fphone" property="fphone"></result>
+        </association>
+        <association property="hid" javaType="com.service.entity.History">
+            <id property="id" column="h.id"></id>
+            <result column="historyid" property="id"></result>
+            <result column="historys" property="historys"></result>
+        </association>
+    </resultMap>
+
+    <select id="groupCount" resultType="java.util.Map">
+        SELECT status,count(status) FROM `workinfo` w
+        INNER JOIN customerinfo c on w.custid=c.cid
+        INNER JOIN prod p on w.acceptid=p.id
+        LEFT JOIN history h on w.historyid=h.id
+        LEFT JOIN orderinfo o on w.orderid=o.id
+        <trim prefixOverrides="and|or" prefix="where">
+            <if test="status!=null and status!=''">
+                w.status=#{status}
+            </if>
+            <if test="custcreatertime!=null and custcreatertime!=''">
+                and `c`.custcreatertime BETWEEN CONCAT(#{otime},' 00:00:00') AND CONCAT(#{ptime},' 23:59:59')
+            </if>
+            <if test="workid!=null and workid!=''">
+                and w.workid=#{workid}
+            </if>
+            <if test="custcreate!=null and custcreate!=''">
+                and `c`.custcreate LIKE CONCAT('%',#{custcreate},'%')
+            </if>
+            <if test="serviceName!=null and serviceName!=''">
+                and w.serviceName LIKE CONCAT('%',#{serviceName},'%')
+            </if>
+            <if test="ostats!=null and ostats!=''">
+                and o.ostats=#{ostats}
+            </if>
+            <if test="orderNo!=null and orderNo!=''">
+                and o.orderNo=#{orderNo}
+            </if>
+            <if test="custidcard!=null and custidcard!=''">
+                and `c`.custidcard=#{custidcard}
+            </if>
+            <if test="custphone!=null and custphone!=''">
+                and `c`.custphone=#{custphone}
+            </if>
+            <if test="custarea!=null and custarea!=''">
+                and `c`.custarea LIKE CONCAT('%',#{custarea},'%')
+            </if>
+            <if test="productsName!=null and productsName!=''">
+                and p.productsName LIKE CONCAT('%',#{productsName},'%')
+            </if>
+            <if test="custname!=null and custname!=''">
+                and `c`.custname LIKE CONCAT('%',#{custname},'%')
+            </if>
+            <if test="broadband!=null and broadband!=''">
+                and w.broadband=#{broadband}
+            </if>
+        </trim>
+        GROUP BY status
+    </select>
+
+    <select id="chaw" resultType="int">
+        select count(1) from workinfo where workid=#{wid}
+    </select>
+
+    <select id="chacountw" resultType="int">
+        select count(1) from workinfo
+    </select>
+
+    <update id="Updateremark">
+        update workinfo
+        <trim prefix="set" suffixOverrides=",">
+            <if test="historyid!=-1">
+                historyid=#{historyid},status=#{status},
+            </if>
+        </trim>
+        where workid = #{workid}
+    </update>
+
+    <select id="chaorderno" resultType="int">
+        SELECT count(1) FROM workinfo zw INNER JOIN orderinfo oi on zw.orderid=oi.id WHERE oi.id=#{id}
+    </select>
+
+    <update id="Ustatos">
+        UPDATE workinfo SET statos=#{statos} where orderid=#{orderid}
+    </update>
+
+    <update id="updateStatue">
+        UPDATE workinfo SET status=#{status} where workid=#{workid}
+    </update>
+
+    <update id="Ustatosoid">
+        UPDATE workinfo SET statos=#{statos},orderid=#{orderid} where workid=#{workid}
+    </update>
+
+    <update id="Reminder">
+        UPDATE workinfo SET reminder=#{reminder} WHERE workid=#{workid}
+    </update>
+
+    <update id="updateassign">
+        update workinfo
+        <trim prefix="set" suffixOverrides=",">
+        <if test="assigneeName!=null and assigneeName!=''">
+            assigneeName=#{assigneeName},
+        </if>
+        <if test="status!=null and status!=''">
+            status=#{status},
+        </if>
+    </trim>
+        where  workid = #{workid}
+    </update>
+
+    <select id="workid" resultType="java.lang.String">
+        select status from workinfo where workid=#{workid}
+    </select>
+
+    <update id="uodateRemark">
+        UPDATE workinfo SET remark=#{remark} WHERE workid=#{workid}
+    </update>
+
+    <update id="updateOrderId">
+        update workinfo set orderid=#{orderId} where workid=#{workid}
+    </update>
+
+    <select id="chaWorkid" resultType="int">
+        select id from workinfo where orderid=#{orderId}
+    </select>
+
+    <update id="updatesettle">
+        update workinfo set settlementstatus=#{settlementstatus},verify=#{verify},completedtime=#{completedtime} where workid=#{workid}
+    </update>
+
+    <select id="chasttle" resultType="java.lang.String">
+        select statos from workinfo where workid=#{workid}
+    </select>
+
+    <select id="whetherisempty" resultType="java.lang.String">
+        SELECT settlementstatus FROM `workinfo` WHERE settlementstatus is null or settlementstatus=""
+    </select>
+</mapper>

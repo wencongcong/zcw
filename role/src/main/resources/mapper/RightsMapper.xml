@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.role.mapper.RightsMapper">
+
+    <select id="queryAllr" resultType="com.role.entity.Rights">
+        select * from rights
+    </select>
+
+    <insert id="insertOneRight" parameterType="com.role.entity.Rights" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert rights(`rname`)value (#{rname})
+    </insert>
+
+    <update id="updateOneRight">
+        update rights
+        <trim prefix="set" suffixOverrides="," suffix=" where id = #{id} ">
+            <if test="rname!= null and rname!=''">
+                rname=#{rname},
+            </if>
+        </trim>
+    </update>
+
+    <delete id="deleteOneRight">
+        delete from rights where id=#{id}
+    </delete>
+</mapper>

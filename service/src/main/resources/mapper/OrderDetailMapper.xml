@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.service.mapper.OrderdetailMapper">
+
+<insert id="insertOne" parameterType="com.service.entity.Orderdetails" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+    INSERT orderdetails
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+        <if test="orderInfoid!=null and orderInfoid!=''">
+            orderInfoid,
+        </if>
+        <if test="assetnumber!=null and assetnumber!=''">
+            assetnumber,
+        </if>
+        <if test="behavior!=null and behavior!=''">
+            behavior,
+        </if>
+        <if test="currentstate!=null and currentstate!=''">
+            currentstate,
+        </if>
+        <if test="currentpeincharge!=null and currentpeincharge!=''">
+            currentpeincharge,
+        </if>
+        <if test="operation!=null and operation!=''">
+            operation,
+        </if>
+        <if test="processinglink!=null and processinglink!=''">
+            processinglink,
+        </if>
+        <if test="workorderstatus!=null and workorderstatus!=''">
+            workorderstatus,
+        </if>
+        <if test="dealingpeopre!=null and dealingpeopre!=''">
+            dealingpeopre,
+        </if>
+        <if test="processingtime!=null and processingtime!=''">
+            processingtime,
+        </if>
+        <if test="pageNew!=null and pageNew!=''">
+            pageNew,
+        </if>
+        <if test="prodName!=null and prodName!=''">
+            prodName,
+        </if>
+        <if test="orderjson!=null and orderjson!=''">
+            orderjson,
+        </if>
+    </trim>
+    <trim prefix="value (" suffix=")" suffixOverrides=",">
+    <if test="orderInfoid!=null and orderInfoid!=''">
+        #{orderInfoid},
+    </if>
+    <if test="assetnumber!=null and assetnumber!=''">
+        #{assetnumber},
+    </if>
+    <if test="behavior!=null and behavior!=''">
+        #{behavior},
+    </if>
+     <if test="currentstate!=null and currentstate!=''">
+        #{currentstate},
+     </if>
+    <if test="currentpeincharge!=null and currentpeincharge!=''">
+        #{currentpeincharge},
+    </if>
+    <if test="operation!=null and operation!=''">
+        #{operation},
+    </if>
+    <if test="processinglink!=null and processinglink!=''">
+        #{processinglink},
+    </if>
+    <if test="workorderstatus!=null and workorderstatus!=''">
+        #{workorderstatus},
+    </if>
+     <if test="dealingpeopre!=null and dealingpeopre!=''">
+        #{dealingpeopre},
+     </if>
+    <if test="processingtime!=null and processingtime!=''">
+        #{processingtime},
+    </if>
+    <if test="pageNew!=null and pageNew!=''">
+        #{pageNew},
+    </if>
+    <if test="prodName!=null and prodName!=''">
+        #{prodName},
+    </if>
+    <if test="orderjson!=null and orderjson!=''">
+        #{orderjson},
+    </if>
+</trim>
+</insert>
+
+    <select id="chaOne" resultType="int">
+    SELECT COUNT(1) FROM orderdetails WHERE orderinfoid=#{orderdetilid}
+    </select>
+
+    <update id="updatepeo">
+        update orderdetails set dealingpeopre=#{dealingpeopre},orderjson=#{orderjson} where orderinfoid=#{orderinfoid}
+    </update>
+</mapper>

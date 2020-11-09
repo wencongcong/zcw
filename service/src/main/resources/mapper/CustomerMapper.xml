@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.service.mapper.CustomerMapper">
+
+    <insert id="insertOne" parameterType="com.service.entity.CustomerInfo" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT ordercustomerinfo(`custmername`,`custmeraddress`,`custmerNo`,`docuNumber`,`custtype`,`custlevel`,`contractnumber`,`accountname`)
+        VALUE(#{custmername},#{custmeraddress},#{custmerNo},#{docuNumber},#{custtype},#{custlevel},#{contractnumber},#{accountname})
+    </insert>
+
+    <select id="chaChong" resultType="int">
+        select count(1) from ordercustomerinfo where custmerNo=#{custmerNo}
+    </select>
+</mapper>

@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.role.mapper.EmployeeMapper">
+
+    <select id="Login" resultMap="employees" >
+        SELECT e.id,e.ename,e.epwd,e.ephone,e.levelid,e.depaid,l.id,l.lname,l.laccept,l.ltime,l.ljiami,l.lxiazai,l.lshangchuang,l.djson,l.darr,l.lfenpei,d.id,d.dname,d.daccept,d.dtime FROM `employee` e
+INNER JOIN levels l on e.levelid=l.id
+INNER JOIN department d on e.depaid=d.id WHERE ephone=#{ephone} and epwd=#{epwd}
+    </select>
+    <resultMap id="employees" type="com.role.entity.Employee">
+        <id property="id" column="e.id"></id>
+        <result property="id" column="id"></result>
+        <result property="ename" column="ename"></result>
+        <result property="epwd" column="epwd"></result>
+        <result property="ephone" column="ephone"></result>
+        <association property="levelsid" javaType="com.role.entity.Levels">
+            <id property="id" column="l.id"></id>
+            <result property="lname" column="lname"></result>
+            <result property="laccept" column="laccept"></result>
+            <result property="ltime" column="ltime"></result>
+            <result property="ljiami" column="ljiami"></result>
+            <result property="lxiazai" column="lxiazai"></result>
+            <result property="lshangchuang" column="lshangchuang"></result>
+            <result property="djson" column="djson"></result>
+            <result property="darr" column="darr"></result>
+            <result property="lfenpei" column="lfenpei"></result>
+        </association>
+        <association property="depasid" javaType="com.role.entity.Department">
+            <id property="id" column="d.id"></id>
+            <result property="dname" column="dname"></result>
+            <result property="daccept" column="daccept"></result>
+            <result property="dtime" column="dtime"></result>
+        </association>
+    </resultMap>
+
+
+
+    <select id="queryAllem" resultMap="employee">
+        SELECT e.id,e.ename,e.epwd,e.ephone,e.levelid,e.depaid,l.id,l.lname,l.laccept,l.ltime,l.ljiami,l.lxiazai,l.lshangchuang,l.djson,l.darr,d.id,d.dname,d.daccept,d.dtime FROM `employee` e
+INNER JOIN levels l on e.levelid=l.id
+INNER JOIN department d on e.depaid=d.id
+    </select>
+    <resultMap id="employee" type="com.role.entity.Employee">
+        <id property="id" column="e.id"></id>
+        <result property="id" column="id"></result>
+        <result property="ename" column="ename"></result>
+        <result property="epwd" column="epwd"></result>
+        <result property="ephone" column="ephone"></result>
+        <association property="levelsid" javaType="com.role.entity.Levels">
+            <id property="id" column="l.id"></id>
+            <result property="id" column="levelid"></result>
+            <result property="lname" column="lname"></result>
+            <result property="laccept" column="laccept"></result>
+            <result property="ltime" column="ltime"></result>
+            <result property="ljiami" column="ljiami"></result>
+            <result property="lxiazai" column="lxiazai"></result>
+            <result property="lshangchuang" column="lshangchuang"></result>
+            <result property="djson" column="djson"></result>
+            <result property="darr" column="darr"></result>
+        </association>
+        <association property="depasid" javaType="com.role.entity.Department">
+            <id property="id" column="d.id"></id>
+            <result property="id" column="depaid"></result>
+            <result property="dname" column="dname"></result>
+            <result property="daccept" column="daccept"></result>
+            <result property="dtime" column="dtime"></result>
+        </association>
+    </resultMap>
+
+    <insert id="insertOneEmployee" parameterType="com.role.entity.Employee" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert employee(`ename`,`ephone`,`levelid`,`depaid`)value (#{ename},#{ephone},#{lid},#{did})
+    </insert>
+
+    <update id="updateOneEmployee">
+        update employee
+        <trim prefix="set" suffixOverrides="," suffix=" where id = #{id} ">
+            <if test="ename!= null and ename!=''">
+                ename=#{ename},
+            </if>
+            <if test="epwd!= null and epwd!=''">
+                epwd=#{epwd},
+            </if>
+            <if test="ephone!=null and ephone!=''">
+                ephone=#{ephone},
+            </if>
+            <if test="levelid!=null and levelid!=''">
+                levelid=#{levelid},
+            </if>
+            <if test="depaid!=null and depaid!=''">
+                depaid=#{depaid},
+            </if>
+        </trim>
+    </update>
+
+    <delete id="deleteOneEmployee">
+        delete from employee where id=#{id}
+    </delete>
+
+    <select id="chaOneEmplyee" resultType="int">
+        select count(1) from employee where ephone=#{ephone} and epwd=#{oldpwd}
+    </select>
+
+    <select id="queryAllDepa" resultMap="empse">
+        SELECT e.id,e.*,l.id,l.*,d.id,d.* FROM `employee` e
+INNER JOIN levels l on e.levelid=l.id
+INNER JOIN department d on e.depaid=d.id
+where ename=#{ename}
+    </select>
+    <resultMap id="empse" type="com.role.entity.Employee">
+        <id property="id" column="e.id"></id>
+        <result property="id" column="id"></result>
+        <result property="ename" column="ename"></result>
+        <result property="epwd" column="epwd"></result>
+        <result property="ephone" column="ephone"></result>
+        <association property="levelsid" javaType="com.role.entity.Levels">
+            <id property="id" column="l.id"></id>
+            <result property="lname" column="lname"></result>
+            <result property="laccept" column="laccept"></result>
+            <result property="ltime" column="ltime"></result>
+            <result property="ljiami" column="ljiami"></result>
+            <result property="lxiazai" column="lxiazai"></result>
+            <result property="lshangchuang" column="lshangchuang"></result>
+            <result property="djson" column="djson"></result>
+            <result property="darr" column="darr"></result>
+            <result property="lfenpei" column="lfenpei"></result>
+        </association>
+        <association property="depasid" javaType="com.role.entity.Department">
+            <id property="id" column="d.id"></id>
+            <result property="dname" column="dname"></result>
+            <result property="daccept" column="daccept"></result>
+            <result property="dtime" column="dtime"></result>
+        </association>
+    </resultMap>
+</mapper>

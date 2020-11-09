@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.service.mapper.HistoryMapper">
+
+    <insert id="insertOneHistory" parameterType="com.service.entity.History" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert history(`statosname`,`state`,`uplogintime`,`uplognno`,`workid`,`sevenstatus`,`historys`,`curentname`)value
+        (#{statosname},#{state},#{uplogintime},#{uplognno},#{workid},#{sevenstatus},#{historys},#{curentname})
+    </insert>
+
+    <select id="queryAll" resultType="com.service.entity.History">
+        select * from  history where workid=#{workid}
+    </select>
+</mapper>

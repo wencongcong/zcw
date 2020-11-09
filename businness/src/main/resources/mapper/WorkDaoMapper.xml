@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.businness.mapper.WorkDaoMapper">
+
+    <select id="queryAll" resultMap="Works">
+        SELECT w.id,w.*,c.id,c.*,p.id,p.*,h.id,h.*,o.id,o.* FROM `workinfo` w
+        INNER JOIN customerinfo c on w.custid=c.cid
+        INNER JOIN prod p on w.acceptid=p.id
+        LEFT JOIN history h on w.historyid=h.id
+        LEFT JOIN orderinfo o on w.orderid=o.id
+        <trim prefixOverrides="and|or" prefix="where">
+            <if test="status!=null and status!=''">
+                w.status=#{status}
+            </if>
+            <if test="otime!=null and otime!=''">
+                and `c`.custcreatertime BETWEEN CONCAT(#{otime},' 00:00:00') AND CONCAT(#{ptime},' 23:59:59')
+            </if>
+            <if test="workid!=null and workid!=''">
+                and w.workid=#{workid}
+            </if>
+            <if test="custcreate!=null and custcreate!=''">
+                and `c`.custcreate LIKE CONCAT('%',#{custcreate},'%')
+            </if>
+            <if test="serviceName!=null and serviceName!=''">
+                and w.serviceName LIKE CONCAT('%',#{serviceName},'%')
+            </if>
+            <if test="ostats!=null and ostats!=''">
+                and o.ostats=#{ostats}
+            </if>
+            <if test="orderNo!=null and orderNo!=''">
+                and o.orderNo=#{orderNo}
+            </if>
+            <if test="custidcard!=null and custidcard!=''">
+                and `c`.custidcard=#{custidcard}
+            </if>
+            <if test="custphone!=null and custphone!=''">
+                and `c`.custphone=#{custphone}
+            </if>
+            <if test="custarea!=null and custarea!=''">
+                and `c`.custarea=#{custarea}
+            </if>
+            <if test="productsName!=null and productsName!=''">
+                and p.productsName LIKE CONCAT('%',#{productsName},'%')
+            </if>
+            <if test="custname!=null and custname!=''">
+                and `c`.custname LIKE CONCAT('%',#{custname},'%')
+            </if>
+            <if test="broadband!=null and broadband!=''">
+                and w.broadband=#{broadband}
+            </if>
+        </trim>
+    </select>
+    <resultMap id="Works" type="com.businness.entity.WorkEX">
+        <id property="id" column="w.id" />
+            <result column="remark" property="remark"></result>
+            <result column="serviceName" property="serviceName"></result>
+            <result column="uploginName" property="uploginName"></result>
+            <result column="assigneeName" property="assigneeName"></result>
+            <result column="broadband" property="broadband"></result>
+            <result column="status" property="status"></result>
+            <result column="statos" property="statos"></result>
+            <result column="appointmenttime" property="appointmenttime"></result>
+            <result column="xdtime" property="xdtime"></result>
+            <result column="serviceName" property="serviceName"></result>
+            <result column="uploginName" property="uploginName"></result>
+            <result column="assigneeName" property="assigneeName"></result>
+            <result column="completedtime" property="completedtime"></result>
+            <result column="financeverify" property="financeverify"></result>
+            <result column="soundverify" property="soundverify"></result>
+            <result column="timepayment" property="timepayment"></result>
+            <result column="workserved" property="workserved"></result>
+            <result column="xdtime" property="xdtime"></result>
+            <result column="reminder" property="reminder"></result>
+            <result column="channl" property="channl"></result>
+        <association property="cid" javaType="com.businness.entity.CustEX">
+            <id property="id" column="c.id"></id>
+            <result column="custid" property="id"></result>
+            <result column="custname" property="custname"></result>
+            <result column="custphone" property="custphone"></result>
+            <result column="custidcard" property="custidcard"></result>
+            <result column="custaddress" property="custaddress"></result>
+            <result column="custarea" property="custarea"></result>
+            <result column="custremark" property="custremark"></result>
+            <result column="custcreater" property="custcreater"></result>
+            <result column="custcreatertime" property="custcreatertime"></result>
+        </association>
+        <association property="pid" javaType="com.businness.entity.ProdEX">
+            <id property="id" column="p.id"></id>
+            <result column="proMoney" property="proMoney"></result>
+            <result column="productsName" property="productsName"></result>
+            <result column="proCount" property="proCount"></result>
+            <result column="otime" property="otime"></result>
+            <result column="ptime" property="ptime"></result>
+            <result column="rate" property="rate"></result>
+            <result column="integral" property="integral"></result>
+            <result column="deduct" property="deduct"></result>
+            <result column="slname" property="slname"></result>
+        </association>
+        <association property="oid" javaType="com.businness.entity.OrderInfoEX">
+            <id property="id" column="o.id"></id>
+            <result column="orderNo" property="orderNo"></result>
+            <result column="ostats" property="ostats"></result>
+            <result column="guwangno" property="guwangno"></result>
+            <result column="guwangstatos" property="guwangstatos"></result>
+            <result column="cwangno" property="cwangno"></result>
+            <result column="cwangstatos" property="cwangstatos"></result>
+            <result column="yuandanno" property="yuandanno"></result>
+            <result column="yuandanstatos" property="yuandanstatos"></result>
+            <result column="fphone" property="fphone"></result>
+        </association>
+        <association property="historyid" javaType="com.businness.entity.HistoryEx">
+            <id property="id" column="h.id"></id>
+            <result column="statosname" property="statosname"></result>
+            <result column="state" property="state"></result>
+            <result column="uplogintime" property="uplogintime"></result>
+            <result column="uplognno" property="uplognno"></result>
+            <result column="workid" property="workid"></result>
+            <result column="historys" property="historys"></result>
+        </association>
+    </resultMap>
+
+    <insert id="insertOneWork" parameterType="com.businness.entity.WorkEX">
+       INSERT INTO workinfo(`workid`,`custid`,`serviceName`,`acceptid`,`status`,`orderid`,`broadband`,`remark`,`appointmenttime`,`paymentamount`,`xdtime`)VALUES(#{workid},#{custid},#{serviceName},#{acceptid},#{status},0,#{broadband},#{remark},#{appointmenttime},#{paymentamount},#{xdtime})
+    </insert>
+
+    <select id="chaworkcount" resultType="int">
+        select count(1) from workinfo
+    </select>
+
+    <select id="workcountsum" resultType="int">
+        SELECT count(1) FROM `workinfo` w
+        INNER JOIN customerinfo c on w.custid=c.cid
+        <trim prefixOverrides="and|or" prefix="where">
+            <if test="otime!=null and otime!=''">
+                and `c`.custcreatertime BETWEEN CONCAT(#{otime},' 00:00:00') AND CONCAT(#{ptime},' 23:59:59')
+            </if>
+        </trim>
+    </select>
+
+    <select id="workcount" resultType="java.util.Map">
+        SELECT custarea,count(custarea) FROM `workinfo` w
+        INNER JOIN customerinfo c on w.custid=c.cid
+        <trim prefixOverrides="and|or" prefix="where">
+            <if test="otime!=null and otime!=''">
+                and `c`.custcreatertime BETWEEN CONCAT(#{otime},' 00:00:00') AND CONCAT(#{ptime},' 23:59:59')
+            </if>
+        </trim>
+		GROUP BY custarea
+    </select>
+    <select id="workchannlcunt" resultType="java.util.Map">
+        SELECT w.channl,count(w.channl) FROM `workinfo` w
+        INNER JOIN customerinfo c on w.custid=c.cid
+        <trim prefixOverrides="and|or" prefix="where">
+            <if test="otime!=null and otime!=''">
+                and `c`.custcreatertime BETWEEN CONCAT(#{otime},' 00:00:00') AND CONCAT(#{ptime},' 23:59:59')
+            </if>
+        </trim>
+		GROUP BY w.channl
+    </select>
+
+    <select id="workstatuscunt" resultMap="stat">
+        SELECT serviceName,count(1),`status` FROM `workinfo` w
+        INNER JOIN customerinfo c on w.custid=c.cid
+        <trim prefixOverrides="and|or" prefix="where">
+            <if test="otime!=null and otime!=''">
+                and `c`.custcreatertime BETWEEN CONCAT(#{otime},' 00:00:00') AND CONCAT(#{ptime},' 23:59:59')
+            </if>
+        </trim>
+        GROUP BY `status`,serviceName
+    </select>
+    <resultMap id="stat" type="java.util.Map">
+        <result column="serviceName" property="servicename"></result>
+        <result column="count(1)" property="num" ></result>
+        <result column="status" property="status" ></result>
+    </resultMap>
+
+    <select id="worksernamecunt" resultType="java.util.Map">
+        SELECT count(`status`),`status` FROM `workinfo` w
+        INNER JOIN customerinfo c on w.custid=c.cid
+        <trim prefixOverrides="and|or" prefix="where">
+            <if test="otime!=null and otime!=''">
+                and `c`.custcreatertime BETWEEN CONCAT(#{otime},' 00:00:00') AND CONCAT(#{ptime},' 23:59:59')
+            </if>
+        </trim>
+        GROUP BY `status`
+    </select>
+
+</mapper>

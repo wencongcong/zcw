@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.role.mapper.DepartmentMapper">
+
+    <select id="queryAlldp" resultType="com.role.entity.Department">
+        select * from department
+    </select>
+
+    <insert id="insertOneDepartment" parameterType="com.role.entity.Department" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert department(`dname`,`daccept`,`dtime`)value (#{dname},#{daccept},#{dtime})
+    </insert>
+
+    <update id="updateOneDepartment">
+        update department
+        <trim prefix="set" suffixOverrides="," >
+            <if test="dname!= null and dname!=''">
+                dname=#{dname},
+            </if>
+        </trim>
+        where id =#{id}
+    </update>
+
+    <delete id="deleteOneDepartment">
+        delete from department where id=#{id}
+    </delete>
+
+    <select id="chadeid" resultType="int">
+        select id from department where  dname=#{dname}
+    </select>
+</mapper>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.service.mapper.StreamMapper">
+
+    <select id="queryAll" resultType="com.service.entity.Stream">
+        select * from stream
+        <trim prefixOverrides="and|or" prefix="where">
+        <if test="flowName!=null and flowName!=''">
+          and flowName=#{flowName}
+        </if>
+        <if test="enble!=-1">
+          and enble=#{enble}
+        </if>
+        </trim>
+    </select>
+    <insert id="insertStream" parameterType="com.service.entity.Stream">
+        insert stream(`flowName`,`stateName`,`enble`)values (#{flowName},#{stateName},1)
+    </insert>
+    <delete id="deleteStream">
+        delete from stream where id=#{id}
+    </delete>
+    <update id="updateStream">
+        update stream
+        <trim prefix="set" suffixOverrides=",">
+            <if test="flowName!=null and flowName!=''">
+                flowName=#{flowName},
+            </if>
+            <if test="stateName!=null and stateName!=''">
+                stateName=#{stateName},
+            </if>
+            <if test="enble!=-1">
+                 enble=#{enble},
+            </if>
+        </trim>
+        where id=#{id}
+    </update>
+
+    <select id="queryOneStream" resultType="com.service.entity.Stream">
+        select * from stream where id=#{id}
+    </select>
+</mapper>

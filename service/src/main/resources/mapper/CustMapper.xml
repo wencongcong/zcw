@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.service.mapper.CustMapper">
+
+    <insert id="insertOneCust" parameterType="com.service.entity.Cust" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert customerinfo(`cid`,`custname`,`custphone`,`custidcard`,`custaddress`,`custarea`,`custremark`,`custcreater`,`custcreatertime`,`custreserved`)
+        value (#{cid},#{custname},#{custphone},#{custidcard},#{custaddress},#{custarea},#{custremark},#{custcreater},#{custcreatertime},#{custreserved})
+    </insert>
+
+    <select id="chaChong" resultType="int">
+        select count(1) from customerinfo where cid=#{cid}
+    </select>
+
+    <select id="chaCustId" resultType="int">
+        select id from customerinfo where cid=#{cid}
+    </select>
+
+    <select id="chawork" resultType="int">
+        select count(1) from customerinfo where cid=#{cid}
+    </select>
+
+    <select id="chacount" resultType="int">
+        select count(1) from customerinfo
+    </select>
+
+    <insert id="sgchars" parameterType="java.util.Map">
+        INSERT customerinfo(`cid`,`custname`,`custidcard`,`custphone`,`custaddress`,`custarea`,`custremark`,`custcreater`,`custcreatertime`,`custreserved`)
+        VALUES(#{cid},#{custname},#{custidcard},#{custphone},#{custaddress},#{custarea},#{custremark},#{custcreater},#{custcreatertime},#{custreserved})
+    </insert>
+    <select id="chachongname" resultType="int">
+        select id from customerinfo where custname=#{custname}
+    </select>
+    <select id="chachongcount" resultType="int">
+        select count(1) from customerinfo where custname=#{custname}
+    </select>
+</mapper>  

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.businness.mapper.WebSocketsMapper">
+    <select id="queryAllWeb" resultType="com.businness.entity.WebSockets">
+        select * from websockets
+        <trim prefixOverrides="and|or" prefix="where">
+            <if test="id!=-1">
+                and id=#{id}
+            </if>
+        </trim>
+    </select>
+
+  <insert id="insertOneWeb" parameterType="com.businness.entity.WebSockets">
+        INSERT INTO websockets(`user`,`fileurl`,`direction`,`accept`,`idname`,`idnumber`,`destinationnumber`,`createdtime`,`answeredtime`,`overtime`,`status`,`gateway`,`filename`,`batchaccept`,`transnumber`,`otheraccept`,`otherstr`,`olaqueue`,`hangupside`)
+        VALUES(#{user},#{fileurl},#{direction},#{accept},#{idname},#{idnumber},#{destinationnumber},#{createdtime},#{answeredtime},#{overtime},#{status},#{gateway},#{filename},#{batchaccept},#{transnumber},#{otheraccept},#{otherstr},#{olaqueue},#{hangupside})
+  </insert>
+</mapper>

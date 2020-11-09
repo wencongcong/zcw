@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.role.mapper.LevelsMapper">
+
+    <select id="queryAlllv" resultType="com.role.entity.Levels">
+        select * from levels
+    </select>
+
+    <insert id="insertOneLevel" parameterType="com.role.entity.Levels" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert levels(`lname`,`laccept`,`ltime`,`ljiami`,`lxiazai`,`lshangchuang`,`djson`,`darr`,`lfenpei`)value (#{lname},#{laccept},#{ltime},#{ljiami},#{lxiazai},#{lshangchuang},#{djson},#{darr},#{lfenpei})
+    </insert>
+
+    <update id="updateOneLevel">
+        update levels
+        <trim prefix="set" suffixOverrides=",">
+            <if test="lname!= null and lname!=''">
+                lname=#{lname},
+            </if>
+            <if test="ljiami!=-1">
+                ljiami=#{ljiami},
+            </if>
+            <if test="lxiazai!=-1">
+                lxiazai=#{lxiazai},
+            </if>
+            <if test="lshangchuang!= -1">
+                lshangchuang=#{lshangchuang},
+            </if>
+            <if test="djson!= null and djson!=''">
+                djson=#{djson},
+            </if>
+            <if test="darr!= null and darr!=''">
+                darr=#{darr},
+            </if>
+            <if test="lfenpei!= -1">
+                lfenpei=#{lfenpei},
+            </if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOneLevel">
+        delete from levels where id=#{id}
+    </delete>
+
+    <select id="chaid" resultType="int">
+        select id from levels where lname=#{lname}
+    </select>
+</mapper>
