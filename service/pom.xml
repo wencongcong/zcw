@@ -6,7 +6,6 @@
         <artifactId>zc</artifactId>
         <groupId>com.zhongcheng</groupId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.service</groupId>
     <artifactId>service</artifactId>
@@ -69,23 +68,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-test</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.role</groupId>
-            <artifactId>role</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>cn.afterturn</groupId>
-            <artifactId>easypoi-spring-boot-starter</artifactId>
-            <version>4.2.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>cn.afterturn</groupId>
-            <artifactId>easypoi-wps</artifactId>
-            <version>4.2.0</version>
         </dependency>
 
         <dependency>
@@ -160,14 +142,5 @@
 
 
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>

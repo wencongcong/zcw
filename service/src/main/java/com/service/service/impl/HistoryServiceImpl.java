@@ -24,4 +24,9 @@ public class HistoryServiceImpl implements HistoryService {
     public List<History> queryAll(int workid) {
         return historyMapper.queryAll(workid);
     }
+
+    @Override
+    public int insertrighthistory(History history) {
+        return historyMapper.insertrighthistory(history);
+    }
 }

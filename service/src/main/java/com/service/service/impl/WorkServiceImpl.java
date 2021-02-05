@@ -6,6 +6,7 @@ import com.service.entity.Work;
 import com.service.mapper.WorkMapper;
 import com.service.service.WorkService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -67,6 +68,8 @@ public class WorkServiceImpl implements WorkService {
         }else {
             lists=workMapper.queryAll(map);
         }
+        }catch (NullPointerException e){
+            e.printStackTrace();
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -90,8 +93,8 @@ public class WorkServiceImpl implements WorkService {
     }
 
     @Override
-    public int sgchar(Map map) {
-        return workMapper.sgchar(map);
+    public int sgchar(Work work) {
+        return workMapper.sgchar(work);
     }
 
     @Override
@@ -115,8 +118,8 @@ public class WorkServiceImpl implements WorkService {
     }
 
     @Override
-    public int Ustatosoid(String statos, int oid, String workid) {
-        return workMapper.Ustatosoid(statos, oid, workid);
+    public int Ustatosoid(String statos, String status,int oid, String workid) {
+        return workMapper.Ustatosoid(statos,status,oid, workid);
     }
 
     @Override
@@ -135,12 +138,13 @@ public class WorkServiceImpl implements WorkService {
     }
 
     @Override
+    @Transactional
     public int updateOrderId(int orderId, String workid) {
         return workMapper.updateOrderId(orderId, workid);
     }
 
     @Override
-    public int chaWorkid(int orderId) {
+    public String chaWorkid(int orderId) {
         return workMapper.chaWorkid(orderId);
     }
 
@@ -162,6 +166,11 @@ public class WorkServiceImpl implements WorkService {
     @Override
     public String whetherisempty() {
         return workMapper.whetherisempty();
+    }
+
+    @Override
+    public int changeWork(Map map) {
+        return workMapper.changeWork(map);
     }
 
 }

@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.brokerage.mapper.TerminalMapper">
+
+    <select id="queryAllTerminal" resultMap="coms">
+        select t.*,t.id,w.id,w.status from terminal t left JOIN workinfo w on t.wid=w.id
+        <trim prefixOverrides="and|or" prefix="where">
+            <if test="id!=null and id!=''">
+                and t.id=#{id}
+            </if>
+            <if test="otime!=null and otime!=''">
+                and t.createtime BETWEEN CONCAT(#{otime},' 00:00:00') AND CONCAT(#{ptime},' 23:59:59')
+            </if>
+            <if test="phone!=null and phone!=''">
+                and t.phone=#{phone}
+            </if>
+            <if test="servicename!=null and servicename!=''">
+                and t.servicename=#{servicename}
+            </if>
+            <if test="sname!=null and sname!=''">
+                and t.servicename='' or t.servicename is null
+            </if>
+            <if test="address!=null and address!=''">
+                and t.address like concat('%',#{address},'%')
+            </if>
+            <if test="custname!=null and custname!=''">
+                and t.custname like concat('%',#{custname},'%')
+            </if>
+            <if test="idcard!=null and idcard!=''">
+                and t.idcard like concat('%',#{idcard},'%')
+            </if>
+            <if test="businessnumber!=null and businessnumber!=''">
+                and t.businessnumber like concat('%',#{businessnumber},'%')
+            </if>
+            <if test="channl!=null and channl!=''">
+                and t.channl like concat('%',#{channl},'%')
+            </if>
+            <if test="advertiser!=null and advertiser!=''">
+                and t.advertiser like concat('%',#{advertiser},'%')
+            </if>
+            <if test="tmallordernumber!=null and tmallordernumber!=''">
+                and t.terminalseries like concat('%',#{terminalseries},'%')
+            </if>
+            <if test="terminaltyp!=null and terminaltyp!=''">
+                and t.terminaltyp like concat('%',#{terminaltyp},'%')
+            </if>
+            <if test="area!=null and area!=''">
+                and t.area like concat('%',#{area},'%')
+            </if>
+            <if test="marketingresults!=null and marketingresults!=''">
+                and t.marketingresults like concat('%',#{marketingresults},'%')
+            </if>
+            <if test="failure!=null and failure!=''">
+                and t.failure=#{failure}
+            </if>
+        </trim>
+    </select>
+    <resultMap id="coms" type="com.brokerage.entity.Terminal">
+        <id property="id" column="t.id" />
+        <result column="id" property="id"></result>
+        <result column="custname" property="custname"></result>
+        <result column="phone" property="phone"></result>
+        <result column="idcard" property="idcard"></result>
+        <result column="businessnumber" property="businessnumber"></result>
+        <result column="address" property="address"></result>
+        <result column="terminalseries" property="terminalseries"></result>
+        <result column="channl" property="channl"></result>
+        <result column="advertiser" property="advertiser"></result>
+        <result column="remark" property="remark"></result>
+        <result column="createtime" property="createtime"></result>
+        <result column="trackingtime" property="trackingtime"></result>
+        <result column="marketingresults" property="marketingresults"></result>
+        <result column="businessnumbertwo" property="businessnumbertwo"></result>
+        <result column="businessnumbertree" property="businessnumbertree"></result>
+        <result column="terminaltyp" property="terminaltyp"></result>
+        <result column="combo" property="combo"></result>
+        <result column="combustible" property="combustible"></result>
+        <result column="template" property="template"></result>
+        <result column="cname" property="cname"></result>
+        <result column="nowPackageType" property="nowPackageType"></result>
+        <result column="nowDiscount" property="nowDiscount"></result>
+        <result column="area" property="area"></result>
+        <result column="servicename" property="servicename"></result>
+        <result column="packageChange" property="packageChange"></result>
+        <result column="productname" property="productname"></result>
+        <result column="paymentterm" property="paymentterm"></result>
+        <result column="receivable" property="receivable"></result>
+        <result column="productnametwo" property="productnametwo"></result>
+        <result column="productnametree" property="productnametree"></result>
+        <result column="failure" property="failure"></result>
+        <association property="wid" javaType="com.brokerage.entity.Work">
+            <id property="id" column="w.id"></id>
+            <result column="id" property="id"></result>
+            <result column="status" property="status"></result>
+        </association>
+    </resultMap>
+
+    <select id="queryAllTerminals" resultMap="comss">
+        select t.*,t.id,w.id,w.status from terminal t left JOIN workinfo w on t.wid=w.id
+        <trim prefixOverrides="and|or" prefix="where">
+            <if test="id!=null and id!=''">
+                and t.id=#{id}
+            </if>
+            <if test="otime!=null and otime!=''">
+                and t.createtime BETWEEN CONCAT(#{otime},' 00:00:00') AND CONCAT(#{ptime},' 23:59:59')
+            </if>
+            <if test="phone!=null and phone!=''">
+                and t.phone=#{phone}
+            </if>
+            <if test="servicename!=null">
+                and t.servicename=#{servicename}
+            </if>
+            <if test="address!=null and address!=''">
+                and t.address like concat('%',#{address},'%')
+            </if>
+            <if test="custname!=null and custname!=''">
+                and t.custname like concat('%',#{custname},'%')
+            </if>
+            <if test="idcard!=null and idcard!=''">
+                and t.idcard like concat('%',#{idcard},'%')
+            </if>
+            <if test="businessnumber!=null and businessnumber!=''">
+                and t.businessnumber like concat('%',#{businessnumber},'%')
+            </if>
+            <if test="channl!=null and channl!=''">
+                and t.channl like concat('%',#{channl},'%')
+            </if>
+            <if test="advertiser!=null and advertiser!=''">
+                and t.advertiser like concat('%',#{advertiser},'%')
+            </if>
+            <if test="tmallordernumber!=null and tmallordernumber!=''">
+                and t.terminalseries like concat('%',#{terminalseries},'%')
+            </if>
+            <if test="terminaltyp!=null and terminaltyp!=''">
+                and t.terminaltyp like concat('%',#{terminaltyp},'%')
+            </if>
+            <if test="area!=null and area!=''">
+                and t.area like concat('%',#{area},'%')
+            </if>
+            <if test="marketingresults!=null and marketingresults!=''">
+                and t.marketingresults like concat('%',#{marketingresults},'%')
+            </if>
+            <if test="failure!=null and failure!=''">
+                and t.failure=#{failure}
+            </if>
+        </trim>
+    </select>
+    <resultMap id="comss" type="com.brokerage.entity.Terminal">
+        <id property="id" column="t.id" />
+        <result column="id" property="id"></result>
+        <result column="custname" property="custname"></result>
+        <result column="phone" property="phone"></result>
+        <result column="idcard" property="idcard"></result>
+        <result column="businessnumber" property="businessnumber"></result>
+        <result column="address" property="address"></result>
+        <result column="terminalseries" property="terminalseries"></result>
+        <result column="channl" property="channl"></result>
+        <result column="advertiser" property="advertiser"></result>
+        <result column="remark" property="remark"></result>
+        <result column="createtime" property="createtime"></result>
+        <result column="trackingtime" property="trackingtime"></result>
+        <result column="marketingresults" property="marketingresults"></result>
+        <result column="businessnumbertwo" property="businessnumbertwo"></result>
+        <result column="businessnumbertree" property="businessnumbertree"></result>
+        <result column="terminaltyp" property="terminaltyp"></result>
+        <result column="combo" property="combo"></result>
+        <result column="combustible" property="combustible"></result>
+        <result column="template" property="template"></result>
+        <result column="cname" property="cname"></result>
+        <result column="nowPackageType" property="nowPackageType"></result>
+        <result column="nowDiscount" property="nowDiscount"></result>
+        <result column="area" property="area"></result>
+        <result column="servicename" property="servicename"></result>
+        <result column="packageChange" property="packageChange"></result>
+        <result column="productname" property="productname"></result>
+        <result column="paymentterm" property="paymentterm"></result>
+        <result column="receivable" property="receivable"></result>
+        <result column="productnametwo" property="productnametwo"></result>
+        <result column="productnametree" property="productnametree"></result>
+        <result column="failure" property="failure"></result>
+        <association property="wid" javaType="com.brokerage.entity.Work">
+            <id property="id" column="w.id"></id>
+            <result column="id" property="id"></result>
+            <result column="status" property="status"></result>
+        </association>
+    </resultMap>
+
+    <insert id="insertOneTerminal">
+        insert terminal(`custname`,`phone`,`nowPackageType`,`nowDiscount`,`area`,`cname`,`businessnumber`,`remark`,`createtime`,`servicename`,`channl`,`marketingresults`)
+        values (#{custname},#{phone},#{nowPackageType},#{nowDiscount},#{area},#{cname},#{businessnumber},#{remark},#{createtime},#{servicename},#{channl},'待外呼')
+    </insert>
+    <insert id="insertTerminal" parameterType="com.brokerage.entity.Terminal">
+       insert terminal(`custname`,`phone`,`nowPackageType`,`nowDiscount`,`area`,`cname`,`businessnumber`,`remark`,`createtime`,`marketingresults`)
+        values (#{custname},#{phone},#{nowPackageType},#{nowDiscount},#{area},#{cname},#{businessnumber},#{remark},#{createtime},'待外呼')
+    </insert>
+    <update id="updatewid">
+        update terminal set wid=#{wid} where id=#{id}
+    </update>
+
+    <select id="chastatos" resultType="int">
+        select count(1) from terminal where id=#{id} and marketingresults=#{statos}
+    </select>
+
+    <select id="chaOk" resultType="int">
+          select ok from terminal where id=#{id}
+    </select>
+
+    <select id="chaStotus" resultType="java.lang.String">
+        select marketingresults from terminal where id=#{id}
+    </select>
+
+    <select id="chaServicename" resultType="java.lang.String">
+        select servicename from terminal where id=#{id}
+    </select>
+
+    <update id="uploginno">
+        update terminal set servicename=#{servicename} where id=#{id}
+    </update>
+
+    <update id="updateTerminal">
+        update terminal
+        <trim prefix="set" suffixOverrides=",">
+            <if test="custname!=null and custname!=''">
+                custname=#{custname},
+            </if>
+            <if test="phone!=null and phone!=''">
+                phone=#{phone},
+            </if>
+            <if test="idcard!=null and idcard!=''">
+                idcard=#{idcard},
+            </if>
+            <if test="businessnumber!=null and businessnumber!=''">
+                businessnumber=#{businessnumber},
+            </if>
+            <if test="address!=null and address!=''">
+                address=#{address},
+            </if>
+            <if test="channl!=null and channl!=''">
+                channl=#{channl},
+            </if>
+            <if test="advertiser!=null and advertiser!=''">
+                advertiser=#{advertiser},
+            </if>
+            <if test="remark!=null and remark!=''">
+                remark=#{remark},
+            </if>
+            <if test="trackingtime!=null and trackingtime!=''">
+                trackingtime=#{trackingtime},
+            </if>
+            <if test="appointmenttime!=null and appointmenttime!=''">
+                appointmenttime=#{appointmenttime},
+            </if>
+            <if test="businessnumbertwo!=null and businessnumbertwo!=''">
+                businessnumbertwo=#{businessnumbertwo},
+            </if>
+            <if test="businessnumbertree!=null and businessnumbertree!=''">
+                businessnumbertree=#{businessnumbertree},
+            </if>
+            <if test="template!=-1">
+                template=#{template},
+            </if>
+            <if test="productname!=null and productname!=''">
+                productname=#{productname},
+            </if>
+            <if test="marketingresults!=null and marketingresults!=''">
+                marketingresults=#{marketingresults},
+            </if>
+            <if test="servicename!=null and servicename!=''">
+                servicename=#{servicename},
+            </if>
+            <if test="area!=null and area!=''">
+                area=#{area},
+            </if>
+            <if test="combustible!=null and combustible!=''">
+                combustible=#{combustible},
+            </if>
+            <if test="cname!=null and cname!=''">
+                cname=#{cname},
+            </if>
+            <if test="terminalseries!=null and terminalseries!=''">
+                terminalseries=#{terminalseries},
+            </if>
+            <if test="terminaltyp!=null and terminaltyp!=''">
+                terminaltyp=#{terminaltyp},
+            </if>
+            <if test="nowPackageType!=null and nowPackageType!=''">
+                nowPackageType=#{nowPackageType},
+            </if>
+            <if test="nowDiscount!=null and nowDiscount!=''">
+                nowDiscount=#{nowDiscount},
+            </if>
+            <if test="packageChange!=null and packageChange!=''">
+                packageChange=#{packageChange},
+            </if>
+            <if test="paymentterm!=null and paymentterm!=''">
+                paymentterm=#{paymentterm},
+            </if>
+            <if test="receivable!=null and receivable!=''">
+                receivable=#{receivable},
+            </if>
+            <if test="productnametwo!=null and productnametwo!=''">
+                productnametwo=#{productnametwo},
+            </if>
+            <if test="productnametree!=null and productnametree!=''">
+                productnametree=#{productnametree},
+            </if>
+            <if test="failure!=null and failure!=''">
+                failure=#{failure}
+            </if>
+        </trim>
+        where id = #{id}
+    </update>
+</mapper>

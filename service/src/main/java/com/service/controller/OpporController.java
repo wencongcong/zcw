@@ -53,6 +53,21 @@ public class OpporController {
         return Result.success(1,pageInfo);
     }
 
+    @RequestMapping(value = "/queryAllFi",method = RequestMethod.POST)
+    public Result queryAllFi(@RequestParam Map map){
+        PageHelper.startPage(Integer.parseInt(map.get("pageNum").toString()),Integer.parseInt(map.get("pageSize").toString()));//这行是重点，表示从pageNum页开始，每页pageSize条数据
+        if (Integer.parseInt(map.get("desc").toString())==0){
+            PageHelper.orderBy("trackingtime desc");
+        }else if(Integer.parseInt(map.get("desc").toString())==1){
+            PageHelper.orderBy("trackingtime asc");
+        }else if(Integer.parseInt(map.get("desc").toString())==2){
+            PageHelper.orderBy("ordertime desc");
+        }
+        List<Fishorders> list= flyIngService.queryAlls(map);
+        PageInfo<Fishorders> pageInfo = new PageInfo(list);
+        return Result.success(1,pageInfo);
+    }
+
     @RequestMapping(value = "/grouby",method = RequestMethod.POST)
     public Map zd(@RequestParam Map map){
         Map maps=new HashMap();
@@ -75,11 +90,22 @@ public class OpporController {
         fishorders.setInterior(map.get("interior").toString());
         fishorders.setOrdertime(sj);
         fishorders.setBroadband(map.get("broadband").toString());
-        int result= flyIngService.insertOne(fishorders);
-        if (result>0){
-            return Result.success(1,"导入成功");
-        }else {
-            return Result.success(0,"导入失败");
+        fishorders.setServicename(map.get("servicename").toString());
+        if (flyIngService.whether(map.get("phone").toString())<1){
+            int result= flyIngService.insertOne(fishorders);
+            if (result>0){
+                return Result.success(1,"导入成功");
+            }else {
+                return Result.success(0,"导入失败");
+            }
+        }else{
+            fishorders.setWhethertorepeat(1);
+            int result= flyIngService.insertOne(fishorders);
+            if (result>0){
+                return Result.success(1,"导入成功");
+            }else {
+                return Result.success(0,"导入失败");
+            }
         }
     }
 
@@ -90,10 +116,22 @@ public class OpporController {
         JSONObject datas= data.getJSONObject("data");
         int length=Integer.parseInt(data.get("length").toString());
         String servicename=data.get("servicename").toString();
-        if (length <=10) {
+        if (length <=50) {
             for (int i = 0; i < length; i++) {
                 String uplogin = datas.get(i).toString();
                 int id = Integer.parseInt(uplogin);
+                String statosname=flyIngService.chaStotus(id);
+                String uploginname=flyIngService.chaServicename(id);
+                History history=new History();
+                history.setStatosname(statosname);
+                history.setState(statosname);
+                history.setUplogintime(sfs.format(new Date()));
+                history.setUplognno(uploginname);
+                history.setWorkid(id);
+                history.setHistorys("");
+                history.setCurentname(servicename);
+                history.setIsitright(1);
+                historyService.insertrighthistory(history);
                 int resul = flyIngService.chastatos("营销成功", id);
                 if (resul == 1) {
                     return Result.fail(0, "营销成功不能分配,商机单编号为:"+id);
@@ -111,7 +149,7 @@ public class OpporController {
                 }
             }
         } else {
-            return Result.success(0, "一次分配不能超过10条");
+            return Result.success(0, "一次分配最多不能分配超过50条");
         }
         return Result.success(1, "运行成功");
     }
@@ -143,11 +181,21 @@ public class OpporController {
             fishorders.setStatos("待外呼");
             fishorders.setOrdertime(sj);
         }
-        int rs=flyIngService.insertOneFish(fishorders);
-        if (rs>0){
-            return Result.success(1,"提交成功");
+        if (flyIngService.whether(map.get("phone").toString())<1){
+            int rs=flyIngService.insertOneFish(fishorders);
+            if (rs>0){
+                return Result.success(1,"提交成功");
+            }else{
+                return Result.success(0,"提交失败");
+            }
         }else{
-            return Result.success(0,"提交失败");
+            fishorders.setWhethertorepeat(1);
+            int rs=flyIngService.insertOneFish(fishorders);
+            if (rs>0){
+                return Result.success(1,"提交成功");
+            }else{
+                return Result.success(0,"提交失败");
+            }
         }
     }
 
@@ -164,6 +212,16 @@ public class OpporController {
         map.put("uplogintime",sj);
         int result=flyIngService.reamrk(map);
         if (result>0){
+            History history=new History();
+            history.setStatosname(flyIngService.chaStotus(Integer.parseInt(map.get("id").toString())));
+            history.setState(map.get("statos").toString());
+            history.setUplogintime(sj);
+            history.setUplognno(flyIngService.chaServicename(Integer.parseInt(map.get("id").toString())));
+            history.setWorkid(Integer.parseInt(map.get("id").toString()));
+            history.setHistorys("");
+            history.setCurentname(flyIngService.chaServicename(Integer.parseInt(map.get("id").toString())));
+            history.setIsitright(1);
+            historyService.insertrighthistory(history);
             return Result.success(1,"修改成功");
         }else {
             return Result.success(0,"修改失败");
@@ -187,6 +245,8 @@ public class OpporController {
         }else {
             return Result.success(0,"添加失败");
         }
+
+
     }
     @RequestMapping(value = "/updateliu",method = RequestMethod.POST)
     public Result updateliu(@RequestParam Map map){
@@ -205,5 +265,11 @@ public class OpporController {
         }else {
             return Result.success(0,"删除失败");
         }
+    }
+
+    @RequestMapping(value = "/remind",method = RequestMethod.POST)
+    public Result remind(@RequestParam(value = "servicename",defaultValue = "")String servicename){
+
+        return flyIngService.timetoremind(servicename);
     }
 }

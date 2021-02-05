@@ -49,10 +49,10 @@ public class UploadController {
             File fileServer = new File(dir, filename);
             //2，实现上传
             uploadFile.transferTo(fileServer);
-            String filePath = request.getScheme() + "://" +
-                    request.getServerName() + ":"
-                    + request.getServerPort()
-                    +"/"+ filename;
+//            String filePath = request.getScheme() + "://" +
+//                    request.getServerName() + ":"
+//                    + request.getServerPort()
+            String filePath="/file/"+filename;
             //3，返回可供访问的网络路径
             commodity.setCommodityt(filePath);
             commodity.setWid(wid);
@@ -80,8 +80,6 @@ public class UploadController {
     @RequestMapping(value = "/url",method = RequestMethod.POST)
     @ResponseBody
     public Result url(@RequestParam Map map){
-
-
 
         return Result.success(1,"success");
     }

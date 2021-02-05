@@ -23,14 +23,22 @@
         select count(1) from customerinfo
     </select>
 
-    <insert id="sgchars" parameterType="java.util.Map">
+    <insert id="sgchars" parameterType="com.service.entity.Cust" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         INSERT customerinfo(`cid`,`custname`,`custidcard`,`custphone`,`custaddress`,`custarea`,`custremark`,`custcreater`,`custcreatertime`,`custreserved`)
         VALUES(#{cid},#{custname},#{custidcard},#{custphone},#{custaddress},#{custarea},#{custremark},#{custcreater},#{custcreatertime},#{custreserved})
     </insert>
     <select id="chachongname" resultType="int">
-        select id from customerinfo where custname=#{custname}
+        select id from customerinfo where custname=#{custname} and custphone=#{custphone} and custidcard=#{custidcard}
     </select>
     <select id="chachongcount" resultType="int">
-        select count(1) from customerinfo where custname=#{custname}
+        select count(1) from customerinfo where custname=#{custname} and custphone=#{custphone} and custidcard=#{custidcard}
     </select>
+
+    <select id="queryCid" resultType="int">
+        SELECT id FROM customerinfo  ORDER BY id desc LIMIT 1
+    </select>
+
+    <update id="changecust">
+        update customerinfo set custname=#{custname},custphone=#{custphone},custidcard=#{custidcard} where cid=#{custid}
+    </update>
 </mapper>  

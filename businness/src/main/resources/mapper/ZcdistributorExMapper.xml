@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.businness.mapper.ZcdistributorExMapper">
+
+    <select id="queryAll" resultType="com.businness.entity.ZcdistributorEx">
+        select * from zc_distributor
+        <trim prefixOverrides="and|or" prefix="where">
+        <if test="servicename!=null and servicename!=''">
+            and servicename LIKE CONCAT('%',#{servicename},'%')
+        </if>
+        <if test="otime!=null and otime!=''">
+             and ordertime BETWEEN CONCAT(#{otime},' 00:00:00') AND CONCAT(#{ptime},' 23:59:59')
+        </if>
+        </trim>
+    </select>
+
+</mapper>  

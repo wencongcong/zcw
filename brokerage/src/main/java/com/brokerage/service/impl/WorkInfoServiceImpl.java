@@ -36,4 +36,9 @@ public class WorkInfoServiceImpl implements WorkInfoService {
     public int updatevery(String verify, String workserved, String workid) {
         return workInfoMapper.updatevery(verify, workserved, workid);
     }
+
+    @Override
+    public int Autocontrolledwork(Work work) {
+        return workInfoMapper.Autocontrolledwork(work);
+    }
 }

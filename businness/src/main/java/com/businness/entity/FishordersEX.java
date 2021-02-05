@@ -1,6 +1,7 @@
 package com.businness.entity;
 
 import cn.afterturn.easypoi.excel.annotation.Excel;
+import cn.afterturn.easypoi.excel.annotation.ExcelEntity;
 import cn.afterturn.easypoi.excel.annotation.ExcelTarget;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,13 +19,11 @@ import java.io.Serializable;
 @ExcelTarget(value = "FishordersEX")
 public class FishordersEX implements Serializable {
 
-    @Excel(name="ID",width = 30,orderNum = "1")
     int id;
     @Excel(name="线索ID",width = 30,orderNum = "1")
     String workid;
     @Excel(name="渠道",width = 30,orderNum = "1")
     String channel;
-    @Excel(name="来源",width = 30,orderNum = "1")
     String flow;
     @Excel(name="联系方式",width = 30,orderNum = "1")
     String phone;
@@ -36,9 +35,8 @@ public class FishordersEX implements Serializable {
     String interior;
     @Excel(name="办理业务",width = 30,orderNum = "1")
     String accept;
-    @Excel(name="业务人员",width = 30,orderNum = "1")
+    @Excel(name = "业务员名称",width = 30,orderNum = "1")
     String servicename;
-    @Excel(name="受理人员",width = 30,orderNum = "1")
     String uploginno;
     @Excel(name="状态",width = 30,orderNum = "1")
     String statos;
@@ -56,16 +54,18 @@ public class FishordersEX implements Serializable {
     String nameofadvertiser;
     @Excel(name="地市",width = 30,orderNum = "1")
     String address;
-    @Excel(name="预约时间",width = 30,orderNum = "1",databaseFormat = "yyyyMMddHHmmss", format = "")
     String appointmentime;
-    @Excel(name="标记",width = 30,orderNum = "1")
     int ok;
-    @Excel(name="跟踪时间",width = 30,orderNum = "1",databaseFormat = "yyyyMMddHHmmss", format = "")
     String trackingtime;//跟踪时间
     @Excel(name="失败原因",width = 30,orderNum = "1",databaseFormat = "yyyyMMddHHmmss", format = "")
     String failure;//失败原因
-    @Excel(name="更新时间",width = 30,orderNum = "1",databaseFormat = "yyyyMMddHHmmss", format = "")
     String uplogintime;//更新时间
     @Excel(name="资产号码",width = 30,orderNum = "1")
     String broadband;
+    int isitnew;
+    int whethertorepeat;
+    WorkEX wid;
+    @Excel(name="收款方式",width = 30,orderNum = "1")
+    String paymentstate;
+
 }

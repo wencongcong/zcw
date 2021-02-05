@@ -9,6 +9,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -29,12 +30,13 @@ public class ProdServiceImpl implements ProdService {
     }
 
     @Override
+    @Transactional
     public int insetOneProd(Prod prod) {
         return prodMapper.insetOneProd(prod);
     }
 
     @Override
-    public Result queryAllinsert(MultipartFile file) throws Exception{
+    public Result queryAllinsert(MultipartFile file) throws Exception {
         int result = 0;
 //		存放excel表中所有user细腻
         List<Prod> prodList = new ArrayList<>();
@@ -43,16 +45,16 @@ public class ProdServiceImpl implements ProdService {
          * 判断文件版本
          */
         String fileName = file.getOriginalFilename();
-        String suffix = fileName.substring(fileName.lastIndexOf(".")+1);
+        String suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
 
         InputStream ins = file.getInputStream();
 
         Workbook wb = null;
 
-        if(suffix.equals("xlsx")){
+        if (suffix.equals("xlsx")) {
             wb = new XSSFWorkbook(ins);
 
-        }else{
+        } else {
             wb = new HSSFWorkbook(ins);
         }
         /**
@@ -63,15 +65,15 @@ public class ProdServiceImpl implements ProdService {
          * line = 1 :从表的第二行开始获取记录
          *
          */
-        if(null != sheet){
+        if (null != sheet) {
 
-            for(int line = 1; line <= sheet.getLastRowNum();line++){
+            for (int line = 2; line <= sheet.getLastRowNum(); line++) {
 
                 Prod prod = new Prod();
 
                 Row row = sheet.getRow(line);
 
-                if(null == row){
+                if (null == row) {
                     continue;
                 }
                 /**
@@ -111,7 +113,15 @@ public class ProdServiceImpl implements ProdService {
                 row.getCell(9).setCellType(CellType.STRING);
                 String depaname = row.getCell(9).getStringCellValue();
                 row.getCell(10).setCellType(CellType.STRING);
-                String subsidy=row.getCell(10).getStringCellValue();
+                String subsidy = row.getCell(10).getStringCellValue();
+                row.getCell(11).setCellType(CellType.STRING);
+                String payMethod = row.getCell(11).getStringCellValue();
+                row.getCell(12).setCellType(CellType.STRING);
+                String isAuto = row.getCell(12).getStringCellValue();
+                row.getCell(13).setCellType(CellType.STRING);
+                String acceptMethod = row.getCell(13).getStringCellValue();
+                row.getCell(14).setCellType(CellType.STRING);
+                String settlementratio = row.getCell(14).getStringCellValue();
 
                 prod.setProMoney(promoney);
                 prod.setProductsName(productname.trim());
@@ -125,27 +135,33 @@ public class ProdServiceImpl implements ProdService {
                 prod.setDepaname(depaname.trim());
                 prod.setEnable(0);
                 prod.setSubsidy(subsidy.trim());
+                prod.setPayMethod(payMethod);
+                prod.setIsAuto(isAuto);
+                prod.setAcceptMethod(Integer.parseInt(acceptMethod));
+                prod.setSettlementratio(settlementratio);
                 prodList.add(prod);
             }
 
-            for(Prod prodInfo:prodList){
+            for (Prod prodInfo : prodList) {
                 /**
                  * 判断数据库表中是否存在用户记录，若存在，则更新，不存在，则保存记录
                  */
-                if (prodMapper.chaName(prodInfo.getProductsName(),prodInfo.getDepaname())>1){
+                if (prodMapper.chaName(prodInfo.getProductsName(), prodInfo.getDepaname()) > 0) {
                     result = 2;
                     prodMapper.updateOneProd(prodInfo);
-                }else {
+                } else {
                     result = 1;
                     prodMapper.insetOneProd(prodInfo);
                 }
             }
         }
 
-        if (result==1){
+        if (result == 1) {
             return Result.success(result, "插入成功");
-        }else {
+        } else if (result == 2) {
             return Result.success(result, "已有产品,更新成功");
+        } else {
+            return Result.success(0, "插入异常");
         }
     }
 

@@ -36,6 +36,9 @@ public class MoneyController {
     private HistoryInfoService historyInfoService;
 
 
+    /**
+     * 佣金报表导出
+     * */
     @RequestMapping(value = "/chaxunrate",method = RequestMethod.POST)
     public Result ChaxunRe(@RequestParam Map map){
         Employee employee=new Employee();
@@ -86,6 +89,9 @@ public class MoneyController {
         return Result.success("/www/wwwroot/CRM2/sourse/file/"+map.get("name").toString()+".xlsx");
     }
 
+    /**
+     *提出报表导出
+     */
     @RequestMapping(value = "/chaxunduct",method = RequestMethod.POST)
     public Result ChaXun(@RequestParam Map map){
         String servicename=null;

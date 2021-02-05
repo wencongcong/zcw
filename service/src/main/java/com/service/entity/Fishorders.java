@@ -40,4 +40,8 @@ public class Fishorders implements Serializable {
     String failure;//失败原因
     String uplogintime;//更新时间
     String broadband;
+    int isitnew;
+    int whethertorepeat;
+    Work wid;
+    String paymentstate;
 }

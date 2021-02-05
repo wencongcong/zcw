@@ -3,11 +3,16 @@
 <mapper namespace="com.service.mapper.HistoryMapper">
 
     <insert id="insertOneHistory" parameterType="com.service.entity.History" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-        insert history(`statosname`,`state`,`uplogintime`,`uplognno`,`workid`,`sevenstatus`,`historys`,`curentname`)value
-        (#{statosname},#{state},#{uplogintime},#{uplognno},#{workid},#{sevenstatus},#{historys},#{curentname})
+        insert history(`statosname`,`state`,`uplogintime`,`uplognno`,`workid`,`sevenstatus`,`historys`,`curentname`,`isitright`)value
+        (#{statosname},#{state},#{uplogintime},#{uplognno},#{workid},#{sevenstatus},#{historys},#{curentname},0)
     </insert>
 
     <select id="queryAll" resultType="com.service.entity.History">
         select * from  history where workid=#{workid}
     </select>
+
+    <insert id="insertrighthistory" parameterType="com.service.entity.History">
+         insert history(`statosname`,`state`,`uplogintime`,`uplognno`,`workid`,`historys`,`curentname`,`isitright`)value
+        (#{statosname},#{state},#{uplogintime},#{uplognno},#{workid},#{historys},#{curentname},#{isitright})
+    </insert>
 </mapper>

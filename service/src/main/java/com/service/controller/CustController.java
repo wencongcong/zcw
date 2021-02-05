@@ -59,9 +59,10 @@ public class CustController {
         orderInfo.setOrderNo(map.get("orderNo").toString());
         orderInfo.setOstats("已受理");
         orderInfo.setAcceptancetime(sj);
-        orderInfo.setOrderdetailsId(0);
+        orderInfo.setOrderdetailsId("0");
         orderInfo.setMarkId(0);
         orderInfo.setCustId(0);
+        orderInfo.setAbnormal(0);
         int Finding=orderInfoService.chaOrderId(map.get("orderNo").toString());
         if (Finding>0){
             return Result.fail(0,ErrorEnum.CHONG_FU);
@@ -84,5 +85,20 @@ public class CustController {
     public int stst()throws Exception{
         System.out.println( custHttpService.Timeupda());
         return 0;
+    }
+
+    @RequestMapping(value = "/deleteorder",method = RequestMethod.POST)
+    public Result deleteOrderId(@RequestParam(defaultValue = "0",value ="workid")String workid,@RequestParam(defaultValue = "0",value ="orderno")String orderno){
+        int result=workService.updateOrderId(0,workid);
+        if (result>0){
+           int results=orderInfoService.deleteOrderinfo(orderno);
+           if (results>0){
+               return Result.success(1,"清空成功");
+           }else {
+               return Result.success(0,"7工单清空失败");
+           }
+        }else {
+            return Result.success(0,"工单查询失败");
+        }
     }
 }

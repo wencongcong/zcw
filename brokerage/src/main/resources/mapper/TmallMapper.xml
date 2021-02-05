@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.brokerage.mapper.TmallMapper">
+
+    <select id="queryAllTmall" resultMap="coms">
+        select t.*,t.id,w.id,w.status from tmall t left JOIN workinfo w on t.wid=w.id
+        <trim prefixOverrides="and|or" prefix="where">
+            <if test="id!=null and id!=''">
+                and t.id=#{id}
+            </if>
+            <if test="otime!=null and otime!=''">
+                and t.createtime BETWEEN CONCAT(#{otime},' 00:00:00') AND CONCAT(#{ptime},' 23:59:59')
+            </if>
+            <if test="phone!=null and phone!=''">
+                and t.phone=#{phone}
+            </if>
+            <if test="servicename!=null and servicename!=''">
+                and t.servicename=#{servicename}
+            </if>
+            <if test="address!=null and address!=''">
+                and t.address like concat('%',#{address},'%')
+            </if>
+            <if test="custname!=null and custname!=''">
+                and t.custname like concat('%',#{custname},'%')
+            </if>
+            <if test="idcard!=null and idcard!=''">
+                and t.idcard like concat('%',#{idcard},'%')
+            </if>
+            <if test="businessnumber!=null and businessnumber!=''">
+                and t.businessnumber like concat('%',#{businessnumber},'%')
+            </if>
+            <if test="channl!=null and channl!=''">
+                and t.channl like concat('%',#{channl},'%')
+            </if>
+            <if test="advertiser!=null and advertiser!=''">
+                and t.advertiser like concat('%',#{advertiser},'%')
+            </if>
+            <if test="tmallordernumber!=null and tmallordernumber!=''">
+                and t.tmallordernumber like concat('%',#{tmallordernumber},'%')
+            </if>
+            <if test="area!=null and area!=''">
+                and t.area like concat('%',#{area},'%')
+            </if>
+            <if test="marketingresults!=null and marketingresults!=''">
+                and t.marketingresults like concat('%',#{marketingresults},'%')
+            </if>
+        </trim>
+    </select>
+    <resultMap id="coms" type="com.brokerage.entity.Tmall">
+        <id property="id" column="t.id" />
+        <result column="id" property="id"></result>
+        <result column="custname" property="custname"></result>
+        <result column="phone" property="phone"></result>
+        <result column="idcard" property="idcard"></result>
+        <result column="businessnumber" property="businessnumber"></result>
+        <result column="address" property="address"></result>
+        <result column="tmallordernumber" property="tmallordernumber"></result>
+        <result column="channl" property="channl"></result>
+        <result column="advertiser" property="advertiser"></result>
+        <result column="remark" property="remark"></result>
+        <result column="createtime" property="createtime"></result>
+        <result column="trackingtime" property="trackingtime"></result>
+        <result column="appointmenttime" property="appointmenttime"></result>
+        <result column="businessnumbertwo" property="businessnumbertwo"></result>
+        <result column="businessnumbertree" property="businessnumbertree"></result>
+        <result column="prodctname" property="prodctname"></result>
+        <result column="prodcttwo" property="prodcttwo"></result>
+        <result column="prodcttree" property="prodcttree"></result>
+        <result column="template" property="template"></result>
+        <result column="paymentterm" property="paymentterm"></result>
+        <result column="paymentmoney" property="paymentmoney"></result>
+        <result column="marketingresults" property="marketingresults"></result>
+        <result column="servicename" property="servicename"></result>
+        <result column="area" property="area"></result>
+        <association property="wid" javaType="com.brokerage.entity.Work">
+            <id property="id" column="w.id"></id>
+            <result column="id" property="id"></result>
+            <result column="status" property="status"></result>
+        </association>
+    </resultMap>
+
+    <select id="queryAllTmalls" resultMap="comss">
+        select t.*,t.id,w.id,w.status from tmall t left JOIN workinfo w on t.wid=w.id
+        <trim prefixOverrides="and|or" prefix="where">
+            <if test="id!=null and id!=''">
+                and t.id=#{id}
+            </if>
+            <if test="otime!=null and otime!=''">
+                and t.createtime BETWEEN CONCAT(#{otime},' 00:00:00') AND CONCAT(#{ptime},' 23:59:59')
+            </if>
+            <if test="phone!=null and phone!=''">
+                and t.phone=#{phone}
+            </if>
+            <if test="servicename!=null">
+                and t.servicename=#{servicename}
+            </if>
+            <if test="address!=null and address!=''">
+                and t.address like concat('%',#{address},'%')
+            </if>
+            <if test="custname!=null and custname!=''">
+                and t.custname like concat('%',#{custname},'%')
+            </if>
+            <if test="idcard!=null and idcard!=''">
+                and t.idcard like concat('%',#{idcard},'%')
+            </if>
+            <if test="businessnumber!=null and businessnumber!=''">
+                and t.businessnumber like concat('%',#{businessnumber},'%')
+            </if>
+            <if test="channl!=null and channl!=''">
+                and t.channl like concat('%',#{channl},'%')
+            </if>
+            <if test="advertiser!=null and advertiser!=''">
+                and t.advertiser like concat('%',#{advertiser},'%')
+            </if>
+            <if test="tmallordernumber!=null and tmallordernumber!=''">
+                and t.tmallordernumber like concat('%',#{tmallordernumber},'%')
+            </if>
+            <if test="area!=null and area!=''">
+                and t.area like concat('%',#{area},'%')
+            </if>
+            <if test="marketingresults!=null and marketingresults!=''">
+                and t.marketingresults like concat('%',#{marketingresults},'%')
+            </if>
+        </trim>
+    </select>
+    <resultMap id="comss" type="com.brokerage.entity.Tmall">
+        <id property="id" column="t.id" />
+        <result column="id" property="id"></result>
+        <result column="custname" property="custname"></result>
+        <result column="phone" property="phone"></result>
+        <result column="idcard" property="idcard"></result>
+        <result column="businessnumber" property="businessnumber"></result>
+        <result column="address" property="address"></result>
+        <result column="tmallordernumber" property="tmallordernumber"></result>
+        <result column="channl" property="channl"></result>
+        <result column="advertiser" property="advertiser"></result>
+        <result column="remark" property="remark"></result>
+        <result column="createtime" property="createtime"></result>
+        <result column="trackingtime" property="trackingtime"></result>
+        <result column="appointmenttime" property="appointmenttime"></result>
+        <result column="businessnumbertwo" property="businessnumbertwo"></result>
+        <result column="businessnumbertree" property="businessnumbertree"></result>
+        <result column="prodctname" property="prodctname"></result>
+        <result column="prodcttwo" property="prodcttwo"></result>
+        <result column="prodcttree" property="prodcttree"></result>
+        <result column="template" property="template"></result>
+        <result column="paymentterm" property="paymentterm"></result>
+        <result column="paymentmoney" property="paymentmoney"></result>
+        <result column="marketingresults" property="marketingresults"></result>
+        <result column="servicename" property="servicename"></result>
+        <result column="area" property="area"></result>
+        <association property="wid" javaType="com.brokerage.entity.Work">
+            <id property="id" column="w.id"></id>
+            <result column="id" property="id"></result>
+            <result column="status" property="status"></result>
+        </association>
+    </resultMap>
+
+    <insert id="insertOneTmall">
+        insert tmall(`custname`,`phone`,`idcard`,`businessnumber`,`address`,`tmallordernumber`,`channl`,`advertiser`,`remark`,`createtime`,`servicename`,`area`,`marketingresults`)
+        values(#{custname},#{phone},#{idcard},#{businessnumber},#{address},#{tmallordernumber},#{channl},#{advertiser},#{remark},#{createtime},#{servicename},#{area},'待确认')
+    </insert>
+    <insert id="insertTmallExcel" parameterType="com.brokerage.entity.Tmall">
+        insert tmall(`custname`,`phone`,`idcard`,`businessnumber`,`address`,`tmallordernumber`,`channl`,`advertiser`,`servicename`,`area`)
+        values(#{custname},#{phone},#{idcard},#{businessnumber},#{address},#{tmallordernumber},#{channl},#{advertiser},#{servicename},#{area})
+    </insert>
+    <update id="updatewid">
+        update tmall set wid=#{wid} where id=#{id}
+    </update>
+
+    <select id="chastatos" resultType="int">
+        select count(1) from tmall where id=#{id} and marketingresults=#{statos}
+    </select>
+
+    <select id="chaOk" resultType="int">
+          select ok from tmall where id=#{id}
+    </select>
+
+    <select id="chaStotus" resultType="java.lang.String">
+        select marketingresults from tmall where id=#{id}
+    </select>
+
+    <select id="chaServicename" resultType="java.lang.String">
+        select servicename from tmall where id=#{id}
+    </select>
+
+    <update id="uploginno">
+        update tmall set servicename=#{servicename} where id=#{id}
+    </update>
+
+    <update id="updateTmall">
+        update tmall
+        <trim prefix="set" suffixOverrides=",">
+            <if test="custname!=null and custname!=''">
+                custname=#{custname},
+            </if>
+            <if test="phone!=null and phone!=''">
+                phone=#{phone},
+            </if>
+            <if test="idcard!=null and idcard!=''">
+                idcard=#{idcard},
+            </if>
+            <if test="businessnumber!=null and businessnumber!=''">
+                businessnumber=#{businessnumber},
+            </if>
+            <if test="address!=null and address!=''">
+                address=#{address},
+            </if>
+            <if test="tmallordernumber!=null and tmallordernumber!=''">
+                tmallordernumber=#{tmallordernumber},
+            </if>
+            <if test="channl!=null and channl!=''">
+                channl=#{channl},
+            </if>
+            <if test="advertiser!=null and advertiser!=''">
+                advertiser=#{advertiser},
+            </if>
+            <if test="remark!=null and remark!=''">
+                remark=#{remark},
+            </if>
+            <if test="trackingtime!=null and trackingtime!=''">
+                trackingtime=#{trackingtime},
+            </if>
+            <if test="appointmenttime!=null and appointmenttime!=''">
+                appointmenttime=#{appointmenttime},
+            </if>
+            <if test="businessnumbertwo!=null and businessnumbertwo!=''">
+                businessnumbertwo=#{businessnumbertwo},
+            </if>
+            <if test="businessnumbertree!=null and businessnumbertree!=''">
+                businessnumbertree=#{businessnumbertree},
+            </if>
+            <if test="template!=-1">
+                template=#{template},
+            </if>
+            <if test="prodctname!=null and prodctname!=''">
+                prodctname=#{prodctname},
+            </if>
+            <if test="prodctnametwo!=null and prodctnametwo!=''">
+                prodctnametwo=#{prodctnametwo},
+            </if>
+            <if test="prodctnametree!=null and prodctnametree!=''">
+                prodctnametree=#{prodctnametree},
+            </if>
+            <if test="paymentterm!=null and paymentterm!=''">
+                paymentterm=#{paymentterm},
+            </if>
+            <if test="paymentmoney!=null and paymentmoney!=''">
+                paymentmoney=#{paymentmoney},
+            </if>
+            <if test="marketingresults!=null and marketingresults!=''">
+                marketingresults=#{marketingresults},
+            </if>
+            <if test="servicename!=null and servicename!=''">
+                servicename=#{servicename},
+            </if>
+            <if test="area!=null and area!=''">
+                area=#{area},
+            </if>
+        </trim>
+        where id = #{id}
+    </update>
+</mapper>

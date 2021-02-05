@@ -19,7 +19,7 @@ import java.io.Serializable;
 @Table(name = "Orderdetails")
 public class Orderdetails implements Serializable {
     int id;
-    String orderInfoid;
+    String orderinfoid;
     String assetnumber;
     String behavior;
     String currentstate;

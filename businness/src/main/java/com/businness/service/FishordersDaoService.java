@@ -2,6 +2,7 @@ package com.businness.service;
 
 
 import com.businness.entity.FishordersEX;
+import com.businness.result.Result;
 
 import java.util.List;
 import java.util.Map;
@@ -13,4 +14,5 @@ public interface FishordersDaoService {
     public int insertOneEx(FishordersEX fishordersEX);
 
     public List<Map<String,String>> fishcount(Map map);
+
 }

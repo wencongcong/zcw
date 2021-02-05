@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.brokerage.mapper.SettlementAnalusisMapper">
+
+    <select id="queryAll" resultMap="SettlementAnalusis">
+SELECT *,CONCAT('[',GROUP_CONCAT(JSON_OBJECT('id',id,'account',assetnumber,'orderno',orderno,'commission',commission,
+        'channl',channl,'productsName',productsName,'schemeName',scenarioname,'acceptthechannel',acceptthechannel,'developingperson',developingperson,'tollcollectionmanner',tollcollectionmanner,
+        'shouldbecommission',shouldbecommission,'statucts',statucts,'accountPeriod',months,'area',prefectural,'branch',networkname,'adjustAccountReason',adjustAccountReason,'commissionType',commissiontype,
+        'strategyName',strategyname,'productType',producttype,'behavior',behavior)),']') as lists,
+SUM(CASE months WHEN #{T1} THEN commission ELSE NULL END) as one,
+SUM(CASE months WHEN #{T2} THEN commission ELSE NULL END) as two,
+SUM(CASE months WHEN #{T3} THEN commission ELSE NULL END) as tree,
+SUM(CASE months WHEN #{T4} THEN commission ELSE NULL END) as four,
+SUM(CASE months WHEN #{T5} THEN commission ELSE NULL END) as five,
+SUM(CASE months WHEN #{T6} THEN commission ELSE NULL END) as six,
+SUM(CASE months WHEN #{T7} THEN commission ELSE NULL END) as seven,
+SUM(CASE months WHEN #{T8} THEN commission ELSE NULL END) as eight,
+SUM(CASE months WHEN #{T9} THEN commission ELSE NULL END) as nine,
+SUM(CASE months WHEN #{T10} THEN commission ELSE NULL END) as ten,
+SUM(CASE months WHEN #{T11} THEN commission ELSE NULL END) as eleven,
+SUM(CASE months WHEN #{T12} THEN commission ELSE NULL END) as twelve,
+SUM(CASE months WHEN #{T213} THEN commission ELSE NULL END) as thirteen,
+SUM(commission) as commissionsubtotals
+FROM `settlementanalysis`
+        <trim prefixOverrides="and|or" prefix="where">
+            <if test="productsName!=null and productsName!=''">
+                and productsName=#{productsName}
+            </if>
+            <if test="prefectural!=null and prefectural!=''">
+                and prefectural=#{prefectural}
+            </if>
+            <if test="statucts!=null and statucts!=''">
+                and statucts=#{statucts}
+            </if>
+            <if test="channl!=null and channl!=''">
+                and channl=#{channl}
+            </if>
+            <if test="months!=null and months!=''">
+                and months=#{months}
+            </if>
+        </trim>
+GROUP BY orderno
+    </select>
+    <resultMap id="SettlementAnalusis" type="com.brokerage.entity.SettlementAnalusis">
+        <id column="id" property="id"></id>
+        <result property="T1" column="one"></result>
+        <result property="T2" column="two"></result>
+        <result property="T3" column="tree"></result>
+        <result property="T4" column="four"></result>
+        <result property="T5" column="five"></result>
+        <result property="T6" column="six"></result>
+        <result property="T7" column="seven"></result>
+        <result property="T8" column="eight"></result>
+        <result property="T9" column="nine"></result>
+        <result property="T10" column="ten"></result>
+        <result property="T11" column="eleven"></result>
+        <result property="T12" column="twelve"></result>
+        <result property="T213" column="thirteen"></result>
+        <result property="assetnumber" column="assetnumber"></result>
+        <result property="months" column="months"></result>
+        <result property="commission" column="commission"></result>
+        <result property="channl" column="channl"></result>
+        <result property="orderno" column="orderno"></result>
+        <result property="productsName" column="productsName"></result>
+        <result property="acceptthechannel" column="acceptthechannel"></result>
+        <result property="developingperson" column="developingperson"></result>
+        <result property="tollcollectionmanner" column="tollcollectionmanner"></result>
+        <result property="prefectural" column="prefectural"></result>
+        <result property="commissionsubtotal" column="commissionsubtotals"></result>
+        <result property="shouldbecommission" column="shouldbecommission"></result>
+        <result property="statucts" column="statucts"></result>
+        <result property="commissionpart" column="commissionpart"></result>
+        <result property="querylist" column="lists"></result>
+        <result property="producttype" column="producttype"></result>
+        <result property="behavior" column="behavior"></result>
+        <result property="scenarioname" column="scenarioname"></result>
+        <result property="strategyname" column="strategyname"></result>
+        <result property="commissiontype" column="commissiontype"></result>
+        <result property="networkname" column="networkname"></result>
+        <result property="adjustAccountReason" column="adjustAccountReason"></result>
+    </resultMap>
+
+
+    <insert id="insertSett" parameterType="com.brokerage.entity.SettlementAnalusis">
+        insert settlementanalysis(`assetnumber`,`months`,`commission`,`channl`,`orderno`,`productsName`,`acceptthechannel`,`developingperson`,`tollcollectionmanner`,`prefectural`,`commissionsubtotal`,`shouldbecommission`,`statucts`,`commissionpart`,`producttype`,`behavior`,`scenarioname`,`strategyname`,`commissiontype`,`networkname`,`adjustAccountReason`)
+        values(#{assetnumber},#{months},#{commission},#{channl},#{orderno},#{productsName},#{acceptthechannel},#{developingperson},#{tollcollectionmanner},#{prefectural},#{commissionsubtotal},#{shouldbecommission},#{statucts},#{commissionpart},#{producttype},#{behavior},#{scenarioname},#{strategyname},#{commissiontype},#{networkname},#{adjustAccountReason})
+    </insert>
+
+    <select id="queryOneassetnumberormonths" resultType="int" parameterType="java.lang.String">
+        select count(1) from settlementanalysis where assetnumber=#{assetnumber} and months=#{months}
+    </select>
+
+    <update id="updateSettStatus">
+        update settlementanalysis set statucts=#{status} where orderno=#{orderno}
+    </update>
+
+</mapper>

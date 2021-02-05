@@ -23,4 +23,6 @@ public interface WorkDaoService {
     public List<Map<String ,String>>worksernamecunt(Map map);
 
     public int workcountsum(Map map);
+
+    public int queryId();
 }

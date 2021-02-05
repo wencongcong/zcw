@@ -9,4 +9,6 @@ public interface HistoryService {
     public int insertOneHistory(History history);
 
     public List<History> queryAll(int workid);
+
+    public int insertrighthistory(History history);
 }

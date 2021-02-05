@@ -7,10 +7,7 @@ import com.alibaba.druid.util.StringUtils;
 import com.businness.entity.*;
 import com.businness.enums.ErrorEnum;
 import com.businness.result.Result;
-import com.businness.service.CustDaoService;
-import com.businness.service.FishordersDaoService;
-import com.businness.service.ProdDaoService;
-import com.businness.service.WorkDaoService;
+import com.businness.service.*;
 import javafx.concurrent.Worker;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.web.bind.annotation.*;
@@ -38,6 +35,34 @@ public class DaoExController {
     private WorkDaoService workDaoService;
     @Resource
     private CustDaoService custDaoService;
+    @Resource
+    private OrderInfosService orderInfosService;
+    @Resource
+    private ZcdistributorExService zcdistributorExService;
+    @Resource
+    private CommissionExService commissionExService;
+
+
+    @RequestMapping(value = "/excelorder",method = RequestMethod.POST)
+    public Result Excelorder(@RequestParam Map map){
+
+        List<OrderInfoEX> list=orderInfosService.allTheQuery();
+        Workbook workbook = ExcelExportUtil.exportExcel(new ExportParams("7工单","7工单"),
+                OrderInfoEX.class, list);
+        if(workbook==null){
+            return Result.fail(0, ErrorEnum.NO_MESSAGE);
+        }
+        FileOutputStream fps=null;
+        try {
+            ///www/wwwroot/crm/FileText"+I+".xlsx
+            fps=new FileOutputStream("/www/wwwroot/CRM2/sourse/file/"+map.get("name").toString()+".xlsx");
+            workbook.write(fps);
+            fps.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Result.success("/file/"+map.get("name").toString()+".xlsx");
+    }
 
     @RequestMapping(value = "/excelfish",method = RequestMethod.POST)
     public Result Excel(@RequestParam Map map){
@@ -57,7 +82,7 @@ public class DaoExController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return Result.success("/www/wwwroot/CRM2/sourse/file/"+map.get("name").toString()+".xlsx");
+        return Result.success("/file/"+map.get("name").toString()+".xlsx");
     }
 
     @RequestMapping(value = "/excelprod",method = RequestMethod.POST)
@@ -71,14 +96,14 @@ public class DaoExController {
         }
         FileOutputStream fps=null;
         try {
-            ///www/wwwroot/crm/FileText"+I+".xlsx
+            //www/wwwroot/CRM2/sourse/file/"+map.get("name").toString()+".xlsx
             fps=new FileOutputStream("/www/wwwroot/CRM2/sourse/file/"+map.get("name").toString()+".xlsx");
             workbook.write(fps);
             fps.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return Result.success("/www/wwwroot/CRM2/sourse/file/"+map.get("name").toString()+".xlsx");
+        return Result.success("/file/"+map.get("name").toString()+".xlsx");
     }
 
     @RequestMapping(value = "/excelwork",method = RequestMethod.POST)
@@ -99,7 +124,28 @@ public class DaoExController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return Result.success("/www/wwwroot/CRM2/sourse/file/"+map.get("name").toString()+".xlsx");
+        return Result.success("/file/"+map.get("name").toString()+".xlsx");
+    }
+
+    @RequestMapping(value = "/exceltent",method = RequestMethod.POST)
+    public Result Exceltent(@RequestParam Map map){
+
+        List<ZcdistributorEx> list=zcdistributorExService.queryAll(map);
+        Workbook workbook = ExcelExportUtil.exportExcel(new ExportParams("分销报表","分销"),
+                ZcdistributorEx.class, list);
+        if(workbook==null){
+            return Result.fail(0, ErrorEnum.NO_MESSAGE);
+        }
+        FileOutputStream fps=null;
+        try {
+            ///www/wwwroot/crm/FileText"+I+".xlsx
+            fps=new FileOutputStream("/www/wwwroot/CRM2/sourse/file/"+map.get("name").toString()+".xlsx");
+            workbook.write(fps);
+            fps.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Result.success("/file/"+map.get("name").toString()+".xlsx");
     }
 
     @RequestMapping(value = "/daoruexcele",method = RequestMethod.POST)
@@ -127,98 +173,173 @@ public class DaoExController {
         return Result.fail(1,"运行结束");
     }
 
-    @RequestMapping(value = "/daoruexcel",method = RequestMethod.POST)
+    @RequestMapping(value = "/daoruexcelecomm",method = RequestMethod.POST)
     @ResponseBody
-    public Result  daoruexcel(@RequestParam("empFile") MultipartFile empFile, HttpServletRequest request) throws Exception{
-        Date date=new Date();
-        SimpleDateFormat sfs=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String sj=sfs.format(date);
+    public Result  daoruexcelecomm(@RequestParam("empFile") MultipartFile empFile, HttpServletRequest request) throws Exception{
         MultipartRequest multipartRequest=(MultipartRequest) request;
         ImportParams  params=new ImportParams();
         params.setTitleRows(0);
         params.setHeadRows(1);
         params.setNeedVerify(true);
         params.setLastOfInvalidRow(0);
-        List<WorksEx> list=null;
-        WorkEX workEX=new WorkEX();
-        CustEX custEX=new CustEX();
-        int custid=0;
-        int workid=0;
-        int pid=0;
-        int bj=0;
+        List<CommissionEx> list=null;
         try {
-            list= ExcelImportUtil.importExcel(empFile.getInputStream(), WorksEx.class, params);
-            for (WorksEx worksEX:list){
-                if (StringUtils.isEmpty(worksEX.getCustname()) || StringUtils.isEmpty(worksEX.getStatus()) || StringUtils.isEmpty(worksEX.getAccept())|| StringUtils.isEmpty(worksEX.getServiceName())) {
-                    return Result.fail(0,"必要数据不能为空");
-                }else if (custDaoService.chaChongCount(worksEX.getCustname())>0){
-                    custid=custDaoService.chachongname(worksEX.getCustname());
-                    pid=prodDaoService.chaAcceptName(worksEX.getAccept(),worksEX.getDepaname());
-                    if (pid==0){
-                        return Result.fail(0,"产品错误");
-                    }
-                    workid=workDaoService.chaworkcount();
-                    workEX.setWorkid(String.valueOf(workid+1));
-                    workEX.setCustid(String.valueOf(custid));
-                    workEX.setAcceptid(String.valueOf(pid));
-                    workEX.setServiceName(worksEX.getServiceName());
-                    workEX.setStatus(worksEX.getStatus());
-                    workEX.setBroadband(worksEX.getBroadband());
-                    workEX.setRemark(worksEX.getRemark());
-                    workEX.setAppointmenttime(worksEX.getAppointmenttime());
-                    workEX.setPaymentamount(worksEX.getPaymentamount());
-                    workEX.setXdtime(sj);
-                    int rest=workDaoService.insertOneWork(workEX);
-                    if (rest>0){
-                        bj++;
-                        continue;
-                    }else{
-                        return Result.fail(0,"插入失败,第"+bj+"失败");
-                    }
-                }else{
-                custid=custDaoService.chacount();
-                custEX.setCid(String.valueOf(custid+1));
-                custEX.setCustname(worksEX.getCustname());
-                custEX.setCustphone(worksEX.getCustphone());
-                custEX.setCustidcard(worksEX.getCustidcard());
-                custEX.setCustaddress(worksEX.getCustaddress());
-                custEX.setCustarea(worksEX.getCustarea()==null?"其他":worksEX.getCustarea());
-                custEX.setCustcreatertime(sj);
-                int result=custDaoService.insertOne(custEX);
-                if (result>0){
-                    custid=custEX.getId();
-                    pid=prodDaoService.chaAcceptName(worksEX.getAccept(),worksEX.getDepaname());
-                    if (pid==0){
-                        return Result.fail(0,"产品错误");
-                    }
-                    workid=workDaoService.chaworkcount();
-                    workEX.setWorkid(String.valueOf(workid+1));
-                    workEX.setCustid(String.valueOf(custid));
-                    workEX.setAcceptid(String.valueOf(pid));
-                    workEX.setServiceName(worksEX.getServiceName());
-                    workEX.setStatus(worksEX.getStatus());
-                    workEX.setBroadband(worksEX.getBroadband());
-                    workEX.setRemark(worksEX.getRemark());
-                    workEX.setAppointmenttime(worksEX.getAppointmenttime());
-                    workEX.setPaymentamount(worksEX.getPaymentamount());
-                    workEX.setXdtime(sj);
-                   int res=workDaoService.insertOneWork(workEX);
-                   if (res>0){
-                       bj++;
-                       continue;
-                   }else{
-                       return Result.fail(0,"插入失败,第"+bj+"失败");
-                   }
-                }else{
-                    return Result.fail(0,"信息导入失败");
-                }
+            list= ExcelImportUtil.importExcel(empFile.getInputStream(), CommissionEx.class, params);
+            for (CommissionEx commissionEx:list){
+                int result=commissionExService.insertAllComm(commissionEx);
+                if (result==0){
+                    return Result.fail(0,"插入失败");
                 }
             }
-            return Result.success(1,"导入成功");
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        return Result.fail(1,"运行结束");
+        return Result.success(1,"运行结束");
+    }
+
+
+    @RequestMapping(value = "/daoruexcel",method = RequestMethod.POST)
+    @ResponseBody
+    public Result  daoruexcel(@RequestParam("empFile") MultipartFile empFile, HttpServletRequest request) throws Exception {
+        Date date = new Date();
+        SimpleDateFormat sfs = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String sj = sfs.format(date);
+        MultipartRequest multipartRequest = (MultipartRequest) request;
+        ImportParams params = new ImportParams();
+        params.setTitleRows(0);
+        params.setHeadRows(1);
+        params.setNeedVerify(true);
+        params.setLastOfInvalidRow(0);
+        List<WorksEx> list = null;
+        WorkEX workEX = new WorkEX();
+        CustEX custEX = new CustEX();
+        OrderInfoEX orderInfo = new OrderInfoEX();
+        int custid = 0;
+        int workid = 0;
+        int pid = 0;
+        int bj = 0;
+        int oid = 0;
+        try {
+            list = ExcelImportUtil.importExcel(empFile.getInputStream(), WorksEx.class, params);
+            for (WorksEx worksEX : list) {
+                if (StringUtils.isEmpty(worksEX.getCustname()) || StringUtils.isEmpty(worksEX.getStatus()) || StringUtils.isEmpty(worksEX.getAccept()) || StringUtils.isEmpty(worksEX.getServiceName())) {
+                    return Result.fail(0, "必要数据不能为空");
+                } else if (custDaoService.chaChongCount(worksEX.getCustname(),worksEX.getCustphone()) > 0) {
+                    custid = custDaoService.chachongname(worksEX.getCustname(),worksEX.getCustphone());
+                    pid = prodDaoService.chaAcceptName(worksEX.getAccept(), worksEX.getDepaname());
+                    if (pid == 0) {
+                        return Result.fail(0, "产品错误");
+                    }
+                    if (worksEX.getOrderno() != null) {
+                        orderInfo.setOrderNo(worksEX.getOrderno());
+                        orderInfo.setOstats(worksEX.getStatus());
+                        orderInfo.setAcceptancetime(sj);
+                        orderInfo.setOrderdetaiId("0");
+                        orderInfo.setMarkId(0);
+                        orderInfo.setCustId(0);
+                        orderInfo.setAbnormal(0);
+                        int Finding = orderInfosService.chaOrderId(worksEX.getOrderno());
+                        if (Finding > 0) {
+                            return Result.fail(0, ErrorEnum.CHONG_FU);
+                        } else {
+                            int result = orderInfosService.insertOneOrderNo(orderInfo);
+                            if (result > 0) {
+                                oid = orderInfo.getId();
+                                workid = workDaoService.queryId();
+                                workEX.setWorkid(String.valueOf(workid + 1));
+                                workEX.setCustid(String.valueOf(custid));
+                                workEX.setAcceptid(String.valueOf(pid));
+                                workEX.setServiceName(worksEX.getServiceName().trim());
+                                workEX.setStatus(worksEX.getStatus().trim());
+                                workEX.setBroadband(worksEX.getBroadband() == null ? "" : worksEX.getBroadband());
+                                workEX.setRemark(worksEX.getRemark());
+                                workEX.setPaymentamount(worksEX.getPaymentamount());
+                                workEX.setChannl(worksEX.getChannl());
+                                workEX.setOrderid(String.valueOf(oid));
+                                workEX.setXdtime(worksEX.getXdtime());
+                                workEX.setAssigneeName(worksEX.getAssigneeName());
+                                int rest = workDaoService.insertOneWork(workEX);
+                                if (rest > 0) {
+                                    bj++;
+                                    continue;
+                                } else {
+                                    return Result.fail(0, "插入失败,第" + bj + "失败");
+                                }
+                            } else {
+                                return Result.fail(0, "工单号插入失败");
+                            }
+                        }
+                    } else {
+                        return Result.fail(0, "工单号不能为空");
+                    }
+                } else {
+                    custid = custDaoService.queryCid();
+                    custEX.setCid(String.valueOf(custid + 1));
+                    custEX.setCustname(worksEX.getCustname().trim());
+                    custEX.setCustphone(worksEX.getCustphone());
+                    custEX.setCustidcard(worksEX.getCustidcard());
+                    custEX.setCustaddress(worksEX.getCustaddress());
+                    custEX.setCustarea(worksEX.getCustarea() == null ? "其他" : worksEX.getCustarea());
+                    custEX.setCustcreatertime(sj);
+                    int result = custDaoService.insertOne(custEX);
+                    if (result > 0) {
+                        custid = custEX.getId();
+                        pid = prodDaoService.chaAcceptName(worksEX.getAccept(), worksEX.getDepaname());
+                        if (pid == 0) {
+                            return Result.fail(0, "产品错误");
+                        }
+                        if (worksEX.getOrderno() != null) {
+                            orderInfo.setOrderNo(worksEX.getOrderno());
+                            orderInfo.setOstats(worksEX.getStatus());
+                            orderInfo.setAcceptancetime(sj);
+                            orderInfo.setOrderdetaiId("0");
+                            orderInfo.setMarkId(0);
+                            orderInfo.setCustId(0);
+                            orderInfo.setAbnormal(0);
+                            int Finding = orderInfosService.chaOrderId(worksEX.getOrderno());
+                            if (Finding > 0) {
+                                return Result.fail(0, ErrorEnum.CHONG_FU);
+                            } else {
+                                int results = orderInfosService.insertOneOrderNo(orderInfo);
+                                if (results > 0) {
+                                    oid = orderInfo.getId();
+                                    workid = workDaoService.queryId();
+                                    workEX.setWorkid(String.valueOf(workid + 1));
+                                    workEX.setCustid(String.valueOf(custid));
+                                    workEX.setAcceptid(String.valueOf(pid));
+                                    workEX.setServiceName(worksEX.getServiceName().trim());
+                                    workEX.setStatus(worksEX.getStatus().trim());
+                                    workEX.setBroadband(worksEX.getBroadband() == null ? "" : worksEX.getBroadband());
+                                    workEX.setRemark(worksEX.getRemark());
+                                    workEX.setChannl(worksEX.getChannl());
+                                    workEX.setOrderid(String.valueOf(oid));
+                                    workEX.setPaymentamount(worksEX.getPaymentamount());
+                                    workEX.setXdtime(worksEX.getXdtime());
+                                    workEX.setAssigneeName(worksEX.getAssigneeName());
+                                    int res = workDaoService.insertOneWork(workEX);
+                                    if (res > 0) {
+                                        bj++;
+                                        continue;
+                                    } else {
+                                        return Result.fail(0, "插入失败,第" + bj + "失败");
+                                    }
+                                } else {
+                                    return Result.fail(0, "工单号插入失败");
+                                }
+                            }
+                        } else {
+                            return Result.fail(0, "信息导入失败");
+                        }
+                    }
+                }
+                return Result.success(1, "导入成功");
+            }
+
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return Result.success(1, "运行结束");
     }
 }

@@ -8,11 +8,13 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface CustDaoMapper extends BaseMapper<CustEX> {
 
-    public int chachongname(@Param("custname")String custname);
+    public int chachongname(@Param("custname")String custname,@Param("custphone")String custphone);
 
-    public int chaChongCount(@Param("custname")String custname);
+    public int chaChongCount(@Param("custname")String custname,@Param("custphone")String custphone);
 
     public int insertOne(CustEX custEX);
 
     public int chacount();
+
+    public int queryCid();
 }

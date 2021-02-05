@@ -10,4 +10,10 @@ import java.util.Map;
 @Mapper
 public interface ProdInMapper extends BaseMapper<Prod> {
     public Prod queryAll(@Param("id")int id,@Param("depaname")String depaname);
+
+    //查询产品id
+    public int chaAccept(@Param("productsName")String productsName,@Param("depaname")String depaname);
+
+    //查询数量
+    public int chaName(@Param("productsName")String productsName,@Param("depaname")String depaname);
 }

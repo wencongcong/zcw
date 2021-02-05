@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.brokerage.mapper.ZcdistributorMapper">
+
+    <insert id="insertOneDistributor" parameterType="java.util.Map">
+        insert zc_distributor(`workid`,`channel`,`phone`,`name`,`idcard`,`interior`,`payment`,`paymentmethod`,`remark`,`address`,`servicename`,`product`,`commodity`,`toproomotelinks`,`isitnew`,`whethertorepeat`,`wid`,`statos`,`ordertime`)
+        values ('','分销',#{phone},#{name},#{idCard},#{address},#{payAmount},#{payMethod},#{remark},#{area},#{devName},#{product},#{commodity},#{bottomImg},1,0,0,'营销成功',#{ordertime})
+    </insert>
+
+
+    <select id="queryAllZcdis" resultMap="zcdis">
+        select t.*,t.id,w.id,w.status from zc_distributor t left JOIN workinfo w on t.wid=w.id
+        <trim prefixOverrides="and|or" prefix="where">
+            <if test="id!=null and id!=''">
+                and t.id=#{id}
+            </if>
+            <if test="otime!=null and otime!=''">
+                and t.ordertime BETWEEN CONCAT(#{otime},' 00:00:00') AND CONCAT(#{ptime},' 23:59:59')
+            </if>
+            <if test="statos!=null and statos!=''">
+                and t.statos=#{statos}
+            </if>
+            <if test="nameofadvertiser!=null and nameofadvertiser!=''">
+                and t.nameofadvertiser like concat('%',#{nameofadvertiser},'%')
+            </if>
+            <if test="channel!=null and channel!=''">
+                and t.channel like concat('%',#{channel},'%')
+            </if>
+            <if test="idcard!=null and idcard!=''">
+                and t.idcard like concat('%',#{idcard},'%')
+            </if>
+            <if test="phone!=null and phone!=''">
+                and t.phone=#{phone}
+            </if>
+            <if test="servicename!=null and servicename!=''">
+                and t.servicename=#{servicename}
+            </if>
+            <if test="address!=null and address!=''">
+                and t.address like concat('%',#{address},'%')
+            </if>
+            <if test="name!=null and name!=''">
+                and t.name like concat('%',#{name},'%')
+            </if>
+            <if test="broadband!=null and broadband!=''">
+                and t.broadband like concat('%',#{broadband},'%')
+            </if>
+        </trim>
+        </select>
+    <resultMap id="zcdis" type="com.brokerage.entity.Zcdistributor">
+            <id property="id" column="t.id" />
+            <result column="id" property="id"></result>
+            <result column="channel" property="channel"></result>
+            <result column="phone" property="phone"></result>
+            <result column="name" property="name"></result>
+            <result column="idcard" property="idcard"></result>
+            <result column="interior" property="interior"></result>
+            <result column="product" property="product"></result>
+            <result column="commodity" property="commodity"></result>
+            <result column="servicename" property="servicename"></result>
+            <result column="uploginno" property="uploginno"></result>
+            <result column="statos" property="statos"></result>
+            <result column="payment" property="payment"></result>
+            <result column="ordertime" property="ordertime"></result>
+            <result column="paymentmethod" property="paymentmethod"></result>
+            <result column="remark" property="remark"></result>
+            <result column="toproomotelinks" property="toproomotelinks"></result>
+            <result column="nameofadvertiser" property="nameofadvertiser"></result>
+            <result column="address" property="address"></result>
+            <result column="appointmentime" property="appointmentime"></result>
+            <result column="trackingtime" property="trackingtime"></result>
+            <result column="failure" property="failure"></result>
+            <result column="uplogintime" property="uplogintime"></result>
+            <result column="broadband" property="broadband"></result>
+            <result column="whethertorepeat" property="whethertorepeat"></result>
+            <association property="wid" javaType="com.brokerage.entity.Work">
+                <id property="id" column="w.id"></id>
+                <result column="id" property="id"></result>
+                <result column="status" property="status"></result>
+            </association>
+        </resultMap>
+
+    <update id="reamrk">
+        update zc_distributor
+        <trim prefix="set" suffixOverrides="," suffix=" where id = #{id} ">
+            <if test="name!=null and name!=''">
+                name=#{name},
+            </if>
+            <if test="interior!=null and interior!=''">
+                interior=#{interior},
+            </if>
+            <if test="phone!=null and phone!=''">
+                phone=#{phone},
+            </if>
+            <if test="idcard!=null and idcard!=''">
+                idcard=#{idcard},
+            </if>
+            <if test="product!=null and product!=''">
+                product=#{product},
+            </if>
+            <if test="payment!=null and payment!=''">
+                payment=#{payment},
+            </if>
+            <if test="paymentmethod!=null and paymentmethod!=''">
+                paymentmethod=#{paymentmethod},
+            </if>
+            <if test="remark!=null and remark!=''">
+                remark=#{remark},
+            </if>
+            <if test="address!=null and address!=''">
+                address=#{address},
+            </if>
+            <if test="statos!=null and statos!=''">
+                statos=#{statos},
+            </if>
+            <if test="commodity!=null and commodity!=''">
+                commodity=#{commodity},
+            </if>
+            <if test="broadband!=null and broadband!=''">
+                broadband=#{broadband},
+            </if>
+            <if test="0==0">
+                isitnew=0,
+            </if>
+            <if test="0==0">
+                whethertorepeat=0,
+            </if>
+        </trim>
+    </update>
+
+    <update id="updatewid">
+        update zc_distributor set wid=#{wid} where id=#{id}
+    </update>
+</mapper>

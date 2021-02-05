@@ -6,15 +6,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.service.entity.History;
-import com.service.entity.OrderHstory;
-import com.service.entity.Stream;
-import com.service.entity.Work;
+import com.service.entity.*;
 import com.service.result.Result;
-import com.service.service.HistoryService;
-import com.service.service.OrderInfoService;
-import com.service.service.StreamService;
-import com.service.service.WorkService;
+import com.service.service.*;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -37,6 +31,8 @@ public class WorkController {
     private HistoryService historyService;
     @Resource
     private StreamService streamService;
+    @Resource
+    private CustService custService;
 
 
     @RequestMapping(value = "/cha",method = RequestMethod.POST)
@@ -80,24 +76,31 @@ public class WorkController {
         history.setUplognno(map.get("servicename").toString()+"-"+map.get("oldname").toString());
         history.setState(map.get("status").toString());
         history.setHistorys(map.get("historys").toString());
-        switch (statos){
-            case "废弃单":
-                if (workService.chaorderno(Integer.parseInt(map.get("orderId").toString()))<=0||statos.equals("已撤单")||statos.equals("已取消")){
-                    workService.Updateremark(map);
-                }else if (workService.chaorderno(Integer.parseInt(map.get("orderId").toString()))>0||statos.equals("成功订单")){
-                    workService.Updateremark(map);
-                }else {
-                    return Result.fail("不是已撤单/已取消订单,不可废弃");
-                }
-                break;
-            case "取消办理":
-                if(workService.chaorderno(Integer.parseInt(map.get("orderId").toString()))<=0||statos.equals("已取消")||statos.equals("已撤单")){
-                    workService.Updateremark(map);
-                }else{
-                    return Result.fail("不能取消办理");
-                }
-                break;
-        }
+            switch (map.get("status").toString()){
+                case "废弃":
+                    if (workService.chaorderno(Integer.parseInt(map.get("orderid").toString()))>0||map.get("statosname").toString().equals("待核实")){
+                        workService.Updateremark(map);
+                    }else {
+                        return Result.fail(0,"不是已撤单/已取消订单,不可废弃");
+                    }
+                    break;
+                case "取消办理":
+                    if(workService.chaorderno(Integer.parseInt(map.get("orderid").toString()))<=0||statos.equals("已取消")||statos.equals("已撤单")){
+                        workService.Updateremark(map);
+                    }else{
+                        return Result.fail(0,"不能取消办理");
+                    }
+                    break;
+                case "待核实":
+                    if(workService.chaorderno(Integer.parseInt(map.get("orderid").toString()))<=0||statos.equals("已取消")||statos.equals("已撤单")){
+                        workService.Updateremark(map);
+                    }else{
+                        return Result.fail(0,"不能转待核实,CRM状态不处于已取消、已撤单状态或CRM工单号已填");
+                    }
+                    break;
+            }
+
+
         historyService.insertOneHistory(history);
         map.put("historyid",history.getId());
         if (workService.Updateremark(map)>0) {
@@ -193,6 +196,23 @@ public class WorkController {
             return Result.fail(0,"查询失败");
         }else {
             return Result.success(1,stream);
+        }
+    }
+
+
+    @RequestMapping(value = "/changecustomerorder",method = RequestMethod.POST)
+    public Result changecustomerorder(@RequestParam Map map){
+
+        int result=custService.changecust(map);
+        if (result>0){
+            int results=workService.changeWork(map);
+            if (results>0){
+                return Result.success(1,"修改成功");
+            }else{
+                return Result.success(0,"工单数据有误,修改失败");
+            }
+        }else{
+            return Result.success(0,"修改失败");
         }
     }
 }

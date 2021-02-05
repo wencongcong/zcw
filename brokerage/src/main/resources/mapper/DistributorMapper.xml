@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.brokerage.mapper.DistributorMapper">
+
+    <select id="queryallinformation"  resultMap="querygis">
+        SELECT d.id,g.id,g.*,d.* FROM `distributor` d LEFT JOIN graphtemplate g on d.bottomid=g.id
+        <trim prefixOverrides="and|or" prefix="where">
+            <if test="picturename!=null and picturename!=''">
+                and g.picturename=#{picturename}
+            </if>
+            <if test="terrain!=null and terrain!=''">
+                and d.terrain=#{terrain}
+            </if>
+            <if test="productname!=null and productname!=''">
+                and d.productname=#{productname}
+            </if>
+            <if test="price!=null and price!=''">
+                and d.price=#{price}
+            </if>
+            <if test="adjustment!=null and adjustment!=''">
+                and d.adjustment=#{adjustment}
+            </if>
+            <if test="productsname!=null and productsname!=''">
+                and d.productsname=#{productsname}
+            </if>
+        </trim>
+    </select>
+    <resultMap id="querygis" type="com.brokerage.entity.Distributor">
+        <id property="id" column="d.id" />
+        <result column="id" property="id"></result>
+        <result column="productname" property="productname"></result>
+        <result column="terrain" property="terrain"></result>
+        <result column="price" property="price"></result>
+        <result column="adjustment" property="adjustment"></result>
+        <result column="productsname" property="productsname"></result>
+        <association property="botid" javaType="com.brokerage.entity.Graphtemplate">
+            <id property="id" column="g.id" />
+            <result column="bottomid" property="id"></result>
+            <result column="topimg" property="topimg"></result>
+            <result column="bottomimg" property="bottomimg"></result>
+            <result column="picturename" property="picturename"></result>
+        </association>
+    </resultMap>
+
+    <insert id="insertthedistribution" parameterType="com.brokerage.entity.Distributor">
+        INSERT distributor(`terrain`,`productname`,`price`,`adjustment`,`productsname`,`createtime`,`topimg`,`bottomid`)
+        VALUES(#{terrain},#{productname},#{price},#{adjustment},#{productsname},#{createtime},#{topimg},#{bottomid})
+    </insert>
+
+    <delete id="deleteDistributor">
+        delete from distributor where id=#{id}
+    </delete>
+
+    <update id="updateDistributor">
+        update distributor
+        <trim prefix="set" suffixOverrides="," suffix=" where id = #{id} ">
+            <if test="terrain!=null and terrain!=''">
+                terrain=#{terrain},
+            </if>
+            <if test="productname!=null and productname!=''">
+                productname=#{productname},
+            </if>
+            <if test="price!=null and price!=''">
+                price=#{price},
+            </if>
+            <if test="adjustment!=null and adjustment!=''">
+                adjustment=#{adjustment},
+            </if>
+            <if test="productsname!=null and productsname!=''">
+                productsname=#{productsname},
+            </if>
+            <if test="bottomid!=-1 and bottomid!=0">
+                bottomid=#{bottomid},
+            </if>
+        </trim>
+    </update>
+</mapper>

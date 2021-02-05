@@ -4,11 +4,16 @@ import com.role.entity.Employee;
 import com.role.enums.ErrorEnum;
 import com.role.result.Result;
 import com.role.service.EmployeeService;
+import com.role.service.impl.VerifCode;
+import org.junit.Test;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpSession;
-import java.text.ParseException;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -20,12 +25,12 @@ public class EmplController {
     @Resource
     private EmployeeService employeeService;
 
+
     @RequestMapping(value = "/turnorder",method = RequestMethod.POST)
     public Result trunoforder(@RequestParam Map map){
 
         return Result.success();
     }
-
     @RequestMapping(value ="/Gpwd",method = RequestMethod.POST)
     public Result Gpwd(@RequestParam Map map){
          if (employeeService.chaOneEmplyee(map.get("ephone").toString(),map.get("oldpwd").toString())==0){
@@ -36,7 +41,6 @@ public class EmplController {
             return Result.success(1,"修改成功");
         }
     }
-
     @RequestMapping(value = "/empldepa",method = RequestMethod.POST)
     public Result Gtokem(@RequestParam Map map){
         int result=employeeService.updateOneEmployee(map);
@@ -46,7 +50,6 @@ public class EmplController {
             return Result.fail(0, ErrorEnum.CHA_ERROR);
         }
     }
-
     @RequestMapping(value = "/deleteempl",method = RequestMethod.POST)
     public Result deleteempl(@RequestParam(value = "id",defaultValue = "0")int id){
         int result=employeeService.deleteOneEmployee(id);
@@ -61,4 +64,6 @@ public class EmplController {
         List<Employee> lists=employeeService.queryAllDepa(ename);
         return Result.success(1,lists);
     }
+
+
 }

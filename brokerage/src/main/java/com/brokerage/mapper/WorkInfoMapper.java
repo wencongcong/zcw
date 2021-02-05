@@ -22,4 +22,16 @@ public interface WorkInfoMapper extends BaseMapper<Work> {
 
     //修改佣金结算状态
     public int updatevery(@Param("verify")String verify,@Param("workserved")String workserved,@Param("workid")String workid);
+
+    public int Autocontrolledwork(Work work);
+
+    //查询工单ID是否重复
+    public int chaw(@Param("wid") String wid);
+    //查询数量
+    public int chacountw();
+
+    public List<Work> queryAlls();
+
+    public int queryId();
+
 }

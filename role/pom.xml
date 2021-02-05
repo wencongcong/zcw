@@ -6,14 +6,13 @@
         <artifactId>zc</artifactId>
         <groupId>com.zhongcheng</groupId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath/> <!-- lookup parent from repository -->
+
     </parent>
     <groupId>com.role</groupId>
     <artifactId>role</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>role</name>
     <description>Demo project for Spring Boot</description>
-
     <properties>
         <java.version>1.8</java.version>
     </properties>
@@ -89,6 +88,14 @@
         </dependency>
         <!-- redis -->
         <dependency>
+            <groupId>org.springframework.session</groupId>
+            <artifactId>spring-session-data-redis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.session</groupId>
+            <artifactId>spring-session-jdbc</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
@@ -96,16 +103,12 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-test</artifactId>
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
 
     </dependencies>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>

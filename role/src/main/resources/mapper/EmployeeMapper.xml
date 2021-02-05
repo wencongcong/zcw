@@ -36,7 +36,7 @@ INNER JOIN department d on e.depaid=d.id WHERE ephone=#{ephone} and epwd=#{epwd}
 
 
     <select id="queryAllem" resultMap="employee">
-        SELECT e.id,e.ename,e.epwd,e.ephone,e.levelid,e.depaid,l.id,l.lname,l.laccept,l.ltime,l.ljiami,l.lxiazai,l.lshangchuang,l.djson,l.darr,d.id,d.dname,d.daccept,d.dtime FROM `employee` e
+        SELECT e.id,e.ename,e.ephone,e.levelid,e.depaid,l.id,l.lname,l.laccept,l.ltime,l.ljiami,l.lxiazai,l.lshangchuang,l.djson,l.darr,d.id,d.dname,d.daccept,d.dtime FROM `employee` e
 INNER JOIN levels l on e.levelid=l.id
 INNER JOIN department d on e.depaid=d.id
     </select>
@@ -44,7 +44,6 @@ INNER JOIN department d on e.depaid=d.id
         <id property="id" column="e.id"></id>
         <result property="id" column="id"></result>
         <result property="ename" column="ename"></result>
-        <result property="epwd" column="epwd"></result>
         <result property="ephone" column="ephone"></result>
         <association property="levelsid" javaType="com.role.entity.Levels">
             <id property="id" column="l.id"></id>

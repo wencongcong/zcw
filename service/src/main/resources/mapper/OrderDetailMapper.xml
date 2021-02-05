@@ -5,8 +5,8 @@
 <insert id="insertOne" parameterType="com.service.entity.Orderdetails" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
     INSERT orderdetails
     <trim prefix="(" suffix=")" suffixOverrides=",">
-        <if test="orderInfoid!=null and orderInfoid!=''">
-            orderInfoid,
+        <if test="orderinfoid!=null and orderinfoid!=''">
+            orderinfoid,
         </if>
         <if test="assetnumber!=null and assetnumber!=''">
             assetnumber,
@@ -46,8 +46,8 @@
         </if>
     </trim>
     <trim prefix="value (" suffix=")" suffixOverrides=",">
-    <if test="orderInfoid!=null and orderInfoid!=''">
-        #{orderInfoid},
+    <if test="orderinfoid!=null and orderinfoid!=''">
+        #{orderinfoid},
     </if>
     <if test="assetnumber!=null and assetnumber!=''">
         #{assetnumber},
@@ -95,4 +95,43 @@
     <update id="updatepeo">
         update orderdetails set dealingpeopre=#{dealingpeopre},orderjson=#{orderjson} where orderinfoid=#{orderinfoid}
     </update>
+
+    <update id="updateAll">
+    UPDATE orderdetails  <trim prefix="set" suffixOverrides=",">
+    <if test="behavior!=null and behavior!=''">
+        behavior=#{behavior},
+    </if>
+    <if test="currentstate!=null and currentstate!=''">
+        currentstate=#{currentstate},
+    </if>
+    <if test="currentpeincharge!=null and currentpeincharge!=''">
+        currentpeincharge=#{currentpeincharge},
+    </if>
+    <if test="operation!=null and operation!=''">
+        operation=#{operation},
+    </if>
+    <if test="processinglink!=null and processinglink!=''">
+        processinglink=#{processinglink},
+    </if>
+    <if test="workorderstatus!=null and workorderstatus!=''">
+        workorderstatus=#{workorderstatus},
+    </if>
+    <if test="dealingpeopre!=null and dealingpeopre!=''">
+        dealingpeopre=#{dealingpeopre},
+    </if>
+    <if test="processingtime!=null and processingtime!=''">
+        processingtime=#{processingtime},
+    </if>
+    <if test="pageNew!=null and pageNew!=''">
+        pageNew=#{pageNew},
+    </if>
+    <if test="prodName!=null and prodName!=''">
+        prodName=#{prodName},
+    </if>
+    <if test="orderjson!=null and orderjson!=''">
+        orderjson=#{orderjson},
+    </if>
+</trim>
+    where orderinfoid=#{orderinfoid} and  assetnumber=#{assetnumber}
+</update>
 </mapper>

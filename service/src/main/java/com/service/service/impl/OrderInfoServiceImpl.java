@@ -69,4 +69,9 @@ public class OrderInfoServiceImpl implements OrderInfoService {
     public int updateOneOrder(OrderInfo orderInfo) {
         return orderInfoMapper.updateOneOrder(orderInfo);
     }
+
+    @Override
+    public int deleteOrderinfo(String orderid) {
+        return orderInfoMapper.deleteOrderinfo(orderid);
+    }
 }

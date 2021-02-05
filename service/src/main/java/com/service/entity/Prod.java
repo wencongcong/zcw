@@ -40,4 +40,13 @@ public class Prod implements Serializable {
     int enable;
     @Excel(name = "补贴")
     String subsidy;
+    @Excel(name = "付费方式")
+    String payMethod;
+    @Excel(name = "是否是自动单")
+    String isAuto;
+    @Excel(name = "受理方式")
+    int acceptMethod;
+    @Excel(name="倍率")
+    String settlementratio;
+
 }

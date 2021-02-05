@@ -34,4 +34,8 @@ public interface OrderInfoMapper extends BaseMapper<OrderInfo> {
     public int insertOneOrderNo(OrderInfo orderInfo);
 
     public int updateOneOrder(OrderInfo orderInfo);
+
+    public int deleteOrderinfo(@Param("orderid")String orderid);
+
+    public int queryMarkId(@Param("orderid")String orderid);
 }

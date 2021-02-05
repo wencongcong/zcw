@@ -17,6 +17,7 @@ import java.io.Serializable;
 @Table(name = "ProdEX")
 @ExcelTarget(value = "ProdEX")
 public class ProdEX implements Serializable {
+
     int id;
     @Excel(name="金额",width = 30,orderNum = "1")
     String proMoney;
@@ -36,4 +37,8 @@ public class ProdEX implements Serializable {
     String deduct;
     @Excel(name="操作说明",width = 30,orderNum = "1")
     String slname;
+    @Excel(name="倍率",width = 30,orderNum = "1")
+    String settlementratio;
+    @Excel(name="部门",width = 30,orderNum = "1")
+    String depaname;
 }

@@ -18,8 +18,9 @@ import java.io.Serializable;
 @Table(name = "WorksEx")
 @ExcelTarget(value = "WorksEx")
 public class WorksEx implements Serializable {
-    @Excel(name = "id")
     int id;
+    @Excel(name="渠道",width = 30,orderNum = "1")
+    String channl;
     @Excel(name="客户姓名(不能为空)",width = 30,orderNum = "1")
     String custname;
     @Excel(name="手机号",width = 30,orderNum = "1")
@@ -28,7 +29,7 @@ public class WorksEx implements Serializable {
     String custidcard;
     @Excel(name="地址",width = 30,orderNum = "1")
     String custaddress;
-    @Excel(name="地市(浙江省-杭州)",width = 30,orderNum = "1")
+    @Excel(name="地市(杭州市)",width = 30,orderNum = "1")
     String custarea;
     @Excel(name="产品(不能为空)",width = 30,orderNum = "1")
     String accept;
@@ -36,14 +37,18 @@ public class WorksEx implements Serializable {
     String serviceName;
     @Excel(name="工单备注",width = 30,orderNum = "1")
     String remark;
+    @Excel(name="工单号",width = 30,orderNum = "1")
+    String orderno;
     @Excel(name="状态(不能为空)",width = 30,orderNum = "1")
     String status;
-    @Excel(name="宽带账号",width = 30,orderNum = "1")
+    @Excel(name="业务号码",width = 30,orderNum = "1")
     String broadband;
-    @Excel(name="预约时间",width = 30,orderNum = "1",databaseFormat = "yyyyMMddHHmmss", format = "")
-    String appointmenttime;
+    @Excel(name="下单时间(不能为空)如2021-11-12 11:11:11",width = 30,orderNum = "1",databaseFormat = "yyyyMMddHHmmss", format = "")
+    String xdtime;
     @Excel(name="付款金额",width = 30,orderNum = "1")
     String paymentamount;
     @Excel(name="部门(不能为空)",width = 30,orderNum = "1")
     String depaname;
+    @Excel(name="受理员",width = 30,orderNum = "1")
+    String assigneeName;
 }

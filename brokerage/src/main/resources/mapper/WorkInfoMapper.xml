@@ -11,8 +11,8 @@
         </trim>
     </select>
     <select id="queryAll" resultMap="Works">
-        SELECT w.id,w.*,c.id,c.*,p.id,p.*,o.id,o.* FROM `workinfo` w
-        INNER JOIN customerinfo c on w.custid=c.cid
+        SELECT w.id,w.*,c.id,c.*,c.custaddress as addres,p.id,p.*,o.id,o.* FROM `workinfo` w
+        INNER JOIN customerinfo c on w.custid=c.id
         INNER JOIN prod p on w.acceptid=p.id
         LEFT JOIN orderinfo o on w.orderid=o.id
         <trim prefixOverrides="and|or" prefix="where">
@@ -20,7 +20,7 @@
             and  w.statos="成功订单"
         </if>
         <if test="keyword!=null and keyword!=''">
-            and w.serviceName=#{keyword} or w.workid=#{keyword}   or o.orderNo=#{keyword} or p.productsName=#{keyword}
+            and w.serviceName=#{keyword} or w.workid=#{keyword} or o.orderNo=#{keyword} or p.productsName=#{keyword}
         </if>
         <if test="otime!=null and otime!=''">
              and w.completedtime BETWEEN CONCAT(#{otime},' 00:00:00') AND CONCAT(#{ptime},' 23:59:59')
@@ -56,13 +56,25 @@
         <result column="settlementstatus" property="settlementstatus"></result>
         <result column="completedtime" property="completedtime"></result>
         <result column="verify" property="verify"></result>
+        <result column="paymentstate" property="paymentstate"></result>
+        <result column="businessnumber" property="businessnumber"></result>
+        <result column="region" property="region"></result>
+        <result column="existingpreferential" property="existingpreferential"></result>
+        <result column="existingPackageTypes" property="existingPackageTypes"></result>
+        <result column="terminaltype" property="terminaltype"></result>
+        <result column="changedPackagetype" property="changedPackagetype"></result>
+        <result column="vicecardnumber" property="vicecardnumber"></result>
+        <result column="custaddress" property="custaddress"></result>
+        <result column="prodctsName" property="prodctsName"></result>
+        <result column="prodacceptthemethod" property="prodacceptthemethod"></result>
+        <result column="terminalseries" property="terminalseries"></result>
         <association property="cid" javaType="com.brokerage.entity.Cust">
             <id property="id" column="c.id"></id>
             <result column="custid" property="id"></result>
             <result column="custname" property="custname"></result>
             <result column="custphone" property="custphone"></result>
             <result column="custidcard" property="custidcard"></result>
-            <result column="custaddress" property="custaddress"></result>
+            <result column="addres" property="custaddress"></result>
             <result column="custarea" property="custarea"></result>
             <result column="custremark" property="custremark"></result>
         </association>
@@ -78,6 +90,7 @@
             <result column="deduct" property="deduct"></result>
             <result column="depaname" property="depaname"></result>
             <result column="subsidy" property="subsidy"></result>
+            <result column="settlementratio" property="settlementratio"></result>
         </association>
         <association property="oid" javaType="com.brokerage.entity.OrderInfo">
             <id property="id" column="o.id"></id>
@@ -93,6 +106,9 @@
             <result column="yuandanno" property="yuandanno"></result>
             <result column="yuandanstatos" property="yuandanstatos"></result>
             <result column="fphone" property="fphone"></result>
+            <result column="thefirstName" property="thefirstName"></result>
+            <result column="thefirstNo" property="thefirstNo"></result>
+            <result column="automatilmarking" property="automatilmarking"></result>
         </association>
     </resultMap>
 
@@ -103,4 +119,113 @@
     <update id="updatevery">
         update workinfo set verify=#{verify},workserved=#{workserved} where workid=#{workid}
     </update>
+
+    <insert id="Autocontrolledwork" parameterType="com.brokerage.entity.Work" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO workinfo(`workid`,`custid`,`serviceName`,`acceptid`,`status`,`orderid`,`broadband`,`remark`,`appointmenttime`,`paymentamount`,`xdtime`,`reminder`,`channl`,`settlementstatus`,`workserved`,`paymentstate`,`soundverify`,`businessnumber`,`region`,`existingpreferential`,`existingPackageTypes`,`terminaltype`,`changedPackagetype`,`vicecardnumber`,`custaddress`,`terminalseries`)
+       VALUES(#{workid},#{custid},#{serviceName},#{acceptid},#{status},#{orderid},#{broadband},#{remark},#{appointmenttime},#{paymentamount},#{xdtime},0,#{channl},#{settlementstatus},#{workserved},#{paymentstate},#{soundverify},#{businessnumber},#{region},#{existingpreferential},#{existingPackageTypes},#{terminaltype},#{changedPackagetype},#{vicecardnumber},#{custaddress},#{terminalseries})
+    </insert>
+
+    <select id="chacountw" resultType="int">
+        select count(1) from workinfo
+    </select>
+
+    <select id="chaw" resultType="int">
+        select count(1) from workinfo where workid=#{wid}
+    </select>
+
+    <select id="queryAlls" resultMap="Worksd">
+        SELECT w.id,w.*,c.id,c.*,c.custaddress as addres,p.id,p.*,o.id,o.* FROM `workinfo` w
+        INNER JOIN customerinfo c on w.custid=c.id
+        INNER JOIN prod p on w.acceptid=p.id
+        LEFT JOIN orderinfo o on w.orderid=o.id
+        <trim prefixOverrides="and|or" prefix="where">
+            <if test="1==1">
+                and  w.statos='成功订单'
+            </if>
+        </trim>
+    </select>
+    <resultMap id="Worksd" type="com.brokerage.entity.Work">
+        <id property="id" column="w.id" />
+        <result column="id" property="id"></result>
+        <result column="workid" property="workid"></result>
+        <result column="acceptid" property="acceptid"></result>
+        <result column="custid" property="custid"></result>
+        <result column="orderid" property="orderid"></result>
+        <result column="historyid" property="historyid"></result>
+        <result column="status" property="status"></result>
+        <result column="statos" property="statos"></result>
+        <result column="appointmenttime" property="appointmenttime"></result>
+        <result column="xdtime" property="xdtime"></result>
+        <result column="serviceName" property="serviceName"></result>
+        <result column="uploginName" property="uploginName"></result>
+        <result column="assigneeName" property="assigneeName"></result>
+        <result column="broadband" property="broadband"></result>
+        <result column="channl" property="channl"></result>
+        <result column="remark" property="remark"></result>
+        <result column="paymentamount" property="paymentamount"></result>
+        <result column="reminder" property="reminder"></result>
+        <result column="settlementstatus" property="settlementstatus"></result>
+        <result column="completedtime" property="completedtime"></result>
+        <result column="verify" property="verify"></result>
+        <result column="paymentstate" property="paymentstate"></result>
+        <result column="businessnumber" property="businessnumber"></result>
+        <result column="region" property="region"></result>
+        <result column="existingpreferential" property="existingpreferential"></result>
+        <result column="existingPackageTypes" property="existingPackageTypes"></result>
+        <result column="terminaltype" property="terminaltype"></result>
+        <result column="changedPackagetype" property="changedPackagetype"></result>
+        <result column="vicecardnumber" property="vicecardnumber"></result>
+        <result column="custaddress" property="custaddress"></result>
+        <result column="prodctsName" property="prodctsName"></result>
+        <result column="prodacceptthemethod" property="prodacceptthemethod"></result>
+        <result column="terminalseries" property="terminalseries"></result>
+        <association property="cid" javaType="com.brokerage.entity.Cust">
+            <id property="id" column="c.id"></id>
+            <result column="custid" property="id"></result>
+            <result column="custname" property="custname"></result>
+            <result column="custphone" property="custphone"></result>
+            <result column="custidcard" property="custidcard"></result>
+            <result column="addres" property="custaddress"></result>
+            <result column="custarea" property="custarea"></result>
+            <result column="custremark" property="custremark"></result>
+        </association>
+        <association property="pid" javaType="com.brokerage.entity.Prod">
+            <id property="id" column="p.id"></id>
+            <result column="acceptid" property="id"></result>
+            <result column="otime" property="otime"></result>
+            <result column="ptime" property="ptime"></result>
+            <result column="productsName" property="productsName"></result>
+            <result column="slname" property="slname"></result>
+            <result column="rate" property="rate"></result>
+            <result column="integral" property="integral"></result>
+            <result column="deduct" property="deduct"></result>
+            <result column="depaname" property="depaname"></result>
+            <result column="subsidy" property="subsidy"></result>
+            <result column="settlementratio" property="settlementratio"></result>
+        </association>
+        <association property="oid" javaType="com.brokerage.entity.OrderInfo">
+            <id property="id" column="o.id"></id>
+            <result column="orderid" property="id"></result>
+            <result column="orderNo" property="orderNo"></result>
+            <result column="ostats" property="ostats"></result>
+            <result column="chargemethod" property="chargemethod"></result>
+            <result column="acceptchannal" property="acceptchannal"></result>
+            <result column="cwangno" property="cwangno"></result>
+            <result column="cwangstatos" property="cwangstatos"></result>
+            <result column="guwangno" property="guwangno"></result>
+            <result column="guwangstatos" property="guwangstatos"></result>
+            <result column="yuandanno" property="yuandanno"></result>
+            <result column="yuandanstatos" property="yuandanstatos"></result>
+            <result column="fphone" property="fphone"></result>
+            <result column="thefirstName" property="thefirstName"></result>
+            <result column="thefirstNo" property="thefirstNo"></result>
+            <result column="automatilmarking" property="automatilmarking"></result>
+            <result column="orderdetailsId" property="orderdetailsId"></result>
+            <result column="acceptancetime" property="acceptancetime"></result>
+        </association>
+    </resultMap>
+
+    <select id="queryId" resultType="int">
+        select id from `workinfo` ORDER BY id desc LIMIT 1
+    </select>
 </mapper>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.businness.mapper.CommissionExMapper">
+
+    <insert id="insertAllComm" parameterType="com.businness.entity.CommissionEx">
+    insert commission(`area`,`payment`,`subordinate`,`numberphone`,`producttype`,`projectID`,`projectname`,`trategyID`,`nameofstrategy`,`commissionshows`,`remunerationtype`,`networkcoding`,`agentcode`,`nameofagent`,`commission`,`clearingform`,`marketingstaffcode`,`reconciliationreason`,`networkname`)
+    values (#{area},#{payment},#{subordinate},#{numberphone},#{producttype},#{projectID},#{projectname},#{trategyID},#{nameofstrategy},#{commissionshows},#{remunerationtype},#{networkcoding},#{agentcode},#{nameofagent},#{commission},#{clearingform},#{marketingstaffcode},#{reconciliationreason},#{networkname})
+    </insert>
+
+    <select id="queryAllComm" resultType="java.util.Map">
+        select * from commission
+        <trim prefixOverrides="and|or" prefix="where">
+            <if test="subordinate!=null and subordinate!=''">
+                and subordinate=#{subordinate}
+            </if>
+            <if test="otime!=null and otime!=''">
+                and payment BETWEEN CONCAT(#{otime},' 00:00:00') AND CONCAT(#{ptime},' 23:59:59')
+            </if>
+            <if test="area!=null and area!=''">
+                and area=#{area}
+            </if>
+            <if test="numberphone!=null and numberphone!=''">
+                and numberphone=#{numberphone}
+            </if>
+            <if test="projectname!=null and projectname!=''">
+                and projectname=#{projectname}
+            </if>
+            <if test="nameofstrategy!=null and nameofstrategy!=''">
+                and nameofstrategy=#{nameofstrategy}
+            </if>
+            <if test="remunerationtype!=null and remunerationtype!=''">
+                and remunerationtype=#{remunerationtype}
+            </if>
+            <if test="networkname!=null and networkname!=''">
+                and networkname=#{networkname}
+            </if>
+        </trim>
+    </select>
+
+</mapper>  

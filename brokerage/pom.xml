@@ -6,7 +6,6 @@
         <artifactId>zc</artifactId>
         <groupId>com.zhongcheng</groupId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.brokerage</groupId>
     <artifactId>brokerage</artifactId>
@@ -19,11 +18,6 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
-        </dependency>
-
         <!---->
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -72,12 +66,6 @@
 
         <dependency>
             <groupId>cn.afterturn</groupId>
-            <artifactId>easypoi-spring-boot-starter</artifactId>
-            <version>4.1.2</version>
-        </dependency>
-
-        <dependency>
-            <groupId>cn.afterturn</groupId>
             <artifactId>easypoi-wps</artifactId>
             <version>4.2.0</version>
         </dependency>
@@ -95,6 +83,12 @@
             <groupId>cn.afterturn</groupId>
             <artifactId>easypoi-base</artifactId>
             <version>4.1.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper</artifactId>
+            <version>5.2.0</version>
         </dependency>
 
         <dependency>
@@ -150,6 +144,18 @@
             <artifactId>org.apache.bval.bundle</artifactId>
             <version>1.1.0</version>
         </dependency>
+
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>1.3.2</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/commons-fileupload/commons-fileupload -->
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>1.3.1</version>
+        </dependency>
         <!---->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -163,14 +169,5 @@
             </exclusions>
         </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>

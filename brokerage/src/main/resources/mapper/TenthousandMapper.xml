@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.brokerage.mapper.TenthousandMapper">
+
+    <select id="queryAllTen" resultMap="coms">
+        select t.*,t.id,w.id,w.status from tenthousand t left JOIN workinfo w on t.wid=w.id
+        <trim prefixOverrides="and|or" prefix="where">
+            <if test="id!=null and id!=''">
+                and t.id=#{id}
+            </if>
+            <if test="otime!=null and otime!=''">
+                and t.createtime BETWEEN CONCAT(#{otime},' 00:00:00') AND CONCAT(#{ptime},' 23:59:59')
+            </if>
+            <if test="phone!=null and phone!=''">
+                and t.businessphone=#{phone}
+            </if>
+            <if test="servicename!=null and servicename!=''">
+                and t.servicename=#{servicename}
+            </if>
+            <if test="address!=null and address!=''">
+                and t.address like concat('%',#{address},'%')
+            </if>
+            <if test="businessarea!=null and businessarea!=''">
+                and t.businessarea like concat('%',#{businessarea},'%')
+            </if>
+            <if test="name!=null and name!=''">
+                and t.businessname like concat('%',#{name},'%')
+            </if>
+            <if test="idcard!=null and idcard!=''">
+                and t.businessidcard like concat('%',#{idcard},'%')
+            </if>
+            <if test="broadband!=null and broadband!=''">
+                and t.broadband like concat('%',#{broadband},'%')
+            </if>
+            <if test="accept!=null and accept!=''">
+                and t.prodctone like concat('%',#{accept},'%')
+            </if>
+            <if test="businessnumberone!=null and businessnumberone!=''">
+                and t.businessnumberone like concat('%',#{businessnumberone},'%')
+            </if>
+        </trim>
+    </select>
+    <resultMap id="coms" type="com.brokerage.entity.Tenthousand">
+        <id property="id" column="t.id" />
+        <result column="id" property="id"></result>
+        <result column="businessname" property="businessname"></result>
+        <result column="businessidcard" property="businessidcard"></result>
+        <result column="businessphone" property="businessphone"></result>
+        <result column="businessnumberone" property="businessnumberone"></result>
+        <result column="businessarea" property="businessarea"></result>
+        <result column="servicename" property="servicename"></result>
+        <result column="prodctone" property="prodctone"></result>
+        <result column="createtime" property="createtime"></result>
+        <result column="servicename" property="servicename"></result>
+        <result column="trackingtime" property="trackingtime"></result>
+        <result column="advertiser" property="advertiser"></result>
+        <result column="source" property="source"></result>
+        <result column="marketingresults" property="marketingresults"></result>
+        <result column="businessnumbertwo" property="businessnumbertwo"></result>
+        <result column="businessnumbertree" property="businessnumbertree"></result>
+        <result column="prodcttwo" property="prodcttwo"></result>
+        <result column="prodcttree" property="prodcttree"></result>
+        <result column="template" property="template"></result>
+        <result column="receivable" property="receivable"></result>
+        <result column="payment" property="payment"></result>
+        <result column="remark" property="remark"></result>
+        <result column="marketing" property="marketing"></result>
+        <result column="broadband" property="broadband"></result>
+        <result column="secondaryCard" property="secondaryCard"></result>
+        <result column="address" property="address"></result>
+        <association property="wid" javaType="com.brokerage.entity.Work">
+            <id property="id" column="w.id"></id>
+            <result column="id" property="id"></result>
+            <result column="status" property="status"></result>
+        </association>
+    </resultMap>
+
+    <select id="queryAllTens" resultMap="comss">
+        select t.*,t.id,w.id,w.status from tenthousand t left JOIN workinfo w on t.wid=w.id
+        <trim prefixOverrides="and|or" prefix="where">
+            <if test="id!=null and id!=''">
+                and t.id=#{id}
+            </if>
+            <if test="otime!=null and otime!=''">
+                and t.createtime BETWEEN CONCAT(#{otime},' 00:00:00') AND CONCAT(#{ptime},' 23:59:59')
+            </if>
+            <if test="phone!=null and phone!=''">
+                and t.businessphone=#{phone}
+            </if>
+            <if test="servicename!=null">
+                and t.servicename=#{servicename}
+            </if>
+            <if test="address!=null and address!=''">
+                and t.address like concat('%',#{address},'%')
+            </if>
+            <if test="businessarea!=null and businessarea!=''">
+                and t.businessarea=#{businessarea}
+            </if>
+            <if test="name!=null and name!=''">
+                and t.businessname like concat('%',#{name},'%')
+            </if>
+            <if test="idcard!=null and idcard!=''">
+                and t.businessidcard like concat('%',#{idcard},'%')
+            </if>
+            <if test="broadband!=null and broadband!=''">
+                and t.broadband like concat('%',#{broadband},'%')
+            </if>
+            <if test="accept!=null and accept!=''">
+                and t.prodctone like concat('%',#{accept},'%')
+            </if>
+            <if test="businessnumberone!=null and businessnumberone!=''">
+                and t.businessnumberone like concat('%',#{businessnumberone},'%')
+            </if>
+        </trim>
+    </select>
+    <resultMap id="comss" type="com.brokerage.entity.Tenthousand">
+        <id property="id" column="t.id" />
+        <result column="id" property="id"></result>
+        <result column="businessname" property="businessname"></result>
+        <result column="businessidcard" property="businessidcard"></result>
+        <result column="businessphone" property="businessphone"></result>
+        <result column="businessnumberone" property="businessnumberone"></result>
+        <result column="businessarea" property="businessarea"></result>
+        <result column="servicename" property="servicename"></result>
+        <result column="prodctone" property="prodctone"></result>
+        <result column="createtime" property="createtime"></result>
+        <result column="servicename" property="servicename"></result>
+        <result column="trackingtime" property="trackingtime"></result>
+        <result column="advertiser" property="advertiser"></result>
+        <result column="source" property="source"></result>
+        <result column="marketingresults" property="marketingresults"></result>
+        <result column="businessnumbertwo" property="businessnumbertwo"></result>
+        <result column="businessnumbertree" property="businessnumbertree"></result>
+        <result column="prodcttwo" property="prodcttwo"></result>
+        <result column="prodcttree" property="prodcttree"></result>
+        <result column="template" property="template"></result>
+        <result column="receivable" property="receivable"></result>
+        <result column="payment" property="payment"></result>
+        <result column="remark" property="remark"></result>
+        <result column="marketing" property="marketing"></result>
+        <result column="broadband" property="broadband"></result>
+        <result column="secondaryCard" property="secondaryCard"></result>
+        <result column="address" property="address"></result>
+        <result column="channl" property="channl"></result>
+        <association property="wid" javaType="com.brokerage.entity.Work">
+            <id property="id" column="w.id"></id>
+            <result column="id" property="id"></result>
+            <result column="status" property="status"></result>
+        </association>
+    </resultMap>
+
+    <insert id="insertTenth">
+        insert tenthousand(`businessname`,`businessidcard`,`businessphone`,`businessarea`,`marketing`,`createtime`,`servicename`,`broadband`,`businessnumberone`,`template`,`secondaryCard`,`prodctone`,`remark`,`wid`,`channl`)
+        values(#{username},#{idCard},#{phone},#{city},#{marketing},#{createtime},#{serviceName},#{broadband},#{mainCard},#{template},#{secondaryCard},#{product},#{remark},0,#{channl})
+    </insert>
+    <update id="updateTenth">
+        update tenthousand
+        <trim prefix="set" suffixOverrides=",">
+            <if test="businessname!=null and businessname!=''">
+                businessname=#{businessname},
+            </if>
+            <if test="businessidcard!=null and businessidcard!=''">
+                businessidcard=#{businessidcard},
+            </if>
+            <if test="businessphone!=null and businessphone!=''">
+                businessphone=#{businessphone},
+            </if>
+            <if test="businessnumberone!=null and businessnumberone!=''">
+                businessnumberone=#{businessnumberone},
+            </if>
+            <if test="businessarea!=null and businessarea!=''">
+                businessarea=#{businessarea},
+            </if>
+            <if test="servicename!=null and servicename!=''">
+                servicename=#{servicename},
+            </if>
+            <if test="prodctone!=null and prodctone!=''">
+                prodctone=#{prodctone},
+            </if>
+            <if test="trackingtime!=null and trackingtime!=''">
+                trackingtime=#{trackingtime},
+            </if>
+            <if test="marketingresults!=null and marketingresults!=''">
+                marketingresults=#{marketingresults},
+            </if>
+            <if test="businessnumbertwo!=null and businessnumbertwo!=''">
+                businessnumbertwo=#{businessnumbertwo},
+            </if>
+            <if test="businessnumbertree!=null and businessnumbertree!=''">
+                businessnumbertree=#{businessnumbertree},
+            </if>
+            <if test="prodcttwo!=null and prodcttwo!=''">
+                prodcttwo=#{prodcttwo},
+            </if>
+            <if test="prodcttree!=null and prodcttree!=''">
+                prodcttree=#{prodcttree},
+            </if>
+            <if test="template!=-1">
+                template=#{template},
+            </if>
+            <if test="receivable!=null and receivable!=''">
+                receivable=#{receivable},
+            </if>
+            <if test="payment!=null and payment!=''">
+                payment=#{payment},
+            </if>
+            <if test="remark!=null and remark!=''">
+                remark=#{remark},
+            </if>
+            <if test="address!=null and address!=''">
+                address=#{address},
+            </if>
+            <if test="marketing!=null and marketing!=''">
+                marketing=#{marketing},
+            </if>
+            <if test="broadband!=null and broadband!=''">
+                broadband=#{broadband},
+            </if>
+            <if test="secondaryCard!=null and secondaryCard!=''">
+                secondaryCard=#{secondaryCard},
+            </if>
+        </trim>
+        where id = #{id}
+    </update>
+    <delete id="deleteTenth">
+        delete from tenthousand where id=#{id}
+    </delete>
+
+    <update id="updatewid">
+        update tenthousand set wid=#{wid} where id=#{id}
+    </update>
+
+    <select id="chastatos" resultType="int">
+        select count(1) from tenthousand where id=#{id} and marketingresults=#{statos}
+    </select>
+
+    <select id="chaOk" resultType="int">
+          select ok from tenthousand where id=#{id}
+    </select>
+
+    <select id="chaStotus" resultType="java.lang.String">
+        select marketingresults from tenthousand where id=#{id}
+    </select>
+
+    <select id="chaServicename" resultType="java.lang.String">
+        select servicename from tenthousand where id=#{id}
+    </select>
+
+    <update id="uploginno">
+        update tenthousand set servicename=#{servicename} where id=#{id}
+    </update>
+</mapper>

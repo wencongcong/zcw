@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Table;
 import java.io.Serializable;
 /*
 *
@@ -13,6 +14,7 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "OrderInfo")
 public class OrderInfo implements Serializable {
     int id;
     String orderNo;
@@ -29,7 +31,7 @@ public class OrderInfo implements Serializable {
     String automatilmarking;
     String chargemethod;
     String acceptancetype;
-    int orderdetailsId;
+    String orderdetailsId;
     int markId;
     int custId;
     String guwangno;
@@ -39,4 +41,10 @@ public class OrderInfo implements Serializable {
     String yuandanno;
     String yuandanstatos;
     String fphone;
+    String createNo;
+    String createName;
+    String createPhone;
+    String thefirstNo;
+    String thefirstPhone;
+    String thefirstName;
 }

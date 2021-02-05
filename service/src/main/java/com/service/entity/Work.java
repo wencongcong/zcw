@@ -47,4 +47,16 @@ public class Work implements Serializable {
     int reminder;
     String channl;
     String settlementstatus;
+    String paymentstate;
+    String businessnumber;
+    String region;
+    String existingpreferential;
+    String existingPackageTypes;
+    String terminaltype;
+    String changedPackagetype;
+    String vicecardnumber;
+    String custaddress;
+    String prodctsName;
+    String prodacceptthemethod;
+    String terminalseries;
 }

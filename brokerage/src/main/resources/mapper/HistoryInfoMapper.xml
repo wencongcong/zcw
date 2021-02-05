@@ -3,8 +3,8 @@
 <mapper namespace="com.brokerage.mapper.HistoryInfoMapper">
 
     <insert id="insertOneHistory" parameterType="com.brokerage.entity.History" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-        insert history(`statosname`,`state`,`uplogintime`,`uplognno`,`workid`,`sevenstatus`,`historys`,`curentname`)value
-        (#{statosname},#{state},#{uplogintime},#{uplognno},#{workid},#{sevenstatus},#{historys},#{curentname})
+        insert history(`statosname`,`state`,`uplogintime`,`uplognno`,`workid`,`sevenstatus`,`historys`,`curentname`,`isitright`)value
+        (#{statosname},#{state},#{uplogintime},#{uplognno},#{workid},#{sevenstatus},#{historys},#{curentname},0)
     </insert>
 
     <select id="queryAll" resultType="com.brokerage.entity.History">

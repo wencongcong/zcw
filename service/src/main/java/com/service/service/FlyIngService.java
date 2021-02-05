@@ -32,17 +32,23 @@ public interface FlyIngService {
 
     public Result sgcha(Map map);
 
- //   public List<Map<String, Object>> timeCha();
 //手动导单
     public int insertOne(Fishorders fishorders);
 
     public int chastatos(String statos,int id);
 
-    public int upstatos(String statos,int id,int ok);
+    public int upstatos(String statos,int id,String wid,int ok);
     //查询是否已分配
     public int chaOk(int id);
     //查询状态
     public String chaStotus(int id);
     //
     public String chaServicename(@Param("id")int id);
+
+    public Result timetoremind(String servicename);
+
+    public int whether(String phone);
+
+    public List<Fishorders> queryAlls(Map map);
+
 }

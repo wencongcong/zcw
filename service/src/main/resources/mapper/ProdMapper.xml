@@ -8,12 +8,15 @@
         <if test="productsName!=null and productsName!=''">
             productsName LIKE CONCAT('%',#{productsName},'%') and depaname is not null  and enable=0
         </if>
+        <if test="depaname!=null and depaname!=''">
+          and  depaname LIKE CONCAT('%',#{depaname},'%')
+        </if>
     </trim>
 </select>
 
     <insert id="insetOneProd" parameterType="com.service.entity.Prod">
-        INSERT INTO prod(`proMoney`,`productsName`,`proCount`,`otime`,`ptime`,`rate`,`integral`,`deduct`,`slname`,`depaname`,`enable`,`subsidy`)
-        VALUES(#{proMoney},#{productsName},#{proCount},#{otime},#{ptime},#{rate},#{integral},#{deduct},#{slname},#{depaname},0,#{subsidy})
+        INSERT INTO prod(`proMoney`,`productsName`,`proCount`,`otime`,`ptime`,`rate`,`integral`,`deduct`,`slname`,`depaname`,`enable`,`subsidy`,`payMethod`,`isAuto`,`acceptMethod`,`settlementratio`)
+        VALUES(#{proMoney},#{productsName},#{proCount},#{otime},#{ptime},#{rate},#{integral},#{deduct},#{slname},#{depaname},0,#{subsidy},#{payMethod},#{isAuto},#{acceptMethod},#{settlementratio})
     </insert>
 
     <update id="updateOneProd">
@@ -55,6 +58,18 @@
             <if test="subsidy!=null and subsidy!=''">
                 subsidy=#{subsidy},
             </if>
+            <if test="payMethod!=null and payMethod!=''">
+                payMethod=#{payMethod},
+            </if>
+            <if test="isAuto!=null and isAuto!=''">
+                isAuto=#{isAuto},
+            </if>
+            <if test="subsidy!=-1">
+                acceptMethod=#{acceptMethod},
+            </if>
+            <if test="settlementratio!=null and settlementratio!=''">
+                settlementratio=#{settlementratio},
+            </if>
         </trim>
         where id = #{id}
     </update>
@@ -63,10 +78,10 @@
         SELECT * FROM prod
         <trim prefix="where" prefixOverrides="and|or">
         <if test="productsName!=null and productsName!=''">
-            productsName LIKE CONCAT('%',#{productsName},'%')
+           and productsName LIKE CONCAT('%',#{productsName},'%') and depaname is not null  and enable=0
         </if>
         <if test="depaname!=null and depaname!=''">
-            depaname=#{depaname}
+            and depaname=#{depaname}
         </if>
     </trim>
 

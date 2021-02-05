@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.brokerage.mapper.WorkorderListMapper">
+
+    <select id="queryAllorderlist" resultMap="workorder">
+        SELECT wo.id wid,wo.* FROM workorderlist wo
+        <trim prefixOverrides="and|or" prefix="where">
+            <if test="channl!=null and channl!=''">
+                and wo.channl=#{channl}
+            </if>
+            <if test="prodctsName!=null and prodctsName!=''">
+                and wo.prodctsName=#{prodctsName}
+            </if>
+            <if test="orderon!=null and orderon!=''">
+                and wo.orderon=#{orderon}
+            </if>
+            <if test="theassetnumber!=null and theassetnumber!=''">
+                and wo.theassetnumber=#{theassetnumber}
+            </if>
+            <if test="orderstatus!=null and orderstatus!=''">
+                and wo.orderstatus=#{orderstatus}
+            </if>
+            <if test="currentstatus!=null and currentstatus!=''">
+                and wo.currentstatus=#{currentstatus}
+            </if>
+        </trim>
+    </select>
+    <resultMap id="workorder" type="com.brokerage.entity.Workorderlist">
+        <id property="id" column="wid" />
+        <result column="wid" property="id"></result>
+        <result column="createtime" property="createtime"></result>
+        <result column="prodctsName" property="prodctsName"></result>
+        <result column="channl" property="channl"></result>
+        <result column="orderon" property="orderon"></result>
+        <result column="custname" property="custname"></result>
+        <result column="orderstatus" property="orderstatus"></result>
+        <result column="chargemanner" property="chargemanner"></result>
+        <result column="acceptchannel" property="acceptchannel"></result>
+        <result column="firstdeveloppeople" property="firstdeveloppeople"></result>
+        <result column="firstdeveloppeopleno" property="firstdeveloppeopleno"></result>
+        <result column="theassetnumber" property="theassetnumber"></result>
+        <result column="behavior" property="behavior"></result>
+        <result column="markid" property="markid"></result>
+        <result column="currentstatus" property="currentstatus"></result>
+        <result column="remark" property="remark"></result>
+        <result column="automatilmarking" property="automatilmarking"></result>
+        <result column="paymoney" property="paymoney"></result>
+        <result column="orderdetailsid" property="orderdetailsid"></result>
+        <collection property="orderdetailsInfoid"  ofType="com.brokerage.entity.OrderdetailsInfo" select="queryOrderdetails" column="orderdetailsid">
+<!--            <id column="oid" property="id"></id>-->
+<!--            <result column="oid" property="id"></result>-->
+<!--            <result column="orderinfoid" property="orderinfoid"></result>-->
+<!--            <result column="assetnumber" property="assetnumber"></result>-->
+<!--            <result column="currentstate" property="currentstate"></result>-->
+<!--            <result column="behavior" property="behavior"></result>-->
+        </collection>
+    </resultMap>
+
+    <select id="queryOrderdetails" resultMap="orderderinfosmap">
+        select id oid,orderinfoid,assetnumber,currentstate,behavior from orderdetails od where orderinfoid=#{orderdetailsid}
+    </select>
+
+    <resultMap id="orderderinfosmap" type="com.brokerage.entity.OrderdetailsInfo">
+        <id column="oid" property="id"></id>
+        <result column="oid" property="id"></result>
+        <result column="orderinfoid" property="orderinfoid"></result>
+        <result column="assetnumber" property="assetnumber"></result>
+        <result column="currentstate" property="currentstate"></result>
+        <result column="behavior" property="behavior"></result>
+    </resultMap>
+
+
+
+    <select id="queryAllordercount" resultType="int">
+        SELECT count(1) FROM workorderlist wo inner join orderdetails od on od.orderinfoid=wo.orderdetailsid
+        <trim prefixOverrides="and|or" prefix="where">
+            <if test="channl!=null and channl!=''">
+                and wo.channl=#{channl}
+            </if>
+            <if test="prodctsName!=null and prodctsName!=''">
+                and wo.prodctsName=#{prodctsName}
+            </if>
+            <if test="orderon!=null and orderon!=''">
+                and wo.orderon=#{orderon}
+            </if>
+            <if test="theassetnumber!=null and theassetnumber!=''">
+                and wo.theassetnumber=#{theassetnumber}
+            </if>
+            <if test="orderstatus!=null and orderstatus!=''">
+                and wo.orderstatus=#{orderstatus}
+            </if>
+            <if test="currentstatus!=null and currentstatus!=''">
+                and wo.currentstatus=#{currentstatus}
+            </if>
+        </trim>
+    </select>
+
+
+    <insert id="insertWorkorderlist" parameterType="com.brokerage.entity.Workorderlist">
+        insert workorderlist(`acceptid`,`channl`,`orderon`,`custname`,`orderstatus`,`chargemanner`,`acceptchannel`,`orderdetailsid`,`markid`,`prodctsName`,`createtime`,`remark`,`automatilmarking`,`paymoney`,`firstdeveloppeople`,`firstdeveloppeopleno`)
+        values (#{acceptid},#{channl},#{orderon},#{custname},#{orderstatus},#{chargemanner},#{acceptchannel},#{orderdetailsid},#{markid},#{prodctsName},#{createtime},#{remark},#{automatilmarking},#{paymoney},#{firstdeveloppeople},#{firstdeveloppeopleno})
+    </insert>
+
+    <select id="oneOrderno" resultType="int">
+        select count(1) from workorderlist where  orderon=#{orderon}
+    </select>
+</mapper>

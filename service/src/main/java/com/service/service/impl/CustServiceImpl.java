@@ -4,6 +4,7 @@ import com.service.entity.Cust;
 import com.service.mapper.CustMapper;
 import com.service.service.CustService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Map;
@@ -36,8 +37,8 @@ public class CustServiceImpl implements CustService {
     }
 
     @Override
-    public int sgchars(Map map) {
-        return custMapper.sgchars(map);
+    public int sgchars(Cust cust) {
+        return custMapper.sgchars(cust);
     }
 
     @Override
@@ -46,12 +47,18 @@ public class CustServiceImpl implements CustService {
     }
 
     @Override
-    public int chachongname(String custname) {
-        return custMapper.chachongname(custname);
+    public int chachongname(String custname,String custphone,String custidcard) {
+        return custMapper.chachongname(custname,custphone,custidcard);
     }
 
     @Override
-    public int chachongcount(String custname) {
-        return custMapper.chachongcount(custname);
+    public int chachongcount(String custname,String custphone,String custidcard) {
+        return custMapper.chachongcount(custname,custphone,custidcard);
+    }
+
+    @Override
+    @Transactional
+    public int changecust(Map map) {
+        return custMapper.changecust(map);
     }
 }

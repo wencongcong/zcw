@@ -30,4 +30,6 @@ public interface OrderInfoService {
     public int insertOneOrderNo(OrderInfo orderInfo);
 
     public int updateOneOrder(OrderInfo orderInfo);
+
+    public int deleteOrderinfo(String orderid);
 }

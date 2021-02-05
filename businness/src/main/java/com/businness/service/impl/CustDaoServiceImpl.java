@@ -14,8 +14,8 @@ public class CustDaoServiceImpl implements CustDaoService {
     private CustDaoMapper custDaoMapper;
 
     @Override
-    public int chachongname(String custname) {
-        return custDaoMapper.chachongname(custname);
+    public int chachongname(String custname,String custphone) {
+        return custDaoMapper.chachongname(custname,custphone);
     }
 
     @Override
@@ -29,7 +29,12 @@ public class CustDaoServiceImpl implements CustDaoService {
     }
 
     @Override
-    public int chaChongCount(String custname) {
-        return custDaoMapper.chaChongCount(custname);
+    public int chaChongCount(String custname,String custphone) {
+        return custDaoMapper.chaChongCount(custname,custphone);
+    }
+
+    @Override
+    public int queryCid() {
+        return custDaoMapper.queryCid();
     }
 }

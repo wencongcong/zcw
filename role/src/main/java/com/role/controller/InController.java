@@ -2,9 +2,12 @@ package com.role.controller;
 
 
 import com.role.entity.Inform;
+import com.role.entity.Terrain;
 import com.role.enums.ErrorEnum;
 import com.role.result.Result;
 import com.role.service.InformService;
+import com.role.service.TerrainService;
+import org.apache.ibatis.annotations.Mapper;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -20,6 +23,8 @@ public class InController {
 
     @Resource
     private InformService informService;
+    @Resource
+    private TerrainService terrainService;
 
     @RequestMapping(value = "/chaxun",method = RequestMethod.POST)
     public Result querAll(@RequestParam Map map){
@@ -34,7 +39,6 @@ public class InController {
         Date date=new Date();
         SimpleDateFormat sfs=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String sj=sfs.format(date);
-
         Inform inform=new Inform();
         inform.setName(map.get("name").toString());
         inform.setIsoffor(Integer.parseInt(map.get("isoffor").toString()));
@@ -68,4 +72,38 @@ public class InController {
         }
     }
 
+    @RequestMapping(value = "/tree",method = RequestMethod.POST)
+    public Result treein(@RequestParam Map map){
+        SimpleDateFormat sld=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date=new Date();
+        String time=sld.format(date);
+        Terrain terrain=new Terrain();
+        terrain.setAreaname(map.get("areaname").toString());
+        terrain.setCreatetime(time);
+        terrain.setIsopen(1);
+        int result=terrainService.additionTerrain(terrain);
+        if (result>0){
+            return Result.success(1,"添加成功");
+        }else {
+            return Result.fail(0,"添加失败");
+        }
+    }
+    @RequestMapping(value = "/queryatree",method = RequestMethod.POST)
+    public Result treeAll(@RequestParam Map map) {
+        List<Terrain> list=terrainService.queryAll(map.get("areaname").toString());
+        return Result.success(1,list);
+    }
+
+    @RequestMapping(value = "/updatetree",method = RequestMethod.POST)
+    public Result updatetree(@RequestParam Map map) {
+        Terrain terrain=new Terrain();
+        terrain.setId(Integer.parseInt(map.get("id").toString()));
+        terrain.setIsopen(Integer.parseInt(map.get("isopen").toString()));
+        int result=terrainService.updateTerrain(terrain);
+        if (result>0){
+            return Result.success(1,"添加成功");
+        }else {
+            return Result.fail(0,"添加失败");
+        }
+    }
 }

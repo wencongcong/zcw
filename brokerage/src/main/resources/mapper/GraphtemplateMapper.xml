@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.brokerage.mapper.GraphtemplateMapper">
+
+    <insert id="insertOneGraphtemplate" parameterType="com.brokerage.entity.Graphtemplate">
+        insert graphtemplate(`topimg`,`bottomimg`,`picturename`)
+        values(#{topimg},#{bottomimg},#{picturename})
+    </insert>
+
+    <select id="queryGraphtemplate" resultType="com.brokerage.entity.Graphtemplate">
+        select * from graphtemplate
+    </select>
+
+    <update id="updateGrap">
+        update graphtemplate
+        <trim prefix="set" suffixOverrides="," suffix=" where id = #{id} ">
+            <if test="topimg!=null and topimg!=''">
+                topimg=#{topimg},
+            </if>
+            <if test="bottomimg!=null and bottomimg!=''">
+                bottomimg=#{bottomimg},
+            </if>
+            <if test="picturename!=null and picturename!=''">
+                picturename=#{picturename},
+            </if>
+        </trim>
+    </update>
+</mapper>

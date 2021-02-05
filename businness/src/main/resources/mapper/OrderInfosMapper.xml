@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.businness.mapper.OrderInfosMapper">
+
+    <select id="allTheQuery" resultType="com.businness.entity.OrderInfoEX">
+        select * from orderinfo oi INNER JOIN orderdetails od on oi.orderdetailsId=od.orderinfoid WHERE orderNo!=0
+    </select>
+
+    <insert id="insertOneOrderNo" parameterType="com.businness.entity.OrderInfoEX" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+         INSERT orderinfo(`orderNo`,`ostats`,`acceptancetime`,`orderdetailsId`,`markId`,`custId`,`abnormal`)value(#{orderNo},#{ostats},#{acceptancetime},#{orderdetaiId},#{markId},#{custId},#{abnormal})
+    </insert>
+
+
+    <select id="chaOrderId" resultType="int">
+        select count(1) from orderinfo where orderNo=#{orderNo}
+    </select>
+</mapper>  

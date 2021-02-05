@@ -54,4 +54,9 @@ public class WorkDaoServiceImpl implements WorkDaoService {
     public int workcountsum(Map map) {
         return workDaoMapper.workcountsum(map);
     }
+
+    @Override
+    public int queryId() {
+        return workDaoMapper.queryId();
+    }
 }

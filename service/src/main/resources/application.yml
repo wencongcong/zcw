@@ -16,7 +16,7 @@ mybatis:
 
 
 server:
-  port: 8084
+  port: 8184
 
 mapper:
   mappers: com.util.mapper.BaseMapper

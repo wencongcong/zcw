@@ -13,4 +13,6 @@ public interface HistoryMapper extends BaseMapper<History> {
     public int insertOneHistory(History history);
 
     public List<History> queryAll(@Param("workid")int workid);
+
+    public int insertrighthistory(History history);
  }

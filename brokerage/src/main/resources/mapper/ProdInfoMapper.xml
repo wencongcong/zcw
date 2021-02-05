@@ -5,4 +5,8 @@
 <select id="queryAll" resultType="com.brokerage.entity.Prod">
     select * from prod where id=#{id} and depaname=#{depaname}
 </select>
+
+    <select id="chaAccept" resultType="int">
+        select id from prod where productsName=#{productsName} and depaname=#{depaname}
+    </select>
 </mapper>

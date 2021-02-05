@@ -1,11 +1,15 @@
 package com.service.util;
 
 import com.alibaba.fastjson.JSON;
+import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.params.CookiePolicy;
+import org.apache.http.cookie.Cookie;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.protocol.HTTP;
@@ -14,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * 调用http接口的工具类
@@ -29,8 +34,6 @@ import java.io.IOException;
     public final static int SOCKET_TIMEOUT = 3000 * 1000;//请求获取数据的超时时间
 
     private static final Logger logger = LoggerFactory.getLogger(com.service.util.HttpClientUtil.class);
-
-//    private static String serverIp = "http://122.229.29.27:8002/ZJ114MallExchangeServ_New_Test/ExchangeService.asmx";
 
     /**
      * post soap 请求
@@ -53,6 +56,11 @@ import java.io.IOException;
 
         CloseableHttpResponse response = null;
 
+        Header cookies=httppost.getLastHeader("Cookie");
+        String st=cookies.getValue();
+        String ost[]=st.split(";");
+        String su_info=ost[ost.length-1].substring(ost[ost.length-1].indexOf("=")+1);
+        String stoken=ost[ost.length-2].substring(ost[ost.length-2].indexOf("=")+1);
 
         try {
             StringEntity stringEntity = new StringEntity(requestXML, "UTF-8");
@@ -97,6 +105,13 @@ import java.io.IOException;
         CloseableHttpResponse response = null;
 
         httppost.setHeader(HTTP.CONTENT_TYPE, APPLICATION_JSON);
+
+//        Header cookies=httppost.getLastHeader("Cookie");
+//        String st=cookies.getValue();
+//        String ost[]=st.split(";");
+//        String su_info=ost[ost.length-1].substring(ost[ost.length-1].indexOf("=")+1);
+//        String stoken=ost[ost.length-2].substring(ost[ost.length-2].indexOf("=")+1);
+
         //数据类型转换
         StringEntity stringEntity = new StringEntity(JSON.toJSONString(params), "UTF-8");
         httppost.setEntity(stringEntity);

@@ -4,7 +4,7 @@
 
     <select id="queryAll" resultMap="Works">
         SELECT w.id,w.*,c.id,c.*,p.id,p.*,h.id,h.*,o.id,o.* FROM `workinfo` w
-        INNER JOIN customerinfo c on w.custid=c.cid
+        INNER JOIN customerinfo c on w.custid=c.id
         INNER JOIN prod p on w.acceptid=p.id
         LEFT JOIN history h on w.historyid=h.id
         LEFT JOIN orderinfo o on w.orderid=o.id
@@ -15,11 +15,17 @@
             <if test="otime!=null and otime!=''">
                 and `c`.custcreatertime BETWEEN CONCAT(#{otime},' 00:00:00') AND CONCAT(#{ptime},' 23:59:59')
             </if>
+            <if test="cotime!=null and cotime!=''">
+                and `o`.acceptancetime BETWEEN CONCAT(#{cotime},' 00:00:00') AND CONCAT(#{cptime},' 23:59:59')
+            </if>
             <if test="workid!=null and workid!=''">
                 and w.workid=#{workid}
             </if>
             <if test="custcreate!=null and custcreate!=''">
                 and `c`.custcreate LIKE CONCAT('%',#{custcreate},'%')
+            </if>
+            <if test="assigneeName!=null and assigneeName!=''">
+                and w.assigneeName LIKE CONCAT('%',#{assigneeName},'%')
             </if>
             <if test="serviceName!=null and serviceName!=''">
                 and w.serviceName LIKE CONCAT('%',#{serviceName},'%')
@@ -37,7 +43,7 @@
                 and `c`.custphone=#{custphone}
             </if>
             <if test="custarea!=null and custarea!=''">
-                and `c`.custarea=#{custarea}
+                and `c`.custarea LIKE CONCAT('%',#{custarea},'%')
             </if>
             <if test="productsName!=null and productsName!=''">
                 and p.productsName LIKE CONCAT('%',#{productsName},'%')
@@ -48,10 +54,17 @@
             <if test="broadband!=null and broadband!=''">
                 and w.broadband=#{broadband}
             </if>
+            <if test="channl!=null and channl!=''">
+                and w.channl=#{channl}
+            </if>
+            <if test="abnormal!=null and abnormal!=''">
+                and o.abnormal=#{abnormal}
+            </if>
         </trim>
     </select>
     <resultMap id="Works" type="com.businness.entity.WorkEX">
         <id property="id" column="w.id" />
+            <result column="workid" property="workid"></result>
             <result column="remark" property="remark"></result>
             <result column="serviceName" property="serviceName"></result>
             <result column="uploginName" property="uploginName"></result>
@@ -72,6 +85,7 @@
             <result column="xdtime" property="xdtime"></result>
             <result column="reminder" property="reminder"></result>
             <result column="channl" property="channl"></result>
+            <result column="paymentstate" property="paymentstate"></result>
         <association property="cid" javaType="com.businness.entity.CustEX">
             <id property="id" column="c.id"></id>
             <result column="custid" property="id"></result>
@@ -120,7 +134,7 @@
     </resultMap>
 
     <insert id="insertOneWork" parameterType="com.businness.entity.WorkEX">
-       INSERT INTO workinfo(`workid`,`custid`,`serviceName`,`acceptid`,`status`,`orderid`,`broadband`,`remark`,`appointmenttime`,`paymentamount`,`xdtime`)VALUES(#{workid},#{custid},#{serviceName},#{acceptid},#{status},0,#{broadband},#{remark},#{appointmenttime},#{paymentamount},#{xdtime})
+       INSERT INTO workinfo(`workid`,`custid`,`serviceName`,`acceptid`,`status`,`orderid`,`broadband`,`remark`,`paymentamount`,`xdtime`,`channl`,`assigneeName`)VALUES(#{workid},#{custid},#{serviceName},#{acceptid},#{status},#{orderid},#{broadband},#{remark},#{paymentamount},#{xdtime},#{channl},#{assigneeName})
     </insert>
 
     <select id="chaworkcount" resultType="int">
@@ -129,7 +143,7 @@
 
     <select id="workcountsum" resultType="int">
         SELECT count(1) FROM `workinfo` w
-        INNER JOIN customerinfo c on w.custid=c.cid
+        INNER JOIN customerinfo c on w.custid=c.id
         <trim prefixOverrides="and|or" prefix="where">
             <if test="otime!=null and otime!=''">
                 and `c`.custcreatertime BETWEEN CONCAT(#{otime},' 00:00:00') AND CONCAT(#{ptime},' 23:59:59')
@@ -139,7 +153,7 @@
 
     <select id="workcount" resultType="java.util.Map">
         SELECT custarea,count(custarea) FROM `workinfo` w
-        INNER JOIN customerinfo c on w.custid=c.cid
+        INNER JOIN customerinfo c on w.custid=c.id
         <trim prefixOverrides="and|or" prefix="where">
             <if test="otime!=null and otime!=''">
                 and `c`.custcreatertime BETWEEN CONCAT(#{otime},' 00:00:00') AND CONCAT(#{ptime},' 23:59:59')
@@ -149,7 +163,7 @@
     </select>
     <select id="workchannlcunt" resultType="java.util.Map">
         SELECT w.channl,count(w.channl) FROM `workinfo` w
-        INNER JOIN customerinfo c on w.custid=c.cid
+        INNER JOIN customerinfo c on w.custid=c.id
         <trim prefixOverrides="and|or" prefix="where">
             <if test="otime!=null and otime!=''">
                 and `c`.custcreatertime BETWEEN CONCAT(#{otime},' 00:00:00') AND CONCAT(#{ptime},' 23:59:59')
@@ -160,7 +174,7 @@
 
     <select id="workstatuscunt" resultMap="stat">
         SELECT serviceName,count(1),`status` FROM `workinfo` w
-        INNER JOIN customerinfo c on w.custid=c.cid
+        INNER JOIN customerinfo c on w.custid=c.id
         <trim prefixOverrides="and|or" prefix="where">
             <if test="otime!=null and otime!=''">
                 and `c`.custcreatertime BETWEEN CONCAT(#{otime},' 00:00:00') AND CONCAT(#{ptime},' 23:59:59')
@@ -176,13 +190,17 @@
 
     <select id="worksernamecunt" resultType="java.util.Map">
         SELECT count(`status`),`status` FROM `workinfo` w
-        INNER JOIN customerinfo c on w.custid=c.cid
+        INNER JOIN customerinfo c on w.custid=c.id
         <trim prefixOverrides="and|or" prefix="where">
             <if test="otime!=null and otime!=''">
                 and `c`.custcreatertime BETWEEN CONCAT(#{otime},' 00:00:00') AND CONCAT(#{ptime},' 23:59:59')
             </if>
         </trim>
         GROUP BY `status`
+    </select>
+
+    <select id="queryId" resultType="int">
+         select id from `workinfo` ORDER BY id desc LIMIT 1
     </select>
 
 </mapper>

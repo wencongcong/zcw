@@ -2,11 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.businness.mapper.CustDaoMapper">
     <select id="chachongname" resultType="int">
-        select id from customerinfo where custname=#{custname}
+        select id from customerinfo where custname=#{custname} and custphone=#{custphone}
     </select>
 
     <select id="chaChongCount" resultType="int">
-        select count(1) from customerinfo where custname=#{custname}
+        select count(1) from customerinfo where custname=#{custname} and custphone=#{custphone}
     </select>
     <insert id="insertOne" parameterType="com.businness.entity.CustEX" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
         insert customerinfo(`cid`,`custname`,`custphone`,`custidcard`,`custaddress`,`custarea`,`custcreatertime`)
@@ -15,5 +15,9 @@
 
     <select id="chacount" resultType="int">
         select count(1) from customerinfo
+    </select>
+
+    <select id="queryCid" resultType="int">
+          SELECT id FROM customerinfo  ORDER BY id desc LIMIT 1
     </select>
 </mapper>  

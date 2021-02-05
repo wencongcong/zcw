@@ -13,4 +13,6 @@ public interface OrderdetailMapper extends BaseMapper<Orderdetails> {
     public int chaOne(@Param("orderdetilid")String orderdetilid);
 
     public int updatepeo(@Param("dealingpeopre")String dealingpeopre,@Param("orderjson")String orderjson,@Param("orderinfoid")String orderinfoid);
+
+    public int updateAll(Orderdetails orderdetails);
 }

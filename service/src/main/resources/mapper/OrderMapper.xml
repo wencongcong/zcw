@@ -3,8 +3,8 @@
 <mapper namespace="com.service.mapper.OrderInfoMapper">
 
     <insert id="inserOne" parameterType="com.service.entity.OrderInfo" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-        INSERT orderinfo(`orderNo`,`ostats`,`subtype`,`batchmark`,`qiremarks`,`acceptancetime`,`ordertype`,`groupprdernumber`,`remarks`,`ordersource`,`acceptchannal`,`automatilmarking`,`chargemethod`,`acceptancetype`,`orderdetailsId`,`markId`,`custId`,`guwangno`,`guwangstatos`,`cwangno`,`cwangstatos`,`yuandanno`,`yuandanstatos`,`fphone`)VALUES
-        (#{orderNo},#{ostats},#{subtype},#{batchmark},#{qiremarks},#{acceptancetime},#{ordertype},#{groupprdernumber},#{remarks},#{ordersource},#{acceptchannal},#{automatilmarking},#{chargemethod},#{acceptancetype},#{orderdetailsId},#{markId},#{custId},#{guwangno},#{guwangstatos},#{cwangno},#{cwangstatos},#{yuandanno},#{yuandanstatos},#{fphone})
+        INSERT orderinfo(`orderNo`,`ostats`,`subtype`,`batchmark`,`qiremarks`,`acceptancetime`,`ordertype`,`groupprdernumber`,`remarks`,`ordersource`,`acceptchannal`,`automatilmarking`,`chargemethod`,`acceptancetype`,`orderdetailsId`,`markId`,`custId`,`guwangno`,`guwangstatos`,`cwangno`,`cwangstatos`,`yuandanno`,`yuandanstatos`,`fphone`,`rowstate`)VALUES
+        (#{orderNo},#{ostats},#{subtype},#{batchmark},#{qiremarks},#{acceptancetime},#{ordertype},#{groupprdernumber},#{remarks},#{ordersource},#{acceptchannal},#{automatilmarking},#{chargemethod},#{acceptancetype},#{orderdetailsId},#{markId},#{custId},#{guwangno},#{guwangstatos},#{cwangno},#{cwangstatos},#{yuandanno},#{yuandanstatos},#{fphone},#{rowstate})
     </insert>
 
     <update id="updateOneOrder" parameterType="com.service.entity.OrderInfo">
@@ -48,7 +48,7 @@
         <if test="acceptancetype!=null and acceptancetype!=''">
             acceptancetype=#{acceptancetype},
         </if>
-        <if test="orderdetailsId!=-1">
+        <if test="orderdetailsId!=null and orderdetailsId!=''">
             orderdetailsId=#{orderdetailsId},
         </if>
         <if test="markId!=-1">
@@ -78,12 +78,36 @@
         <if test="fphone!=null and fphone!=''">
             fphone=#{fphone},
         </if>
+        <if test="rowstate!=null and rowstate!=''">
+            rowstate=#{rowstate},
+        </if>
+        <if test="abnormal!=-1">
+            abnormal=#{abnormal},
+        </if>
+        <if test="createNo!=null and createNo!=''">
+            createNo=#{createNo},
+        </if>
+        <if test="createName!=null and createName!=''">
+            createName=#{createName},
+        </if>
+        <if test="createPhone!=null and createPhone!=''">
+            createPhone=#{createPhone},
+        </if>
+        <if test="thefirstNo!=null and thefirstNo!=''">
+            thefirstNo=#{thefirstNo},
+        </if>
+        <if test="thefirstPhone!=null and thefirstPhone!=''">
+            thefirstPhone=#{thefirstPhone},
+        </if>
+        <if test="thefirstName!=null and thefirstName!=''">
+            thefirstName=#{thefirstName},
+        </if>
     </trim>
          where id=#{id}
     </update>
 
     <insert id="insertOneOrderNo" parameterType="com.service.entity.OrderInfo" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-         INSERT orderinfo(`orderNo`,`ostats`,`acceptancetime`,`orderdetailsId`,`markId`,`custId`)value(#{orderNo},#{ostats},#{acceptancetime},#{orderdetailsId},#{markId},#{custId})
+         INSERT orderinfo(`orderNo`,`ostats`,`acceptancetime`,`orderdetailsId`,`markId`,`custId`,`abnormal`)value(#{orderNo},#{ostats},#{acceptancetime},#{orderdetailsId},#{markId},#{custId},#{abnormal})
     </insert>
     <select id="chaOne" resultType="int">
         SELECT count(1) from orderinfo where orderNo=#{orderno}
@@ -102,7 +126,7 @@
     </select>
 
     <select id="chaOrderNo" resultType="java.util.Map">
-        SELECT id,orderNo from orderinfo where ostats  not IN ('已归档','已取消','已撤单','质检回退','受理组回退'," ") or ostats is not null
+        SELECT id,orderNo from orderinfo where ostats not IN('已完成','已归档','已取消','已撤单','质检回退','受理组回退'," ")
         <trim prefixOverrides="where" prefix="">
             <if test="ostats!=null and ostats!=''">
                 or ostats=#{ostats}
@@ -121,4 +145,9 @@
     <select id="chaOrderId" resultType="int">
         select count(1) from orderinfo where orderNo=#{orderNo}
     </select>
+
+    <delete id="deleteOrderinfo">
+        delete from orderinfo where orderNo=#{orderid}
+    </delete>
+
 </mapper>

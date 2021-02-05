@@ -1,7 +1,7 @@
 
 spring:
   datasource:
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://192.168.0.253:3306/zcrm?useUnicode=true&characterEncoding=utf-8&useSSL=false
     username: ZCRM
     password: xEys6RbKMiZeTinT
@@ -20,7 +20,7 @@ mybatis:
 
 
 server:
-  port: 8086
+  port: 8186
 
 mapper:
   mappers: com.util.mapper.BaseMapper

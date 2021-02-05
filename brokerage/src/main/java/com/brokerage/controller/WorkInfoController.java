@@ -4,13 +4,11 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.brokerage.entity.*;
 import com.brokerage.result.Result;
-import com.brokerage.service.EmployeeService;
-import com.brokerage.service.HistoryInfoService;
-import com.brokerage.service.ProdService;
-import com.brokerage.service.WorkInfoService;
+import com.brokerage.service.*;
+import com.brokerage.util.ISaleHttpUtil;
+import com.brokerage.util.ISaleHttpUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.apache.ibatis.annotations.Mapper;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -30,8 +28,29 @@ public class WorkInfoController {
     private ProdService proService;
     @Resource
     private HistoryInfoService historyInfoService;
+    @Resource
+    private AutoAcceptService autoAcceptService;
+    @Resource
+    private WorkorderlistService workorderlistService;
 
 
+    @RequestMapping(value = "/autoaccept",method =RequestMethod.POST)
+    public Result autoaccept(ISaleHttpUtil iSaleHttpUtil,@RequestParam Map map)throws Throwable{
+
+        return autoAcceptService.autoaccept(iSaleHttpUtil,map);
+    }
+
+    @RequestMapping(value = "/autoaccepts",method =RequestMethod.POST)
+    public Result autoaccepts(ISaleHttpUtil iSaleHttpUtil,@RequestParam Map map)throws Throwable{
+
+        return autoAcceptService.autoaccepts(iSaleHttpUtil,map);
+    }
+
+    @RequestMapping(value = "/ss",method =RequestMethod.POST)
+    public String ss(ISaleHttpUtils iSaleHttpUtils, @RequestParam Map map)throws Throwable{
+
+        return autoAcceptService.sss(iSaleHttpUtils);
+    }
 
    @RequestMapping(value = "xiustatues",method = RequestMethod.POST)
    @ResponseBody
@@ -159,8 +178,9 @@ public class WorkInfoController {
                 money.setUploginName(work.getAssigneeName());
                 money.setDeduct(prod.getDeduct());
                 money.setOrderNo(orderInfo.getOrderNo());
-                countMoney=countMoney+Integer.parseInt(prod.getDeduct());
                 moneyList.add(money);
+                countMoney=countMoney+Integer.parseInt(prod.getDeduct());
+
             }
         }catch (Exception e){
         }
@@ -207,4 +227,11 @@ public class WorkInfoController {
            }
            return Result.success(1,"运行成功");
     }
+
+    @RequestMapping(value = "/queryAllWorkorder",method = RequestMethod.POST)
+    public Result queryAllWorkorder(@RequestParam Map map){
+        return workorderlistService.queryAllWorkorder(map);
+    }
+
+
 }

@@ -27,4 +27,6 @@ public interface WorkDaoMapper extends BaseMapper<WorkEX> {
 
     public int workcountsum(Map map);
 
+    public int queryId();
+
 }

@@ -19,8 +19,10 @@ import java.io.Serializable;
 @ExcelTarget(value = "WorkEX")
 public class WorkEX implements Serializable {
 
+
+
     int id;
-    @Excel(name = "工单ID")
+    @Excel(name="订单编号",width = 30,orderNum = "1")
     String workid;
     @ExcelEntity(name = "客户列表")
     CustEX cid;
@@ -58,6 +60,7 @@ public class WorkEX implements Serializable {
     String paymentamount;
     @ExcelEntity(name = "反刷工单列表")
     OrderInfoEX oid;
+    String orderid;
     @Excel(name="工作流",width = 30,orderNum = "1")
     String workserved;
     @Excel(name="下单时间",width = 30,orderNum = "1",databaseFormat = "yyyyMMddHHmmss", format = "")
@@ -68,4 +71,6 @@ public class WorkEX implements Serializable {
     String channl;
     @Excel(name = "结算状态",width = 30,orderNum = "1")
     String settlementstatus;
+    @Excel(name="收费方式",width = 30,orderNum = "1")
+    String paymentstate;
 }

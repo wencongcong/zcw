@@ -15,4 +15,6 @@ public interface WorkInfoService {
     public List<Work> queryAll(Map map);
     //修改佣金结算状态
     public int updatevery(String verify,String workserved,String workid);
+
+    public int Autocontrolledwork(Work work);
 }

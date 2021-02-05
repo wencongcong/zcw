@@ -52,5 +52,4 @@ public enum ErrorEnum {
         this.name = name;
     }
 
-
 }

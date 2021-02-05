@@ -4,11 +4,13 @@ import com.businness.entity.CustEX;
 
 public interface CustDaoService {
 
-    public int chachongname(String custname);
+    public int chachongname(String custname,String custphone);
 
     public int insertOne(CustEX custEX);
 
     public int chacount();
 
-    public int chaChongCount(String custname);
+    public int chaChongCount(String custname,String custphone);
+
+    public int queryCid();
 }

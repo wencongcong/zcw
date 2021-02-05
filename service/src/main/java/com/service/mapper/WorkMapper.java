@@ -24,7 +24,7 @@ public interface WorkMapper {
     //查询数量
     public int chacountw();
     //转营销
-    public int sgchar(Map map);
+    public int sgchar(Work work);
 
     public int Updateremark(Map map);
 
@@ -34,7 +34,7 @@ public interface WorkMapper {
 
     public int Reminder(@Param("reminder") int reminder, @Param("workid") int workid);
 
-    public int Ustatosoid(@Param("statos") String statos,@Param("orderid")int oid,@Param("workid") String workid);
+    public int Ustatosoid(@Param("statos") String statos,@Param("status") String status,@Param("orderid")int oid,@Param("workid") String workid);
     //分配修改
     public int updateassign(Map map);
     //根据ID查询状态
@@ -44,7 +44,7 @@ public interface WorkMapper {
     //修改orderID
     public int updateOrderId(@Param("orderId") int orderId, @Param("workid") String workid);
     //根据orderID查询工单ID
-    public int chaWorkid(@Param("orderId") int orderId);
+    public String chaWorkid(@Param("orderId") int orderId);
 
     public int updateStatue(@Param("status") String status, @Param("workid") String workid);
 
@@ -53,4 +53,9 @@ public interface WorkMapper {
     public String chasttle(@Param("workid")String workid);
     //判断是否为空
     public String whetherisempty();
+
+    public int queryId();
+
+    public int changeWork(Map map);
+
 }

@@ -1,6 +1,7 @@
 package com.businness.entity;
 
 import cn.afterturn.easypoi.excel.annotation.Excel;
+import cn.afterturn.easypoi.excel.annotation.ExcelEntity;
 import cn.afterturn.easypoi.excel.annotation.ExcelTarget;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -41,4 +42,11 @@ public class OrderInfoEX implements Serializable {
     String yuandanstatos;
     @Excel(name="施工电话",width = 30,orderNum = "1")
     String fphone;
+    @ExcelEntity(name="行项目信息")
+    OrderDetilsEx orderdetailsId;
+    String orderdetaiId;
+    int markId;
+    int custId;
+    int abnormal;
+    String acceptancetime;
 }

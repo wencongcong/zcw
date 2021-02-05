@@ -24,4 +24,5 @@ public class History implements Serializable {
     String sevenstatus;
     String historys;
     String curentname;
+    int isitright;
 }

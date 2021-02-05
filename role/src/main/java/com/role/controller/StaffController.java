@@ -5,12 +5,17 @@ import com.role.entity.Employee;
 import com.role.entity.Levels;
 import com.role.enums.ErrorEnum;
 import com.role.result.Result;
+import org.springframework.http.MediaType;
 import com.role.service.DepartmentService;
 import com.role.service.EmployeeService;
 import com.role.service.LevelsService;
+import com.role.service.impl.VerifCode;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -31,11 +36,35 @@ public class StaffController {
     @Resource
     private LevelsService levelsService;
 
-    @RequestMapping(value = "/login",method = RequestMethod.POST)
-    public Result Login(@RequestParam(name = "ephone",defaultValue = "0")String ephone, @RequestParam(name = "epwd",defaultValue = "0")String epwd, HttpSession session) throws ParseException {
 
-        return employeeService.Login(ephone, epwd);
+    @RequestMapping(value = "/login",method = RequestMethod.POST)
+    public Result Login(@RequestParam(name = "ephone",defaultValue = "0")String ephone, @RequestParam(name = "epwd",defaultValue = "0")String epwd,
+                        @RequestParam(name = "getcodeimg",defaultValue = "0")String getcodeimg,HttpServletRequest request,HttpSession session) throws ParseException {
+            String imgtext = (String)session.getAttribute("simpleCaptcha").toString();
+            Date now = new Date();
+            Long codeTime = Long.valueOf(session.getAttribute("codeTime")+"");
+            if (imgtext.toUpperCase().equals(getcodeimg.toUpperCase())) {
+                session.removeAttribute("simpleCaptcha");
+                return employeeService.Login(ephone, epwd);
+            } else if ((now.getTime()-codeTime)/1000/60>5) {
+                //验证码有效时长为5分钟
+                session.removeAttribute("simpleCaptcha");
+                return Result.success(0, "验证码已失效，请重新输入！");
+            } else{
+                return Result.success(0, "验证码错误");
+            }
     }
+
+
+    @RequestMapping(value = "/yanzhenimg",method = RequestMethod.POST)
+    public void sss(@RequestParam Map map, HttpServletResponse response,HttpServletRequest request)throws Exception{
+            VerifCode vs=new VerifCode();
+            ImageIO.write(vs.getImage(), "JPG", response.getOutputStream());
+            request.getSession().setAttribute("simpleCaptcha",vs.getText());
+            request.getSession().setAttribute("codeTime",new Date().getTime());
+    }
+
+
 
 
     @RequestMapping(value = "/queryemply",method = RequestMethod.POST)

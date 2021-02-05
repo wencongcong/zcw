@@ -176,24 +176,43 @@ public class DroController {
     }
 
     @RequestMapping(value = "/insertProd",method = RequestMethod.POST)
-    public Result insertProd(@RequestParam Map map){
-        Prod prod=new Prod();
-        prod.setProMoney(map.get("proMoney").toString());
-        prod.setProductsName(map.get("productsName").toString());
-        prod.setProCount(map.get("proCount").toString());
-        prod.setOtime(map.get("otime").toString());
-        prod.setPtime(map.get("ptime").toString());
-        prod.setRate(map.get("rate").toString());
-        prod.setIntegral(map.get("integral").toString());
-        prod.setDeduct(map.get("deduct").toString());
-        prod.setSlname(map.get("slname").toString());
-        int result=prodService.insetOneProd(prod);
+    @ResponseBody
+    public Result insertProd(@RequestBody Map map){
+        JSONObject jsonObject=JSON.parseObject(map.get("depaname").toString());
+        int length=Integer.parseInt(map.get("length").toString());
+        String deduct=null;
+        String depaname=null;
+        JSONObject jst=null;
+        int result=0;
+        for ( int i=0;i<length;i++){
+            jst=(JSONObject)jsonObject.get(i);
+            deduct=jst.getString("deduct");
+            depaname=jst.getString("depaname");
+            Prod prod=new Prod();
+            prod.setProMoney(map.get("proMoney").toString());
+            prod.setProductsName(map.get("productsName").toString());
+            prod.setProCount(map.get("proCount").toString());
+            prod.setOtime(map.get("otime").toString());
+            prod.setPtime(map.get("ptime").toString());
+            prod.setRate(map.get("rate").toString());
+            prod.setIntegral(map.get("integral").toString());
+            prod.setDeduct(deduct);
+            prod.setSlname(map.get("slname").toString());
+            prod.setPayMethod(map.get("payMethod").toString());
+            prod.setIsAuto(map.get("isAuto").toString());
+            prod.setAcceptMethod(Integer.parseInt(map.get("acceptMethod").toString()));
+            prod.setDepaname(depaname);
+            prod.setSubsidy(map.get("subsidy").toString());
+            prod.setSettlementratio(map.get("settlementratio").toString());
+            result=prodService.insetOneProd(prod);
+        }
         if (result>0){
             return Result.success(1,"插入成功");
         }else{
             return Result.fail(0,ErrorEnum.FIAL_ERROR);
         }
     }
+
 
     @RequestMapping(value = "/queryAll",method = RequestMethod.POST)
     public Result queryAll(@RequestParam Map map){
@@ -220,6 +239,10 @@ public class DroController {
         prod.setDepaname(map.get("depaname").toString());
         prod.setEnable(Integer.parseInt(map.get("enable").toString()));
         prod.setSubsidy(map.get("subsidy").toString());
+        prod.setPayMethod(map.get("payMethod").toString());
+        prod.setIsAuto(map.get("isAuto").toString());
+        prod.setAcceptMethod(Integer.parseInt(map.get("acceptMethod").toString()));
+        prod.setSettlementratio(map.get("settlementratio").toString());
         int result=prodService.updateOneProd(prod);
         if (result>0){
             return Result.success(1,"修改成功");
