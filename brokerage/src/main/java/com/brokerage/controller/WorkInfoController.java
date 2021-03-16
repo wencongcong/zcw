@@ -46,12 +46,6 @@ public class WorkInfoController {
         return autoAcceptService.autoaccepts(iSaleHttpUtil,map);
     }
 
-    @RequestMapping(value = "/ss",method =RequestMethod.POST)
-    public String ss(ISaleHttpUtils iSaleHttpUtils, @RequestParam Map map)throws Throwable{
-
-        return autoAcceptService.sss(iSaleHttpUtils);
-    }
-
    @RequestMapping(value = "xiustatues",method = RequestMethod.POST)
    @ResponseBody
     public Result queryAll(@RequestParam Map map){

@@ -46,8 +46,8 @@ public class ISaleHttpUtil {
 
     private RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(CONNECT_TIMEOUT).setConnectionRequestTimeout(CONNECTION_REQUEST_TIMEOUT).setSocketTimeout(SOCKET_TIMEOUT).build();
 
-    private String xAuthToken = "3dc4cca2-5ccb-4ccc-ae8d-9f5566171859";
-    private final String u_info = "ab2a90da-2390-4d54-b971-d9a2eb66b02e";
+    private String xAuthToken = "d7425707-6a9e-481d-a469-2fc7e4d6060f";
+    private final String u_info = "698f050b-5bba-4467-8b98-7e919c29ee33";
     private String Cookies= String.format("SL_G_WPT_TO=zh; SL_GWPT_Show_Hide_tmp=1; SL_wptGlobTipTmp=1; X-Version=v1; X-Version-cpc=V1; X-Version-csrv=V1; X-Version-cpct=V1; X-Version-cequity=V1; X-Version-cpct-pre=V1; X-Version-operation=V1; X-Version-coop=V1; X-Version-cres=V1; X-Version-cequityp=V1; X-Version-jslog=V1; lg_st_tr=2; token=%s; u_info=%s",this.getxAuthToken(),this.u_info);
 
     private String userCode = "18072892408";
@@ -56,7 +56,7 @@ public class ISaleHttpUtil {
 
     private String channelNbr = "";
 
-    private String custOrderToken = "4Z6Nj15CRJyDZMsrjAqo4x";
+    private String custOrderToken = "50GZaDBrFFvxqGkhkR93B5";
 
     public String getUserCode() {
         return userCode;

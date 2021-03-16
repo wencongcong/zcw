@@ -22,7 +22,9 @@ public class FishordersEX implements Serializable {
     int id;
     @Excel(name="线索ID",width = 30,orderNum = "1")
     String workid;
-    @Excel(name="渠道",width = 30,orderNum = "1")
+    @Excel(name="一级渠道",width = 30,orderNum = "1")
+    String channels;
+    @Excel(name="二级渠道",width = 30,orderNum = "1")
     String channel;
     String flow;
     @Excel(name="联系方式",width = 30,orderNum = "1")
@@ -52,7 +54,9 @@ public class FishordersEX implements Serializable {
     String toproomotelinks;
     @Excel(name="广告主名称",width = 30,orderNum = "1")
     String nameofadvertiser;
-    @Excel(name="地市",width = 30,orderNum = "1")
+    @Excel(name="省份",width = 30,orderNum = "1")
+    String areas;
+    @Excel(name="市级",width = 30,orderNum = "1")
     String address;
     String appointmentime;
     int ok;

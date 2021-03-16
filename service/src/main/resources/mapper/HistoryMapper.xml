@@ -3,16 +3,24 @@
 <mapper namespace="com.service.mapper.HistoryMapper">
 
     <insert id="insertOneHistory" parameterType="com.service.entity.History" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-        insert history(`statosname`,`state`,`uplogintime`,`uplognno`,`workid`,`sevenstatus`,`historys`,`curentname`,`isitright`)value
-        (#{statosname},#{state},#{uplogintime},#{uplognno},#{workid},#{sevenstatus},#{historys},#{curentname},0)
+        insert history(`statosname`,`state`,`uplogintime`,`uplognno`,`workid`,`sevenstatus`,`historys`,`curentname`,`isitright`,`updatemotion`)value
+        (#{statosname},#{state},#{uplogintime},#{uplognno},#{workid},#{sevenstatus},#{historys},#{curentname},#{isitright},#{updatemotion})
     </insert>
 
     <select id="queryAll" resultType="com.service.entity.History">
-        select * from  history where workid=#{workid}
+        select * from  history
+        <trim prefixOverrides="and|or" prefix="where">
+            <if test="workid!=-1">
+                and workid=#{workid}
+            </if>
+            <if test="isitright!=-1">
+                and isitright=#{isitright}
+            </if>
+        </trim>
     </select>
 
     <insert id="insertrighthistory" parameterType="com.service.entity.History">
-         insert history(`statosname`,`state`,`uplogintime`,`uplognno`,`workid`,`historys`,`curentname`,`isitright`)value
-        (#{statosname},#{state},#{uplogintime},#{uplognno},#{workid},#{historys},#{curentname},#{isitright})
+         insert history(`statosname`,`state`,`uplogintime`,`uplognno`,`workid`,`historys`,`curentname`,`isitright`,`updatemotion`)value
+        (#{statosname},#{state},#{uplogintime},#{uplognno},#{workid},#{historys},#{curentname},#{isitright},#{updatemotion})
     </insert>
 </mapper>

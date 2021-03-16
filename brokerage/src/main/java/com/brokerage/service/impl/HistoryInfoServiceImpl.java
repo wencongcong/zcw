@@ -20,7 +20,7 @@ public class HistoryInfoServiceImpl implements HistoryInfoService {
     }
 
     @Override
-    public List<History> queryAll(int workid) {
-        return historyInfoMapper.queryAll(workid);
+    public List<History> queryAll(int workid,int isitright) {
+        return historyInfoMapper.queryAll(workid,isitright);
     }
 }

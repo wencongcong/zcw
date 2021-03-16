@@ -27,9 +27,14 @@ public class Terminal implements Serializable {
     String servicename;
     @Excel(name="业务号码",width = 30,orderNum = "1")
     String businessnumber;
-    @Excel(name="地势",width = 30,orderNum = "1")
+    @Excel(name="省份",width = 30,orderNum = "1")
+    String areas;
+    @Excel(name="市级",width = 30,orderNum = "1")
     String area;
     String marketingresults;
+    @Excel(name="一级渠道",width = 30,orderNum = "1")
+    String channels;
+    @Excel(name="二级渠道",width = 30,orderNum = "1")
     String channl;
     String advertiser;
     String ordertime;

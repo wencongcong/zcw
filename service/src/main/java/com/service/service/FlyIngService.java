@@ -15,7 +15,7 @@ public interface FlyIngService {
 
     public Result queryFlyTime() throws ParseException, Exception;
 
-    public int chaFid(String  wordid);
+    public int chaFid(String  wordid,String phone);
 
     public List<Fishorders> queryAll(Map map);
 

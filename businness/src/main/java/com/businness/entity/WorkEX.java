@@ -52,7 +52,7 @@ public class WorkEX implements Serializable {
     String appointmenttime;
     @Excel(name="转财务原因",width = 30,orderNum = "1")
     String financeverify;
-    @Excel(name="转带录音质检原因",width =30 ,orderNum = "1")
+    @Excel(name="天猫单号",width =30 ,orderNum = "1")
     String soundverify;
     @Excel(name="付款时间",width = 30,orderNum = "1",databaseFormat = "yyyyMMddHHmmss", format = "")
     String timepayment;
@@ -67,10 +67,18 @@ public class WorkEX implements Serializable {
     String xdtime;
     @Excel(name="是否催单",width = 30,orderNum = "1")
     int reminder;
-    @Excel(name="渠道",width = 30,orderNum = "1")
+    @Excel(name="一级渠道",width = 30,orderNum = "1")
+    String channels;
+    @Excel(name="二级渠道",width = 30,orderNum = "1")
     String channl;
     @Excel(name = "结算状态",width = 30,orderNum = "1")
     String settlementstatus;
     @Excel(name="收费方式",width = 30,orderNum = "1")
     String paymentstate;
+    @Excel(name="客户备注",width = 30,orderNum = "1")
+    String jsonstr;
+    @Excel(name="终端型号",width = 30,orderNum = "1")
+    String terminaltype;
+    @Excel(name="终端串号",width = 30,orderNum = "1")
+    String terminalseries;
 }

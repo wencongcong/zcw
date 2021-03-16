@@ -51,7 +51,11 @@ public class Tmall implements Serializable {
     String marketingresults;
     @Excel(name="业务人员",width = 30,orderNum = "1")
     String servicename;
-    @Excel(name="地势",width = 30,orderNum = "1")
+    @Excel(name="地市",width = 30,orderNum = "1")
     String area;
+    @Excel(name="省份",width = 30,orderNum = "1")
+    String areas;
+    @Excel(name="一级渠道",width = 30,orderNum = "1")
+    String channels;
 
 }

@@ -34,7 +34,7 @@ public interface WorkMapper {
 
     public int Reminder(@Param("reminder") int reminder, @Param("workid") int workid);
 
-    public int Ustatosoid(@Param("statos") String statos,@Param("status") String status,@Param("orderid")int oid,@Param("workid") String workid);
+    public int Ustatosoid(@Param("statos") String statos,@Param("status") String status,@Param("workid") String workid);
     //分配修改
     public int updateassign(Map map);
     //根据ID查询状态
@@ -42,11 +42,11 @@ public interface WorkMapper {
     //修改备注
     public int uodateRemark(@Param("remark") String remark, @Param("workid") String workid);
     //修改orderID
-    public int updateOrderId(@Param("orderId") int orderId, @Param("workid") String workid);
+    public int updateOrderId(@Param("orderId") int orderId, @Param("workid") String workid,@Param("statos") String statos,@Param("status") String status);
     //根据orderID查询工单ID
     public String chaWorkid(@Param("orderId") int orderId);
 
-    public int updateStatue(@Param("status") String status, @Param("workid") String workid);
+    public int updateStatue(@Param("status") String status, @Param("workid") String workid,@Param("orderid")String orderid);
 
     public int updatesettle(@Param("settlementstatus")String settlementstatus,@Param("verify")String verify,@Param("completedtime")String completedtime,@Param("workid")String workid);
 

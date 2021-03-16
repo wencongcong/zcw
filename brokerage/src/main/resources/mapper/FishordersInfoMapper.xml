@@ -31,13 +31,19 @@
             <if test="failure!=null and failure!=''">
                 and failure=#{failure}
             </if>
+            <if test="areas!=null and areas!=''">
+                and areas=#{areas}
+            </if>
+            <if test="channels!=null and channels!=''">
+                and channels=#{channels}
+            </if>
         </trim>
     </select>
 
     <insert id="insertOneFish" parameterType="com.brokerage.entity.Fishorders">
-             insert fishorders(`workid`,`channel`,`flow`,`phone`,`name`,`idcard`,`interior`,`accept`,`servicename`,`uploginno`,`statos`,`amount`,`ordertime`,`payment`,`remark`,`toproomotelinks`,`nameofadvertiser`,`address`,`appointmentime`,`ok`,`trackingtime`,`failure`,`uplogintime`,`broadband`,`isitnew`,`whethertorepeat`,`wid`)
-            value (#{workid},#{channel},#{flow},#{phone},#{name},#{idcard},#{interior},#{accept},#{servicename},#{uploginno},#{statos},#{amount},#{ordertime},#{payment},#{remark}
-            ,#{toproomotelinks},#{nameofadvertiser},#{address},null,0,#{trackingtime},#{failure},#{uplogintime},#{broadband},1,#{whethertorepeat},0)
+             insert fishorders(`workid`,`channel`,`channels`,`flow`,`phone`,`name`,`idcard`,`interior`,`accept`,`servicename`,`uploginno`,`statos`,`amount`,`ordertime`,`payment`,`remark`,`toproomotelinks`,`nameofadvertiser`,`address`,`areas`,`appointmentime`,`ok`,`trackingtime`,`failure`,`uplogintime`,`broadband`,`isitnew`,`whethertorepeat`,`wid`)
+            value (#{workid},#{channel},#{channels},#{flow},#{phone},#{name},#{idcard},#{interior},#{accept},#{servicename},#{uploginno},#{statos},#{amount},#{ordertime},#{payment},#{remark}
+            ,#{toproomotelinks},#{nameofadvertiser},#{address},#{areas},null,0,#{trackingtime},#{failure},#{uplogintime},#{broadband},1,#{whethertorepeat},0)
     </insert>
 
     <select id="chaFid" resultType="int">
@@ -110,6 +116,12 @@
             </if>
             <if test="broadband!=null and broadband!=''">
                 broadband=#{broadband},
+            </if>
+            <if test="channels!=null and channels!=''">
+                channels=#{channels},
+            </if>
+            <if test="areas!=null and areas!=''">
+                areas=#{areas},
             </if>
         </trim>
     </update>

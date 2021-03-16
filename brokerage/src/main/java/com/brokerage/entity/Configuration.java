@@ -19,4 +19,5 @@ public class Configuration implements Serializable {
     String area;
     String prodctname;
     String servicename;
+    String areas;
 }

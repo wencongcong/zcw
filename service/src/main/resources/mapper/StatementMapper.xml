@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.service.mapper.StatementMapper">
+
+    <select id="queryAll" resultMap="querystatem" >
+    select (SELECT count(1) FROM fishorders where channel like CONCAT('%',#{channel},'%') and ordertime BETWEEN CONCAT(#{otime},' 00:00:00') AND CONCAT(#{ptime},' 23:59:59')) as businessparameters,(SELECT count(1) FROM `workinfo` WHERE channl like CONCAT('%',#{channel},'%') and xdtime BETWEEN CONCAT(#{otime},' 00:00:00') AND CONCAT(#{ptime},' 23:59:59')) as workingodd,CONCAT((SELECT count(1)/(SELECT count(1) FROM fishorders WHERE servicename is not null and servicename!='')*100 FROM fishorders WHERE servicename is not null and servicename!='' and statos='营销成功' and channel like CONCAT('%',#{channel},'%') and ordertime BETWEEN CONCAT(#{otime},' 00:00:00') AND CONCAT(#{ptime},' 23:59:59')),'%') as calloutinto,CONCAT((SELECT count(1)/(SELECT count(1) FROM workinfo where channl like CONCAT('%',#{channel},'%') and xdtime BETWEEN CONCAT(#{otime},' 00:00:00') AND CONCAT(#{ptime},' 23:59:59'))*100 FROM fishorders ft left JOIN workinfo ws on ft.wid=ws.id WHERE ws.`status`='成功订单' and ws.channl like CONCAT('%',#{channel},'%') and ws.xdtime BETWEEN CONCAT(#{otime},' 00:00:00') AND CONCAT(#{ptime},' 23:59:59')),'%') as completime,(SELECT count(1) FROM fishorders fw left JOIN workinfo ww on fw.wid=ww.id WHERE ww.`status`='已受理' and fw.channel like CONCAT('%',#{channel},'%') and fw.ordertime BETWEEN CONCAT(#{otime},' 00:00:00') AND CONCAT(#{ptime},' 23:59:59')) as acceptnum,
+    (SELECT count(1) FROM fishorders fw left JOIN workinfo ww on fw.wid=ww.id WHERE ww.`status`='成功订单' and fw.channel like CONCAT('%',#{channel},'%') and fw.ordertime BETWEEN CONCAT(#{otime},' 00:00:00') AND CONCAT(#{ptime},' 23:59:59')) as pigeonholenum,(SELECT count(1) FROM fishorders fw left JOIN workinfo ww on fw.wid=ww.id WHERE ww.`status`='已提交' and fw.channel like CONCAT('%',#{channel},'%') and fw.ordertime BETWEEN CONCAT(#{otime},' 00:00:00') AND CONCAT(#{ptime},' 23:59:59')) as submitnum,
+    (SELECT count(1) FROM fishorders fw left JOIN workinfo ww on fw.wid=ww.id WHERE ww.`status`='废弃' and fw.channel like CONCAT('%',#{channel},'%') and fw.ordertime BETWEEN CONCAT(#{otime},' 00:00:00') AND CONCAT(#{ptime},' 23:59:59')) as chargebacknum,CONCAT((SELECT count(1)/(SELECT count(1) FROM workinfo where channl like CONCAT('%',#{channel},'%') and xdtime BETWEEN CONCAT(#{otime},' 00:00:00') AND CONCAT(#{ptime},' 23:59:59'))*100 FROM workinfo ww  WHERE ww.`status`='废弃' and ww.channl like CONCAT('%',#{channel},'%') and ww.xdtime BETWEEN CONCAT(#{otime},' 00:00:00') AND CONCAT(#{ptime},' 23:59:59')),'%') as chargeback
+    from fishorders f left JOIN workinfo w on f.wid=w.id WHERE w.channl like CONCAT('%',#{channel},'%') LIMIT 1
+    </select>
+    <resultMap id="querystatem" type="com.service.domeVo.FishordVo">
+        <result property="businessparameters" column="businessparameters"></result>
+        <result property="workingodd" column="workingodd"></result>
+        <result property="calloutinto" column="calloutinto"></result>
+        <result property="completime" column="completime"></result>
+        <result property="acceptnum" column="acceptnum"></result>
+        <result property="pigeonholenum" column="pigeonholenum"></result>
+        <result property="submitnum" column="submitnum"></result>
+        <result property="chargebacknum" column="chargebacknum"></result>
+        <result property="chargeback" column="chargeback"></result>
+    </resultMap>
+
+    <select id="queryAllvs" resultMap="querystatems" >
+       select (SELECT count(1) FROM fishorders where channel like CONCAT('%',#{channel},'%') and ordertime BETWEEN CONCAT(#{totime},' 00:00:00') AND CONCAT(#{tptime},' 23:59:59')) as businessparameters,(SELECT count(1) FROM `workinfo` WHERE channl like CONCAT('%',#{channel},'%') and xdtime BETWEEN CONCAT(#{totime},' 00:00:00') AND CONCAT(#{tptime},' 23:59:59')) as workingodd,CONCAT((SELECT count(1)/(SELECT count(1) FROM fishorders)*100 FROM fishorders WHERE servicename is not null and servicename!='' and statos='营销成功' and channel like CONCAT('%',#{channel},'%') and ordertime BETWEEN CONCAT(#{totime},' 00:00:00') AND CONCAT(#{tptime},' 23:59:59')),'%') as calloutinto,CONCAT((SELECT count(1)/(SELECT count(1) FROM fishorders)*100 FROM fishorders ft left JOIN workinfo ws on ft.wid=ws.id WHERE ws.`status`='成功订单' and ft.channel like CONCAT('%',#{channel},'%') and ft.ordertime BETWEEN CONCAT(#{totime},' 00:00:00') AND CONCAT(#{tptime},' 23:59:59')),'%') as completime,(SELECT count(1) FROM fishorders fw left JOIN workinfo ww on fw.wid=ww.id WHERE ww.`status`='已受理' and fw.channel like CONCAT('%',#{channel},'%') and fw.ordertime BETWEEN CONCAT(#{totime},' 00:00:00') AND CONCAT(#{tptime},' 23:59:59')) as acceptnum,
+    (SELECT count(1) FROM fishorders fw left JOIN workinfo ww on fw.wid=ww.id WHERE ww.`status`='成功订单' and fw.channel like CONCAT('%',#{channel},'%') and fw.ordertime BETWEEN CONCAT(#{totime},' 00:00:00') AND CONCAT(#{tptime},' 23:59:59')) as pigeonholenum,(SELECT count(1) FROM fishorders fw left JOIN workinfo ww on fw.wid=ww.id WHERE ww.`status`='已提交' and fw.channel like CONCAT('%',#{channel},'%') and fw.ordertime BETWEEN CONCAT(#{totime},' 00:00:00') AND CONCAT(#{tptime},' 23:59:59')) as submitnum,
+    (SELECT count(1) FROM fishorders fw left JOIN workinfo ww on fw.wid=ww.id WHERE ww.`status`='废弃' and fw.channel like CONCAT('%',#{channel},'%') and fw.ordertime BETWEEN CONCAT(#{totime},' 00:00:00') AND CONCAT(#{tptime},' 23:59:59')) as chargebacknum,CONCAT((SELECT count(1)/(SELECT count(1) FROM fishorders)*100 FROM fishorders fw left JOIN workinfo ww on fw.wid=ww.id WHERE ww.`status`='废弃' and fw.channel like CONCAT('%',#{channel},'%') and fw.ordertime BETWEEN CONCAT(#{totime},' 00:00:00') AND CONCAT(#{tptime},' 23:59:59')),'%') as chargeback
+    from fishorders f left JOIN workinfo w on f.wid=w.id WHERE w.channl like CONCAT('%',#{channel},'%') LIMIT 1
+    </select>
+    <resultMap id="querystatems" type="com.service.domeVo.FishordVo">
+        <result property="businessparameters" column="businessparameters"></result>
+        <result property="workingodd" column="workingodd"></result>
+        <result property="calloutinto" column="calloutinto"></result>
+        <result property="completime" column="completime"></result>
+        <result property="acceptnum" column="acceptnum"></result>
+        <result property="pigeonholenum" column="pigeonholenum"></result>
+        <result property="submitnum" column="submitnum"></result>
+        <result property="chargebacknum" column="chargebacknum"></result>
+        <result property="chargeback" column="chargeback"></result>
+    </resultMap>
+
+
+    <select id="queryAddressCount" resultType="java.util.Map">
+        SELECT count(address),address FROM fishorders f LEFT JOIN workinfo w ON f.wid = w.id WHERE f.channel like concat('%',#{channel},'%') and f.ordertime BETWEEN CONCAT(#{otime},' 00:00:00') AND CONCAT(#{ptime},' 23:59:59') and f.statos='营销成功' GROUP BY  address
+    </select>
+
+    <select id="queryProd" resultType="java.util.Map">
+        SELECT accept,count(accept)as acceptcount,(SELECT count(1) FROM ( SELECT accept,count(accept)as acceptcount FROM fishorders f LEFT JOIN workinfo w ON f.wid = w.id WHERE w.channl like CONCAT('%',#{channel},'%') and w.xdtime BETWEEN CONCAT(#{otime},' 00:00:00') AND CONCAT(#{ptime},' 23:59:59')
+ GROUP BY  w.acceptid) as acceptcounts)as acceptcounts FROM fishorders f LEFT JOIN workinfo w ON f.wid = w.id WHERE w.channl like CONCAT('%',#{channel},'%') and w.xdtime BETWEEN CONCAT(#{otime},' 00:00:00') AND CONCAT(#{ptime},' 23:59:59')
+ GROUP BY  w.acceptid
+    </select>
+
+    <select id="queryFiCount" resultType="int">
+        select count(1) from workinfo where channl like CONCAT('%',#{channel},'%') and xdtime BETWEEN CONCAT(#{otime},' 00:00:00') AND CONCAT(#{ptime},' 23:59:59')
+    </select>
+
+    <select id="queryService" resultMap="servic">
+      SELECT f.servicename,(SELECT count(1) FROM workinfo WHERE channl like concat('%',#{channel},'%') and servicename=f.servicename and xdtime BETWEEN CONCAT(#{otime},' 00:00:00') AND CONCAT(#{ptime},' 23:59:59') )as worknum, COALESCE(SUM(w.status='成功订单'),0)as succdorders,COALESCE(SUM(w.status='废弃'),0)as abas FROM fishorders f LEFT JOIN workinfo w ON f.wid = w.id and f.ordertime BETWEEN CONCAT(#{otime},' 00:00:00') AND CONCAT(#{ptime},' 23:59:59') and f.channel like concat('%',#{channel},'%')
+    GROUP BY f.servicename
+    </select>
+    <resultMap id="servic" type="com.service.domeVo.FishordVo">
+        <result property="servicename" column="servicename" jdbcType="VARCHAR"></result>
+        <result property="succdorders" column="succdorders" ></result>
+        <result property="abas" column="abas"></result>
+        <result property="worknum" column="worknum" jdbcType="VARCHAR"></result>
+    </resultMap>
+
+    <select id="queryQuTu" resultType="java.util.Map">
+	SELECT DATE_FORMAT(ordertime,'%y-%m-%d') as d,count(*)
+FROM fishorders WHERE  ordertime BETWEEN CONCAT(#{otime},' 00:00:00') AND CONCAT(#{ptime},' 23:59:59')
+GROUP BY DATE_FORMAT(ordertime,'%y%m%d')
+ORDER BY d asc;
+    </select>
+</mapper>

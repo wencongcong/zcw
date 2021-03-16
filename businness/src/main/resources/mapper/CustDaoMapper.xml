@@ -9,8 +9,8 @@
         select count(1) from customerinfo where custname=#{custname} and custphone=#{custphone}
     </select>
     <insert id="insertOne" parameterType="com.businness.entity.CustEX" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-        insert customerinfo(`cid`,`custname`,`custphone`,`custidcard`,`custaddress`,`custarea`,`custcreatertime`)
-        value (#{cid},#{custname},#{custphone},#{custidcard},#{custaddress},#{custarea},#{custcreatertime})
+        insert customerinfo(`cid`,`custname`,`custphone`,`custidcard`,`custareas`,`custaddress`,`custarea`,`custcreatertime`)
+        value (#{cid},#{custname},#{custphone},#{custidcard},#{custareas},#{custaddress},#{custarea},#{custcreatertime})
     </insert>
 
     <select id="chacount" resultType="int">

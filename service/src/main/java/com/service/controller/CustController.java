@@ -36,8 +36,6 @@ public class CustController {
     public static String url = "http://192.168.0.253:2017/order/bss7";
 
     @Resource
-    private OrderHstoryService orderHstoryService;
-    @Resource
     private CustomerService customerService;
     @Resource
     private MarketerService marketerService;
@@ -57,7 +55,7 @@ public class CustController {
         String sj = sfs.format(date);
         OrderInfo orderInfo=new OrderInfo();
         orderInfo.setOrderNo(map.get("orderNo").toString());
-        orderInfo.setOstats("已受理");
+        orderInfo.setOstats("待反刷");
         orderInfo.setAcceptancetime(sj);
         orderInfo.setOrderdetailsId("0");
         orderInfo.setMarkId(0);
@@ -69,8 +67,7 @@ public class CustController {
         }else {
             int result=orderInfoService.insertOneOrderNo(orderInfo);
             if (result>0){
-                workService.updateStatue("已受理",map.get("workid").toString());
-                workService.updateOrderId(orderInfo.getId(),map.get("workid").toString());
+                workService.updateStatue("待反刷",map.get("workid").toString(),String.valueOf(orderInfo.getId()));
                 return Result.success(1,"保存成功");
             }else {
                 return Result.fail(0,ErrorEnum.FIAL_ERROR);
@@ -83,16 +80,16 @@ public class CustController {
 
     @RequestMapping(value = "/sdsd",method = RequestMethod.POST)
     public int stst()throws Exception{
-        System.out.println( custHttpService.Timeupda());
+       custHttpService.Timeupda();
         return 0;
     }
 
     @RequestMapping(value = "/deleteorder",method = RequestMethod.POST)
     public Result deleteOrderId(@RequestParam(defaultValue = "0",value ="workid")String workid,@RequestParam(defaultValue = "0",value ="orderno")String orderno){
-        int result=workService.updateOrderId(0,workid);
-        if (result>0){
-           int results=orderInfoService.deleteOrderinfo(orderno);
-           if (results>0){
+        int results=orderInfoService.deleteOrderinfo(orderno);
+        if (results>0&&orderno!="0"){
+            int result=workService.updateOrderId(0,workid,"已清空","已清空");
+           if (result>0){
                return Result.success(1,"清空成功");
            }else {
                return Result.success(0,"7工单清空失败");

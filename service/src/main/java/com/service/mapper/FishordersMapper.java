@@ -19,7 +19,7 @@ public interface FishordersMapper extends BaseMapper<Fishorders> {
 
     public int upstatos(@Param("statos")String statos,@Param("ok")int ok,@Param("wid")String wid,@Param("id")int id);
 
-    public int chaFid(@Param("wordid") String  wordid);
+    public int chaFid(@Param("wordid") String  wordid,@Param("phone") String  phone);
 
     public List<Map<String, Object>> grouby(Map map);
 

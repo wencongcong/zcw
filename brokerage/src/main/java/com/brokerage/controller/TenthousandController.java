@@ -47,6 +47,22 @@ public class TenthousandController {
 
     @RequestMapping(value = "modificationtheconfiguration",method = RequestMethod.POST)
     public Result updatetinformation(@RequestParam Map map){
+        Date date=new Date();
+        SimpleDateFormat sfs=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        History history=new History();
+        String sj=sfs.format(date);
+        history.setWorkid(Integer.parseInt(map.get("workid").toString()));
+        history.setUplogintime(sj);
+        history.setUplognno(map.get("uploginno").toString());
+        history.setOldname(map.get("oldname").toString());
+        history.setCurentname(map.get("curentname").toString());
+        history.setStatosname(map.get("oldstatus").toString());
+        history.setState(map.get("status").toString());
+        history.setSevenstatus("");
+        history.setHistorys(map.get("historys").toString());
+        history.setIsitright(Integer.parseInt(map.get("isitright").toString()));
+        history.setUpdatemotion("修改");
+        historyInfoService.insertOneHistory(history);
         return tenthousandService.updateTenth(map);
     }
 
@@ -67,6 +83,22 @@ public class TenthousandController {
 
     @RequestMapping(value = "updatetenthousan",method = RequestMethod.POST)
     public Result updatetenthousan(@RequestParam Map map){
+        Date date=new Date();
+        SimpleDateFormat sfs=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        History history=new History();
+        String sj=sfs.format(date);
+        history.setWorkid(Integer.parseInt(map.get("workid").toString()));
+        history.setUplogintime(sj);
+        history.setUplognno(map.get("uploginno").toString());
+        history.setOldname(map.get("oldname").toString());
+        history.setCurentname(map.get("curentname").toString());
+        history.setStatosname(map.get("oldstatus").toString());
+        history.setState(map.get("status").toString());
+        history.setSevenstatus("");
+        history.setHistorys(map.get("historys").toString());
+        history.setIsitright(Integer.parseInt(map.get("isitright").toString()));
+        history.setUpdatemotion("修改");
+        historyInfoService.insertOneHistory(history);
         return configurationService.updateConfig(map);
     }
 
@@ -87,6 +119,7 @@ public class TenthousandController {
         JSONObject datas= data.getJSONObject("data");
         int length=Integer.parseInt(data.get("length").toString());
         String servicename=data.get("servicename").toString();
+        String his=data.getString("historys");
         if (length <=50) {
             for (int i = 0; i < length; i++) {
                 String uplogin = datas.get(i).toString();
@@ -99,9 +132,10 @@ public class TenthousandController {
                 history.setUplogintime(sfs.format(new Date()));
                 history.setUplognno(uploginname);
                 history.setWorkid(id);
-                history.setHistorys("");
+                history.setHistorys(his);
                 history.setCurentname(servicename);
-                history.setIsitright(1);
+                history.setIsitright(Integer.parseInt(map.get("isitright").toString()));
+                history.setUpdatemotion("分配");
                 historyInfoService.insertOneHistory(history);
                 int resul = tenthousandService.chastatos("营销成功", id);
                 if (resul == 1) {

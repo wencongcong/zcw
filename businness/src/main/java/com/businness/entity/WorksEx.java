@@ -19,7 +19,9 @@ import java.io.Serializable;
 @ExcelTarget(value = "WorksEx")
 public class WorksEx implements Serializable {
     int id;
-    @Excel(name="渠道",width = 30,orderNum = "1")
+    @Excel(name="一级渠道",width = 30,orderNum = "1")
+    String channels;
+    @Excel(name="二级渠道",width = 30,orderNum = "1")
     String channl;
     @Excel(name="客户姓名(不能为空)",width = 30,orderNum = "1")
     String custname;
@@ -29,7 +31,9 @@ public class WorksEx implements Serializable {
     String custidcard;
     @Excel(name="地址",width = 30,orderNum = "1")
     String custaddress;
-    @Excel(name="地市(杭州市)",width = 30,orderNum = "1")
+    @Excel(name="省份(浙江省)",width = 30,orderNum = "1")
+    String custareas;
+    @Excel(name="市级(杭州市)",width = 30,orderNum = "1")
     String custarea;
     @Excel(name="产品(不能为空)",width = 30,orderNum = "1")
     String accept;

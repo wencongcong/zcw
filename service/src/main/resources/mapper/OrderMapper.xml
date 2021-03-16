@@ -124,7 +124,7 @@
     <select id="chaStatus" resultType="java.lang.String">
         SELECT ostates FROM `orderinfo` WHERE id=#{id}
     </select>
-
+<!--    -->
     <select id="chaOrderNo" resultType="java.util.Map">
         SELECT id,orderNo from orderinfo where ostats not IN('已完成','已归档','已取消','已撤单','质检回退','受理组回退'," ")
         <trim prefixOverrides="where" prefix="">
@@ -135,8 +135,13 @@
                 and acceptancetime BETWEEN CONCAT(#{acceptancetime},' 00:00:00') AND CONCAT(#{acceptancetime},' 23:59:59')
             </if>
         </trim>
-        ORDER BY  acceptancetime desc
+         ORDER BY  acceptancetime desc
     </select>
+
+    <select id="queryAllOrderNo" resultType="java.util.Map">
+        SELECT id,orderNo,ostats,acceptancetime from orderinfo where ostats not IN('已完成','已归档','已取消','已撤单','质检回退','受理组回退'," ") and ostats!='待反刷'
+    </select>
+
 
     <update id="uodataeStatus">
         UPDATE orderinfo SET ostates=#{status} WHERE orderNo=#{orderno}

@@ -17,6 +17,7 @@ public class Fishorders implements Serializable {
 
     int id;
     String workid;
+    String channels;
     String channel;
     String flow;
     String phone;
@@ -34,6 +35,7 @@ public class Fishorders implements Serializable {
     String toproomotelinks;
     String nameofadvertiser;
     String address;
+    String areas;
     String appointmentime;
     int ok;
     String trackingtime;//跟踪时间

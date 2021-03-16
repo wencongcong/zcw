@@ -53,6 +53,15 @@
             <if test="failure!=null and failure!=''">
                 and t.failure=#{failure}
             </if>
+            <if test="areas!=null and areas!=''">
+                and t.areas=#{areas}
+            </if>
+            <if test="channels!=null and channels!=''">
+                and t.channels=#{channels}
+            </if>
+            <if test="undistributed==9">
+                and w.status is null or w.status=''
+            </if>
         </trim>
     </select>
     <resultMap id="coms" type="com.brokerage.entity.Terminal">
@@ -65,6 +74,7 @@
         <result column="address" property="address"></result>
         <result column="terminalseries" property="terminalseries"></result>
         <result column="channl" property="channl"></result>
+        <result column="channels" property="channels"></result>
         <result column="advertiser" property="advertiser"></result>
         <result column="remark" property="remark"></result>
         <result column="createtime" property="createtime"></result>
@@ -80,6 +90,7 @@
         <result column="nowPackageType" property="nowPackageType"></result>
         <result column="nowDiscount" property="nowDiscount"></result>
         <result column="area" property="area"></result>
+        <result column="areas" property="areas"></result>
         <result column="servicename" property="servicename"></result>
         <result column="packageChange" property="packageChange"></result>
         <result column="productname" property="productname"></result>
@@ -143,6 +154,15 @@
             <if test="failure!=null and failure!=''">
                 and t.failure=#{failure}
             </if>
+            <if test="areas!=null and areas!=''">
+                and t.areas=#{areas}
+            </if>
+            <if test="channels!=null and channels!=''">
+                and t.channels=#{channels}
+            </if>
+            <if test="undistributed==9">
+                and w.status is null or w.status=''
+            </if>
         </trim>
     </select>
     <resultMap id="comss" type="com.brokerage.entity.Terminal">
@@ -155,6 +175,7 @@
         <result column="address" property="address"></result>
         <result column="terminalseries" property="terminalseries"></result>
         <result column="channl" property="channl"></result>
+        <result column="channels" property="channels"></result>
         <result column="advertiser" property="advertiser"></result>
         <result column="remark" property="remark"></result>
         <result column="createtime" property="createtime"></result>
@@ -170,6 +191,7 @@
         <result column="nowPackageType" property="nowPackageType"></result>
         <result column="nowDiscount" property="nowDiscount"></result>
         <result column="area" property="area"></result>
+        <result column="areas" property="areas"></result>
         <result column="servicename" property="servicename"></result>
         <result column="packageChange" property="packageChange"></result>
         <result column="productname" property="productname"></result>
@@ -186,12 +208,12 @@
     </resultMap>
 
     <insert id="insertOneTerminal">
-        insert terminal(`custname`,`phone`,`nowPackageType`,`nowDiscount`,`area`,`cname`,`businessnumber`,`remark`,`createtime`,`servicename`,`channl`,`marketingresults`)
-        values (#{custname},#{phone},#{nowPackageType},#{nowDiscount},#{area},#{cname},#{businessnumber},#{remark},#{createtime},#{servicename},#{channl},'待外呼')
+        insert terminal(`custname`,`phone`,`nowPackageType`,`nowDiscount`,`area`,`areas`,`cname`,`businessnumber`,`remark`,`createtime`,`servicename`,`channl`,`channels`,`marketingresults`)
+        values (#{custname},#{phone},#{nowPackageType},#{nowDiscount},#{area},#{areas},#{cname},#{businessnumber},#{remark},#{createtime},#{servicename},#{channl},#{channels},'待外呼')
     </insert>
     <insert id="insertTerminal" parameterType="com.brokerage.entity.Terminal">
-       insert terminal(`custname`,`phone`,`nowPackageType`,`nowDiscount`,`area`,`cname`,`businessnumber`,`remark`,`createtime`,`marketingresults`)
-        values (#{custname},#{phone},#{nowPackageType},#{nowDiscount},#{area},#{cname},#{businessnumber},#{remark},#{createtime},'待外呼')
+       insert terminal(`custname`,`phone`,`nowPackageType`,`nowDiscount`,`areas`,`area`,`cname`,`businessnumber`,`remark`,`createtime`,`marketingresults`,`channl`,`channels`)
+        values (#{custname},#{phone},#{nowPackageType},#{nowDiscount},#{areas},#{area},#{cname},#{businessnumber},#{remark},#{createtime},'待外呼',#{channl},#{channels})
     </insert>
     <update id="updatewid">
         update terminal set wid=#{wid} where id=#{id}
@@ -305,7 +327,13 @@
                 productnametree=#{productnametree},
             </if>
             <if test="failure!=null and failure!=''">
-                failure=#{failure}
+                failure=#{failure},
+            </if>
+            <if test="areas!=null and areas!=''">
+                areas=#{areas},
+            </if>
+            <if test="channels!=null and channels!=''">
+                channels=#{channels},
             </if>
         </trim>
         where id = #{id}

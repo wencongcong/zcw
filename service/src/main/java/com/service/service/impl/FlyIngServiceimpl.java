@@ -14,6 +14,7 @@ import com.service.result.Result;
 import com.service.service.FlyIngService;
 import com.service.util.HttpClientUtil;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.scheduling.annotation.Schedules;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -68,7 +69,7 @@ public class FlyIngServiceimpl implements FlyIngService {
 
     @Override
     @Transactional
-    @Scheduled(cron = "0 */5 * * * ?")
+   //@Scheduled(cron=" 0 0/5 * * * ? ")
     public Result queryFlyTime() throws Exception {
 
         Fishorders fishorders=new Fishorders();
@@ -98,9 +99,15 @@ public class FlyIngServiceimpl implements FlyIngService {
             map.put("token8", "1a41aeaadbe17385522f0b7f2f73ceeaad5981f0");
             map.put("signature_key9","VkRJSjk4NDFMUVc5");
             map.put("token9", "203b1ab769ad85747e38aa41931a51799e61d451");
+            map.put("signature_key10","UElEQ0daTUJJQU4x");
+            map.put("token10", "59adfa827bf35a94dc20c8953804d4298d918336");
+            map.put("signature_key11","OEFBTFJVSVBRR0pC");
+            map.put("token11", "394a0cf90e7d7773374780dd5f60d0c41c7e4156");
+            map.put("signature_key12","MlpMNkJWRVZHUjA0");
+            map.put("token12", "c19aaa43d96cd796e23331cdf84994c816f61334");
 
             try {
-                for (int i = 0; i <= 9; i++) {
+                for (int i = 0; i < map.size(); i++) {
                     JSONObject rsult = queryFly(map.get("signature_key" + i).toString(), map
                             .get("token" + i).toString());
                     JSONArray data = rsult.getJSONArray("data");
@@ -110,11 +117,12 @@ public class FlyIngServiceimpl implements FlyIngService {
                         JSONObject ss = null;
                         for (Object object : data) {
                             ss = ((JSONObject) object);
-                            if (fishordersMapper.chaFid(ss.getString("clue_id")) > 0) {
+                            if (fishordersMapper.chaFid(ss.getString("clue_id"),ss.getString("telphone")) >= 1) {
                                 continue;
                             } else {
                                 fishorders.setWorkid(ss.getString("clue_id") == "" ? null : ss.getString("clue_id"));
-                                fishorders.setChannel("信息流_飞鱼");
+                                fishorders.setChannels("信息流");
+                                fishorders.setChannel("飞鱼");
                                 fishorders.setFlow(ss.getString("appname") == "" ? null : ss.getString("appname"));
                                 fishorders.setPhone(ss.getString("telphone") == "" ? null : ss.getString("telphone"));
                                 fishorders.setName(ss.getString("name") == "" ? null : ss.getString("name"));
@@ -134,8 +142,10 @@ public class FlyIngServiceimpl implements FlyIngService {
                                 fishorders.setNameofadvertiser(ss.getString("adv_name") == "" ? null : ss.getString("adv_name"));
                                 String address = ss.getString("location").toString();
                                 if (address.indexOf("+") > 0) {
+                                    String areas=address.substring(0,address.indexOf("+"));
                                     sd = address.substring(address.indexOf("+") + 1, address.length());
                                     fishorders.setAddress(sd + "市");
+                                    fishorders.setAreas(areas+"省");
                                 } else {
                                     fishorders.setAddress(ss.getString("location") == "" ? null : ss.getString("location"));
                                 }
@@ -145,6 +155,8 @@ public class FlyIngServiceimpl implements FlyIngService {
                                         int rs = fishordersMapper.insertOneFish(fishorders);
                                         if (rs == 0) {
                                             return Result.fail(0, "插入失败");
+                                        }else{
+                                            continue;
                                         }
                                     } else if (fishordersMapper.whether(ss.getString("telphone").trim())>=1){
                                         fishorders.setWhethertorepeat(1);
@@ -156,7 +168,7 @@ public class FlyIngServiceimpl implements FlyIngService {
                                         }
                                     }
                                 } else if(i==9){
-                                    fishorders.setServicename("施丽君");
+                                    fishorders.setServicename("");
                                     if (fishordersMapper.whether(ss.getString("telphone").trim()) == 0) {
                                         fishorders.setWhethertorepeat(0);
                                         int rs = fishordersMapper.insertOneFish(fishorders);
@@ -186,8 +198,8 @@ public class FlyIngServiceimpl implements FlyIngService {
     }
 
     @Override
-    public int chaFid(String wordid) {
-        return fishordersMapper.chaFid(wordid);
+    public int chaFid(String wordid,String phone) {
+        return fishordersMapper.chaFid(wordid,phone);
     }
 
     @Override
@@ -263,6 +275,7 @@ public class FlyIngServiceimpl implements FlyIngService {
                 work.setPaymentamount(map.get("paymentamount").toString());
                 work.setXdtime(sj);
                 work.setChannl(map.get("channel").toString());
+                work.setChannels(map.get("channels").toString());
                 work.setWorkserved(map.get("workserved").toString());
                 work.setPaymentstate(map.get("paymentstate").toString());
                 work.setBusinessnumber(map.get("businessnumber").toString());
@@ -276,6 +289,7 @@ public class FlyIngServiceimpl implements FlyIngService {
                 work.setProdctsName(map.get("prodctsName").toString());
                 work.setProdacceptthemethod(map.get("prodacceptthemethod").toString());
                 work.setTerminalseries(map.get("terminalseries").toString());
+                work.setJsonstr(map.get("custremark").toString());
                 int wresult=workMapper.sgchar(work);
                 if (wresult>0){
                     fishordersMapper.upstatos("营销成功",1,String.valueOf(work.getId()),Integer.parseInt(map.get("id").toString()));
@@ -291,7 +305,7 @@ public class FlyIngServiceimpl implements FlyIngService {
             cust.setCustphone(map.get("custphone").toString());
             cust.setCustaddress(map.get("custaddress").toString());
             cust.setCustarea(map.get("custarea").toString());
-            cust.setCustremark(map.get("custremark").toString());
+            cust.setCustareas(map.get("areas").toString());
             cust.setCustcreater(map.get("custcreater").toString());
             cust.setCustcreatertime(sj);
             cust.setCustreserved("");
@@ -320,6 +334,7 @@ public class FlyIngServiceimpl implements FlyIngService {
                 work.setPaymentamount(map.get("paymentamount").toString());
                 work.setXdtime(sj);
                 work.setChannl(map.get("channel").toString());
+                work.setChannels(map.get("channels").toString());
                 work.setWorkserved(map.get("workserved").toString());
                 work.setPaymentstate(map.get("paymentstate").toString());
                 work.setBusinessnumber(map.get("businessnumber").toString());
@@ -333,6 +348,7 @@ public class FlyIngServiceimpl implements FlyIngService {
                 work.setProdctsName(map.get("prodctsName").toString());
                 work.setProdacceptthemethod(map.get("prodacceptthemethod").toString());
                 work.setTerminalseries(map.get("terminalseries").toString());
+                work.setJsonstr(map.get("custremark").toString());
             }
             int wresult=workMapper.sgchar(work);
             if (wresult>0&&cresult>0){

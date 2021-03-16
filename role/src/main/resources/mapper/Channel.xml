@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.role.mapper.ChannelMapper">
+
+    <select id="queryAll" resultType="com.role.entity.Channel">
+        select * from channel
+        <trim prefixOverrides="and|or" prefix="where">
+            <if test="channels!=null and channels!=''">
+               and channels like concat('%',#{channels},'%')
+            </if>
+        </trim>
+    </select>
+
+    <insert id="insertChannel" parameterType="int">
+        insert channel
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="channels!=null and channels!=''">
+                channels,
+            </if>
+            <if test="channelnames!=null and channelnames!=''">
+                channelnames,
+            </if>
+        </trim>
+        <trim prefix="value (" suffix=")" suffixOverrides=",">
+            <if test="channels!=null and channels!=''">
+                #{channels},
+            </if>
+            <if test="channelnames!=null and channelnames!=''">
+                #{channelnames},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateChannel">
+        update channel
+        <trim prefix="set" suffixOverrides=",">
+            <if test="channels!=null and channels!=''">
+                #{channels},
+            </if>
+            <if test="channelnames!=null and channelnames!=''">
+                #{channelnames},
+            </if>
+        </trim>
+        where id=#{id}
+    </update>
+
+    <delete id="deleteChaneel" parameterType="int">
+        delete from channel where id=#{id}
+    </delete>
+
+</mapper>

@@ -24,6 +24,7 @@ public class Zcdistributor implements Serializable {
     int id;
     String workid;
     String channel;
+    String channels;
     String flow;
     String phone;
     String name;
@@ -41,6 +42,7 @@ public class Zcdistributor implements Serializable {
     String nameofadvertiser;
     String paymentmethod;
     String address;
+    String areas;
     String appointmentime;
     int ok;
     String trackingtime;//跟踪时间

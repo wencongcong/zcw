@@ -13,7 +13,7 @@
                 w.status=#{status}
             </if>
             <if test="otime!=null and otime!=''">
-                and `c`.custcreatertime BETWEEN CONCAT(#{otime},' 00:00:00') AND CONCAT(#{ptime},' 23:59:59')
+                and `w`.xdtime BETWEEN CONCAT(#{otime},' 00:00:00') AND CONCAT(#{ptime},' 23:59:59')
             </if>
             <if test="cotime!=null and cotime!=''">
                 and `o`.acceptancetime BETWEEN CONCAT(#{cotime},' 00:00:00') AND CONCAT(#{cptime},' 23:59:59')
@@ -60,6 +60,12 @@
             <if test="abnormal!=null and abnormal!=''">
                 and o.abnormal=#{abnormal}
             </if>
+            <if test="areas!=null and areas!=''">
+                and `c`.custareas=#{areas}
+            </if>
+            <if test="channels!=null and channels!=''">
+                and w.channels=#{channels}
+            </if>
         </trim>
     </select>
     <resultMap id="Works" type="com.businness.entity.WorkEX">
@@ -85,7 +91,11 @@
             <result column="xdtime" property="xdtime"></result>
             <result column="reminder" property="reminder"></result>
             <result column="channl" property="channl"></result>
+            <result column="channels" property="channels"></result>
             <result column="paymentstate" property="paymentstate"></result>
+            <result column="jsonstr" property="jsonstr"></result>
+            <result column="terminaltype" property="terminaltype"></result>
+            <result column="terminalseries" property="terminalseries"></result>
         <association property="cid" javaType="com.businness.entity.CustEX">
             <id property="id" column="c.id"></id>
             <result column="custid" property="id"></result>
@@ -93,6 +103,7 @@
             <result column="custphone" property="custphone"></result>
             <result column="custidcard" property="custidcard"></result>
             <result column="custaddress" property="custaddress"></result>
+            <result column="custareas" property="custareas"></result>
             <result column="custarea" property="custarea"></result>
             <result column="custremark" property="custremark"></result>
             <result column="custcreater" property="custcreater"></result>
@@ -134,7 +145,7 @@
     </resultMap>
 
     <insert id="insertOneWork" parameterType="com.businness.entity.WorkEX">
-       INSERT INTO workinfo(`workid`,`custid`,`serviceName`,`acceptid`,`status`,`orderid`,`broadband`,`remark`,`paymentamount`,`xdtime`,`channl`,`assigneeName`)VALUES(#{workid},#{custid},#{serviceName},#{acceptid},#{status},#{orderid},#{broadband},#{remark},#{paymentamount},#{xdtime},#{channl},#{assigneeName})
+       INSERT INTO workinfo(`workid`,`custid`,`serviceName`,`acceptid`,`status`,`orderid`,`broadband`,`remark`,`paymentamount`,`xdtime`,`channl`,`channels`,`assigneeName`)VALUES(#{workid},#{custid},#{serviceName},#{acceptid},#{status},#{orderid},#{broadband},#{remark},#{paymentamount},#{xdtime},#{channl},#{channels},#{assigneeName})
     </insert>
 
     <select id="chaworkcount" resultType="int">
@@ -148,6 +159,12 @@
             <if test="otime!=null and otime!=''">
                 and `c`.custcreatertime BETWEEN CONCAT(#{otime},' 00:00:00') AND CONCAT(#{ptime},' 23:59:59')
             </if>
+            <if test="areas!=null and areas!=''">
+                and `c`.custareas=#{areas}
+            </if>
+            <if test="channels!=null and channels!=''">
+                and `w`.channels=#{channels}
+            </if>
         </trim>
     </select>
 
@@ -157,6 +174,12 @@
         <trim prefixOverrides="and|or" prefix="where">
             <if test="otime!=null and otime!=''">
                 and `c`.custcreatertime BETWEEN CONCAT(#{otime},' 00:00:00') AND CONCAT(#{ptime},' 23:59:59')
+            </if>
+            <if test="areas!=null and areas!=''">
+                and `c`.custareas=#{areas}
+            </if>
+            <if test="channels!=null and channels!=''">
+                and `w`.channels=#{channels}
             </if>
         </trim>
 		GROUP BY custarea
@@ -168,6 +191,12 @@
             <if test="otime!=null and otime!=''">
                 and `c`.custcreatertime BETWEEN CONCAT(#{otime},' 00:00:00') AND CONCAT(#{ptime},' 23:59:59')
             </if>
+            <if test="areas!=null and areas!=''">
+                and `c`.custareas=#{areas}
+            </if>
+            <if test="channels!=null and channels!=''">
+                and `w`.channels=#{channels}
+            </if>
         </trim>
 		GROUP BY w.channl
     </select>
@@ -178,6 +207,12 @@
         <trim prefixOverrides="and|or" prefix="where">
             <if test="otime!=null and otime!=''">
                 and `c`.custcreatertime BETWEEN CONCAT(#{otime},' 00:00:00') AND CONCAT(#{ptime},' 23:59:59')
+            </if>
+            <if test="areas!=null and areas!=''">
+                and `c`.custareas=#{areas}
+            </if>
+            <if test="channels!=null and channels!=''">
+                and `w`.channels=#{channels}
             </if>
         </trim>
         GROUP BY `status`,serviceName
@@ -195,6 +230,13 @@
             <if test="otime!=null and otime!=''">
                 and `c`.custcreatertime BETWEEN CONCAT(#{otime},' 00:00:00') AND CONCAT(#{ptime},' 23:59:59')
             </if>
+            <if test="areas!=null and areas!=''">
+                and `c`.custareas=#{areas}
+            </if>
+            <if test="channels!=null and channels!=''">
+                and `w`.channels=#{channels}
+            </if>
+
         </trim>
         GROUP BY `status`
     </select>

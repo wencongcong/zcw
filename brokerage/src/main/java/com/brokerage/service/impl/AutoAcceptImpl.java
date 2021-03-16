@@ -47,7 +47,6 @@ public  class AutoAcceptImpl implements AutoAcceptService {
     private TerminalMapper terminalMapper;
 
 
-
     SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
     public static String URL = "http://115.233.6.84:8001/";
     JSONObject jsonObject=null;
@@ -77,7 +76,7 @@ public  class AutoAcceptImpl implements AutoAcceptService {
         list.add(maps3);
         map.put("choosenOrgs",list);
         String custid=null;
-        /**
+        /**popo981122
          * 切换地势
          * 需要改变请求头的信息
          * */
@@ -404,13 +403,6 @@ public  class AutoAcceptImpl implements AutoAcceptService {
                     mape.clear();
                     String orderOtherInfo = iSaleHttpUtil.getWithCookie(URL + "cordercore-74f4564b7-m47d4/api-orderprocess/my_performance/orderOtherInfo?custNbr="+custOrderNbr+"&cpc_token=");
                     jsonObject = JSON.parseObject(orderOtherInfo);
-                    // 删除不必要的信息
-//                    mape.clear();
-//                    mape.put("custOrderIds", custOrderUUID);
-//                    String delShopCartCache = iSaleHttpUtil.postWithCookieFormDatas(URL + "cordercore-74f4564b7-m47d4/api-ordershopcart/cart/delShopCartCache", mape);
-//                    jsonObject = JSON.parseObject(delShopCartCache);
-//                    if (!jsonObject.getString("code").equals("0000"))
-//                        return Result.fail(8, jsonObject.getString("message"));
                     mape.clear();
                     //收银操作
                     String goCashier = iSaleHttpUtil.getWithCookie(URL + "cordercore-74f4564b7-m47d4/api-orderprocess/shopcart-process/goCashier");
@@ -440,14 +432,14 @@ public  class AutoAcceptImpl implements AutoAcceptService {
                     String sj=sfs.format(date);
                     Work work=new Work();
                     Cust cust=new Cust();
-                    int count=custInfoMapper.chacount();
+                    int count=custInfoMapper.queryCid();
                     cid=count+1;
                     if (custInfoMapper.chawork(String.valueOf(cid))>1){
                         cid=cid+1;
                     }
                     if(custInfoMapper.chachongcount(mapa.get("custname").toString(),mapa.get("custphone").toString(),mapa.get("idcred").toString())>0){
                         cid=custInfoMapper.chachongname(mapa.get("custname").toString(),mapa.get("custphone").toString(),mapa.get("idcred").toString());
-                        int workcount=workInfoMapper.chacountw();
+                        int workcount=workInfoMapper.queryId();
                         wid=workcount+1;
                         if (workInfoMapper.chaw(String.valueOf(wid))>1){
                             return Result.fail(0, ErrorEnum.CHONG_FU);
@@ -472,7 +464,19 @@ public  class AutoAcceptImpl implements AutoAcceptService {
                             work.setXdtime(sj);
                             work.setChannl(mapa.get("channl").toString());
                             work.setWorkserved(mapa.get("workserved").toString());
-                            work.setPaymentstate("");
+                            work.setPaymentstate(map.get("paymentstate").toString());
+                            work.setBusinessnumber(map.get("businessnumber").toString());
+                            work.setRegion(map.get("region").toString());
+                            work.setExistingPackageTypes(map.get("existingPackageTypes").toString());
+                            work.setExistingpreferential(map.get("existingpreferential").toString());
+                            work.setTerminaltype(map.get("terminaltype").toString());
+                            work.setChangedPackagetype(map.get("changedPackagetype").toString());
+                            work.setVicecardnumber(map.get("vicecardnumber").toString());
+                            work.setCustaddress(map.get("custaddress").toString());
+                            work.setProdctsName(map.get("prodctsName").toString());
+                            work.setProdacceptthemethod(map.get("prodacceptthemethod").toString());
+                            work.setTerminalseries(map.get("terminalseries").toString());
+                            work.setJsonstr(map.get("custremark").toString());
                             int wresult=workInfoMapper.Autocontrolledwork(work);
                             if (wresult>0){
                                 fishordersInfoMapper.upstatos("营销成功",1,String.valueOf(work.getId()),Integer.parseInt(mapa.get("id").toString()));
@@ -483,17 +487,17 @@ public  class AutoAcceptImpl implements AutoAcceptService {
                         }
                     }else {
                         cust.setCid(String.valueOf(cid));
-                        cust.setCustname(mapa.get("custname").toString());
-                        cust.setCustidcard(mapa.get("idcred").toString() == "" ? null : mapa.get("idcred").toString());
-                        cust.setCustphone(mapa.get("custphone").toString());
-                        cust.setCustaddress(mapa.get("custaddress").toString());
-                        cust.setCustarea(mapa.get("custarea").toString());
-                        cust.setCustremark(mapa.get("custremark").toString());
-                        cust.setCustcreater(mapa.get("custcreater").toString());
+                        cust.setCustname(map.get("custname").toString());
+                        cust.setCustidcard(map.get("custidcard") == "" ? null : map.get("custidcard").toString());
+                        cust.setCustphone(map.get("custphone").toString());
+                        cust.setCustaddress(map.get("custaddress").toString());
+                        cust.setCustareas(map.get("areas").toString());
+                        cust.setCustarea(map.get("custarea").toString());
+                        cust.setCustcreater(map.get("custcreater").toString());
                         cust.setCustcreatertime(sj);
                         cust.setCustreserved("");
                         int cresult=custInfoMapper.Autocontrolledcust(cust);
-                        int workcount=workInfoMapper.chacountw();
+                        int workcount=workInfoMapper.queryId();
                         wid=workcount+1;
                         if (workInfoMapper.chaw(String.valueOf(wid))>1){
                             return Result.fail(0, ErrorEnum.CHONG_FU);
@@ -518,7 +522,19 @@ public  class AutoAcceptImpl implements AutoAcceptService {
                             work.setXdtime(sj);
                             work.setChannl(mapa.get("channl").toString());
                             work.setWorkserved(mapa.get("workserved").toString());
-                            work.setPaymentstate("");
+                            work.setPaymentstate(map.get("paymentstate").toString());
+                            work.setBusinessnumber(map.get("businessnumber").toString());
+                            work.setRegion(map.get("region").toString());
+                            work.setExistingPackageTypes(map.get("existingPackageTypes").toString());
+                            work.setExistingpreferential(map.get("existingpreferential").toString());
+                            work.setTerminaltype(map.get("terminaltype").toString());
+                            work.setChangedPackagetype(map.get("changedPackagetype").toString());
+                            work.setVicecardnumber(map.get("vicecardnumber").toString());
+                            work.setCustaddress(map.get("custaddress").toString());
+                            work.setProdctsName(map.get("prodctsName").toString());
+                            work.setProdacceptthemethod(map.get("prodacceptthemethod").toString());
+                            work.setTerminalseries(map.get("terminalseries").toString());
+                            work.setJsonstr(map.get("custremark").toString());
                         }
                         int wresult=workInfoMapper.Autocontrolledwork(work);
                         if (wresult>0&&cresult>0){
@@ -591,12 +607,6 @@ public  class AutoAcceptImpl implements AutoAcceptService {
     }
 
     @Override
-    public String sss(ISaleHttpUtils iSaleHttpUtil){
-
-        return "ss";
-    }
-
-    @Override
     public Result sc(Map map) {
         Date date=new Date();
         int cid=0;
@@ -638,6 +648,7 @@ public  class AutoAcceptImpl implements AutoAcceptService {
                 work.setPaymentamount(map.get("paymentamount").toString());
                 work.setXdtime(sj);
                 work.setChannl(map.get("channel").toString());
+                work.setChannels(map.get("channels").toString());
                 work.setWorkserved(map.get("workserved").toString());
                 work.setPaymentstate(map.get("paymentstate").toString());
                 work.setBusinessnumber(map.get("businessnumber").toString());
@@ -651,6 +662,7 @@ public  class AutoAcceptImpl implements AutoAcceptService {
                 work.setProdctsName(map.get("prodctsName").toString());
                 work.setProdacceptthemethod(map.get("prodacceptthemethod").toString());
                 work.setTerminalseries(map.get("terminalseries").toString());
+                work.setJsonstr(map.get("custremark").toString());
                 int wresult=workInfoMapper.Autocontrolledwork(work);
                 if (wresult>0){
                     zcdistributorMapper.updatewid(Integer.parseInt(map.get("id").toString()),work.getId());
@@ -665,8 +677,8 @@ public  class AutoAcceptImpl implements AutoAcceptService {
             cust.setCustidcard(map.get("custidcard") == "" ? null : map.get("custidcard").toString());
             cust.setCustphone(map.get("custphone").toString());
             cust.setCustaddress(map.get("custaddress").toString());
+            cust.setCustareas(map.get("areas").toString());
             cust.setCustarea(map.get("custarea").toString());
-            cust.setCustremark(map.get("custremark").toString());
             cust.setCustcreater(map.get("custcreater").toString());
             cust.setCustcreatertime(sj);
             cust.setCustreserved("");
@@ -695,6 +707,7 @@ public  class AutoAcceptImpl implements AutoAcceptService {
                 work.setPaymentamount(map.get("paymentamount").toString());
                 work.setXdtime(sj);
                 work.setChannl(map.get("channel").toString());
+                work.setChannels(map.get("channels").toString());
                 work.setWorkserved(map.get("workserved").toString());
                 work.setPaymentstate(map.get("paymentstate").toString());
                 work.setBusinessnumber(map.get("businessnumber").toString());
@@ -708,6 +721,7 @@ public  class AutoAcceptImpl implements AutoAcceptService {
                 work.setProdctsName(map.get("prodctsName").toString());
                 work.setProdacceptthemethod(map.get("prodacceptthemethod").toString());
                 work.setTerminalseries(map.get("terminalseries").toString());
+                work.setJsonstr(map.get("custremark").toString());
             }
             int wresult=workInfoMapper.Autocontrolledwork(work);
             if (wresult>0&&cresult>0){
@@ -761,6 +775,7 @@ public  class AutoAcceptImpl implements AutoAcceptService {
                 work.setPaymentamount(map.get("paymentamount").toString());
                 work.setXdtime(sj);
                 work.setChannl(map.get("channel").toString());
+                work.setChannels(map.get("channels").toString());
                 work.setWorkserved(map.get("workserved").toString());
                 work.setPaymentstate(map.get("paymentstate").toString());
                 work.setBusinessnumber(map.get("businessnumber").toString());
@@ -774,6 +789,7 @@ public  class AutoAcceptImpl implements AutoAcceptService {
                 work.setProdctsName(map.get("prodctsName").toString());
                 work.setProdacceptthemethod(map.get("prodacceptthemethod").toString());
                 work.setTerminalseries(map.get("terminalseries").toString());
+                work.setJsonstr(map.get("custremark").toString());
                 int wresult=workInfoMapper.Autocontrolledwork(work);
                 if (wresult>0){
                     tenthousandMapper.updatewid(Integer.parseInt(map.get("id").toString()),work.getId());
@@ -788,8 +804,8 @@ public  class AutoAcceptImpl implements AutoAcceptService {
             cust.setCustidcard(map.get("custidcard") == "" ? null : map.get("custidcard").toString());
             cust.setCustphone(map.get("custphone").toString());
             cust.setCustaddress(map.get("custaddress").toString());
+            cust.setCustareas(map.get("areas").toString());
             cust.setCustarea(map.get("custarea").toString());
-            cust.setCustremark(map.get("custremark").toString());
             cust.setCustcreater(map.get("custcreater").toString());
             cust.setCustcreatertime(sj);
             cust.setCustreserved("");
@@ -818,6 +834,7 @@ public  class AutoAcceptImpl implements AutoAcceptService {
                 work.setPaymentamount(map.get("paymentamount").toString());
                 work.setXdtime(sj);
                 work.setChannl(map.get("channel").toString());
+                work.setChannels(map.get("channels").toString());
                 work.setWorkserved(map.get("workserved").toString());
                 work.setPaymentstate(map.get("paymentstate").toString());
                 work.setBusinessnumber(map.get("businessnumber").toString());
@@ -831,6 +848,7 @@ public  class AutoAcceptImpl implements AutoAcceptService {
                 work.setProdctsName(map.get("prodctsName").toString());
                 work.setProdacceptthemethod(map.get("prodacceptthemethod").toString());
                 work.setTerminalseries(map.get("terminalseries").toString());
+                work.setJsonstr(map.get("custremark").toString());
             }
             int wresult=workInfoMapper.Autocontrolledwork(work);
             if (wresult>0&&cresult>0){
@@ -884,8 +902,10 @@ public  class AutoAcceptImpl implements AutoAcceptService {
                 work.setPaymentamount(map.get("paymentamount").toString());
                 work.setXdtime(sj);
                 work.setChannl(map.get("channel").toString());
+                work.setChannels(map.get("channels").toString());
                 work.setWorkserved(map.get("workserved").toString());
                 work.setPaymentstate(map.get("paymentstate").toString());
+                work.setSoundverify(map.get("tamllnumber").toString());
                 work.setBusinessnumber(map.get("businessnumber").toString());
                 work.setRegion(map.get("region").toString());
                 work.setExistingPackageTypes(map.get("existingPackageTypes").toString());
@@ -897,6 +917,7 @@ public  class AutoAcceptImpl implements AutoAcceptService {
                 work.setProdctsName(map.get("prodctsName").toString());
                 work.setProdacceptthemethod(map.get("prodacceptthemethod").toString());
                 work.setTerminalseries(map.get("terminalseries").toString());
+                work.setJsonstr(map.get("custremark").toString());
                 int wresult=workInfoMapper.Autocontrolledwork(work);
                 if (wresult>0){
                     tmallMapper.updatewid(Integer.parseInt(map.get("id").toString()),work.getId());
@@ -911,8 +932,8 @@ public  class AutoAcceptImpl implements AutoAcceptService {
             cust.setCustidcard(map.get("custidcard") == "" ? null : map.get("custidcard").toString());
             cust.setCustphone(map.get("custphone").toString());
             cust.setCustaddress(map.get("custaddress").toString());
+            cust.setCustareas(map.get("areas").toString());
             cust.setCustarea(map.get("custarea").toString());
-            cust.setCustremark(map.get("custremark").toString());
             cust.setCustcreater(map.get("custcreater").toString());
             cust.setCustcreatertime(sj);
             cust.setCustreserved("");
@@ -941,8 +962,10 @@ public  class AutoAcceptImpl implements AutoAcceptService {
                 work.setPaymentamount(map.get("paymentamount").toString());
                 work.setXdtime(sj);
                 work.setChannl(map.get("channel").toString());
+                work.setChannels(map.get("channels").toString());
                 work.setWorkserved(map.get("workserved").toString());
                 work.setPaymentstate(map.get("paymentstate").toString());
+                work.setSoundverify(map.get("tamllnumber").toString());
                 work.setBusinessnumber(map.get("businessnumber").toString());
                 work.setRegion(map.get("region").toString());
                 work.setExistingPackageTypes(map.get("existingPackageTypes").toString());
@@ -954,6 +977,7 @@ public  class AutoAcceptImpl implements AutoAcceptService {
                 work.setProdctsName(map.get("prodctsName").toString());
                 work.setProdacceptthemethod(map.get("prodacceptthemethod").toString());
                 work.setTerminalseries(map.get("terminalseries").toString());
+                work.setJsonstr(map.get("custremark").toString());
             }
             int wresult = workInfoMapper.Autocontrolledwork(work);
             if (wresult > 0 && cresult > 0) {
@@ -1007,6 +1031,7 @@ public  class AutoAcceptImpl implements AutoAcceptService {
                 work.setPaymentamount(map.get("paymentamount").toString());
                 work.setXdtime(sj);
                 work.setChannl(map.get("channel").toString());
+                work.setChannels(map.get("channels").toString());
                 work.setWorkserved(map.get("workserved").toString());
                 work.setPaymentstate(map.get("paymentstate").toString());
                 work.setBusinessnumber(map.get("businessnumber").toString());
@@ -1020,6 +1045,7 @@ public  class AutoAcceptImpl implements AutoAcceptService {
                 work.setProdctsName(map.get("prodctsName").toString());
                 work.setProdacceptthemethod(map.get("prodacceptthemethod").toString());
                 work.setTerminalseries(map.get("terminalseries").toString());
+                work.setJsonstr(map.get("custremark").toString());
                 int wresult=workInfoMapper.Autocontrolledwork(work);
                 if (wresult>0){
                     tenthousandMapper.updatewid(Integer.parseInt(map.get("id").toString()),work.getId());
@@ -1034,8 +1060,8 @@ public  class AutoAcceptImpl implements AutoAcceptService {
             cust.setCustidcard(map.get("custidcard") == "" ? null : map.get("custidcard").toString());
             cust.setCustphone(map.get("custphone").toString());
             cust.setCustaddress(map.get("custaddress").toString());
+            cust.setCustareas(map.get("areas").toString());
             cust.setCustarea(map.get("custarea").toString());
-            cust.setCustremark(map.get("custremark").toString());
             cust.setCustcreater(map.get("custcreater").toString());
             cust.setCustcreatertime(sj);
             cust.setCustreserved("");
@@ -1064,6 +1090,7 @@ public  class AutoAcceptImpl implements AutoAcceptService {
                 work.setPaymentamount(map.get("paymentamount").toString());
                 work.setXdtime(sj);
                 work.setChannl(map.get("channel").toString());
+                work.setChannels(map.get("channels").toString());
                 work.setWorkserved(map.get("workserved").toString());
                 work.setPaymentstate(map.get("paymentstate").toString());
                 work.setBusinessnumber(map.get("businessnumber").toString());
@@ -1077,6 +1104,7 @@ public  class AutoAcceptImpl implements AutoAcceptService {
                 work.setProdctsName(map.get("prodctsName").toString());
                 work.setProdacceptthemethod(map.get("prodacceptthemethod").toString());
                 work.setTerminalseries(map.get("terminalseries").toString());
+                work.setJsonstr(map.get("custremark").toString());
             }
             int wresult=workInfoMapper.Autocontrolledwork(work);
             if (wresult>0&&cresult>0){
@@ -1143,7 +1171,19 @@ public  class AutoAcceptImpl implements AutoAcceptService {
                 work.setXdtime(sj);
                 work.setChannl(mapa.get("channel").toString());
                 work.setWorkserved(mapa.get("workserved").toString());
-                work.setPaymentstate("");
+                work.setPaymentstate(mapa.get("paymentstate").toString());
+                work.setBusinessnumber(mapa.get("businessnumber").toString());
+                work.setRegion(mapa.get("region").toString());
+                work.setExistingPackageTypes(mapa.get("existingPackageTypes").toString());
+                work.setExistingpreferential(mapa.get("existingpreferential").toString());
+                work.setTerminaltype(mapa.get("terminaltype").toString());
+                work.setChangedPackagetype(mapa.get("changedPackagetype").toString());
+                work.setVicecardnumber(mapa.get("vicecardnumber").toString());
+                work.setCustaddress(mapa.get("custaddress").toString());
+                work.setProdctsName(mapa.get("prodctsName").toString());
+                work.setProdacceptthemethod(mapa.get("prodacceptthemethod").toString());
+                work.setTerminalseries(mapa.get("terminalseries").toString());
+                work.setJsonstr(mapa.get("custremark").toString());
                 int wresult=workInfoMapper.Autocontrolledwork(work);
                 if (wresult>0){
                     fishordersInfoMapper.upstatos("营销成功",1,String.valueOf(work.getId()),Integer.parseInt(mapa.get("id").toString()));
@@ -1158,6 +1198,7 @@ public  class AutoAcceptImpl implements AutoAcceptService {
             cust.setCustidcard(mapa.get("idcred").toString() == "" ? null : mapa.get("idcred").toString());
             cust.setCustphone(mapa.get("custphone").toString());
             cust.setCustaddress(mapa.get("custaddress").toString());
+            cust.setCustareas(mapa.get("custareas").toString());
             cust.setCustarea(mapa.get("custarea").toString());
             cust.setCustremark(mapa.get("custremark").toString());
             cust.setCustcreater(mapa.get("custcreater").toString());
@@ -1189,7 +1230,19 @@ public  class AutoAcceptImpl implements AutoAcceptService {
                 work.setXdtime(sj);
                 work.setChannl(mapa.get("channel").toString());
                 work.setWorkserved(mapa.get("workserved").toString());
-                work.setPaymentstate("");
+                work.setPaymentstate(mapa.get("paymentstate").toString());
+                work.setBusinessnumber(mapa.get("businessnumber").toString());
+                work.setRegion(mapa.get("region").toString());
+                work.setExistingPackageTypes(mapa.get("existingPackageTypes").toString());
+                work.setExistingpreferential(mapa.get("existingpreferential").toString());
+                work.setTerminaltype(mapa.get("terminaltype").toString());
+                work.setChangedPackagetype(mapa.get("changedPackagetype").toString());
+                work.setVicecardnumber(mapa.get("vicecardnumber").toString());
+                work.setCustaddress(mapa.get("custaddress").toString());
+                work.setProdctsName(mapa.get("prodctsName").toString());
+                work.setProdacceptthemethod(mapa.get("prodacceptthemethod").toString());
+                work.setTerminalseries(mapa.get("terminalseries").toString());
+                work.setJsonstr(mapa.get("custremark").toString());
             }
             int wresult=workInfoMapper.Autocontrolledwork(work);
             if (wresult>0&&cresult>0){

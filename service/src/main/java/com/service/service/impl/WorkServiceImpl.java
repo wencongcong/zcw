@@ -5,6 +5,7 @@ import com.service.entity.Cust;
 import com.service.entity.Work;
 import com.service.mapper.WorkMapper;
 import com.service.service.WorkService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -118,8 +119,8 @@ public class WorkServiceImpl implements WorkService {
     }
 
     @Override
-    public int Ustatosoid(String statos, String status,int oid, String workid) {
-        return workMapper.Ustatosoid(statos,status,oid, workid);
+    public int Ustatosoid(String statos, String status, String workid) {
+        return workMapper.Ustatosoid(statos,status, workid);
     }
 
     @Override
@@ -139,8 +140,8 @@ public class WorkServiceImpl implements WorkService {
 
     @Override
     @Transactional
-    public int updateOrderId(int orderId, String workid) {
-        return workMapper.updateOrderId(orderId, workid);
+    public int updateOrderId(int orderId, String workid, String statos,String status) {
+        return workMapper.updateOrderId(orderId, workid,statos,status);
     }
 
     @Override
@@ -149,8 +150,8 @@ public class WorkServiceImpl implements WorkService {
     }
 
     @Override
-    public int updateStatue(String status, String workid) {
-        return workMapper.updateStatue(status, workid);
+    public int updateStatue(String status, String workid,String orderid) {
+        return workMapper.updateStatue(status, workid,orderid);
     }
 
     @Override

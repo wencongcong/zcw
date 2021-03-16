@@ -8,7 +8,7 @@ public interface HistoryService {
 
     public int insertOneHistory(History history);
 
-    public List<History> queryAll(int workid);
+    public List<History> queryAll(int workid,int isitright);
 
     public int insertrighthistory(History history);
 }

@@ -6,11 +6,9 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.brokerage.entity.Distributor;
 import com.brokerage.entity.Graphtemplate;
+import com.brokerage.entity.History;
 import com.brokerage.result.Result;
-import com.brokerage.service.AutoAcceptService;
-import com.brokerage.service.DistributorService;
-import com.brokerage.service.GraphtemplateService;
-import com.brokerage.service.ZcdistributorService;
+import com.brokerage.service.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -37,6 +35,8 @@ public class DistributorContriller {
     private GraphtemplateService graphtemplateService;
     @Resource
     private AutoAcceptService autoAcceptService;
+    @Resource
+    private HistoryInfoService historyInfoService;
 
     @RequestMapping(value = "/distsquery", method = RequestMethod.POST)
     public Result distributoQuery(@RequestParam Map map) {
@@ -68,6 +68,22 @@ public class DistributorContriller {
     public Result distsupdate(@RequestParam Map map) {
         int result = distributorService.updateDistributor(map);
         if (result > 0) {
+            Date date=new Date();
+            SimpleDateFormat sfs=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            History history=new History();
+            String sj=sfs.format(date);
+            history.setWorkid(Integer.parseInt(map.get("workid").toString()));
+            history.setUplogintime(sj);
+            history.setUplognno(map.get("uploginno").toString());
+            history.setOldname(map.get("oldname").toString());
+            history.setCurentname(map.get("curentname").toString());
+            history.setStatosname(map.get("oldstatus").toString());
+            history.setState(map.get("status").toString());
+            history.setSevenstatus("");
+            history.setHistorys(map.get("historys").toString());
+            history.setIsitright(Integer.parseInt(map.get("isitright").toString()));
+            history.setUpdatemotion("修改");
+            historyInfoService.insertOneHistory(history);
             return Result.success(1, "修改成功");
         } else {
             return Result.success(0, "修改失败");
@@ -139,8 +155,32 @@ public class DistributorContriller {
 
     @RequestMapping(value = "/disxiu", method = RequestMethod.POST)
     public Result disxiu(@RequestParam Map map) {
+        Date date=new Date();
+        SimpleDateFormat sfs=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        History history=new History();
+        String sj=sfs.format(date);
+        history.setWorkid(Integer.parseInt(map.get("workid").toString()));
+        history.setUplogintime(sj);
+        history.setUplognno(map.get("uploginno").toString());
+        history.setOldname(map.get("oldname").toString());
+        history.setCurentname(map.get("curentname").toString());
+        history.setStatosname(map.get("oldstatus").toString());
+        history.setState(map.get("status").toString());
+        history.setSevenstatus("");
+        history.setHistorys(map.get("historys").toString());
+        history.setIsitright(Integer.parseInt(map.get("isitright").toString()));
+        history.setUpdatemotion("修改");
+        historyInfoService.insertOneHistory(history);
         return zcdistributorService.reamrk(map);
     }
+
+    @RequestMapping(value = "/historyQuery", method = RequestMethod.POST)
+    public Result historyQuery(@RequestParam Map map){
+        List<History>lists=historyInfoService.queryAll(Integer.parseInt(map.get("id").toString()),Integer.parseInt(map.get("isitright").toString()));
+        return Result.success(1,lists);
+    }
+
+
 
     @RequestMapping(value = "/girquery", method = RequestMethod.POST)
     public Result girquery() {

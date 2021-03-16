@@ -37,6 +37,7 @@ public class StaffController {
     private LevelsService levelsService;
 
 
+    //登录
     @RequestMapping(value = "/login",method = RequestMethod.POST)
     public Result Login(@RequestParam(name = "ephone",defaultValue = "0")String ephone, @RequestParam(name = "epwd",defaultValue = "0")String epwd,
                         @RequestParam(name = "getcodeimg",defaultValue = "0")String getcodeimg,HttpServletRequest request,HttpSession session) throws ParseException {
@@ -55,6 +56,11 @@ public class StaffController {
             }
     }
 
+    @RequestMapping(value = "/logins",method = RequestMethod.POST)
+    public Result Logins(@RequestParam(name = "ephone",defaultValue = "0")String ephone, @RequestParam(name = "epwd",defaultValue = "0")String epwd
+                        ) throws ParseException {
+            return employeeService.Login(ephone, epwd);
+    }
 
     @RequestMapping(value = "/yanzhenimg",method = RequestMethod.POST)
     public void sss(@RequestParam Map map, HttpServletResponse response,HttpServletRequest request)throws Exception{
@@ -63,9 +69,6 @@ public class StaffController {
             request.getSession().setAttribute("simpleCaptcha",vs.getText());
             request.getSession().setAttribute("codeTime",new Date().getTime());
     }
-
-
-
 
     @RequestMapping(value = "/queryemply",method = RequestMethod.POST)
     public Result queryemply(){

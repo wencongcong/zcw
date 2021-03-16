@@ -3,13 +3,13 @@
 <mapper namespace="com.service.mapper.WorkMapper">
 
     <insert id="insertOneWork" parameterType="com.service.entity.Work" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-        INSERT workinfo(`workid`,`custid`,`acceptid`,`remark`,`serviceName`,`uploginName`,`assigneeName`,`broadband`,`status`,`statos`,`historyid`,`hang`,`verify`,`cancel`,`completedtime`,`appointmenttime`,`financeverify`,`soundverify`,`timepayment`,`paymentamount`,`orderid`,`workserved`,`xdtime`,`jsonstr`,`prodjson`,`reminder`,`channl`)
-        VALUE(#{workid},#{custid},#{acceptid},#{remark},#{serviceName},#{uploginName},#{assigneeName},#{broadband},#{status},#{statos},#{historyid},#{hang},#{verify},#{cancel},#{completedtime},#{appointmenttime},#{financeverify},#{soundverify},#{timepayment},#{paymentamount},#{orderid},#{workserved},#{xdtime},#{jsonstr},#{prodjson},0,#{channl})
+        INSERT workinfo(`workid`,`custid`,`acceptid`,`remark`,`serviceName`,`uploginName`,`assigneeName`,`broadband`,`status`,`statos`,`historyid`,`hang`,`verify`,`cancel`,`channels`,`completedtime`,`appointmenttime`,`financeverify`,`soundverify`,`timepayment`,`paymentamount`,`orderid`,`workserved`,`xdtime`,`jsonstr`,`prodjson`,`reminder`,`channl`)
+        VALUE(#{workid},#{custid},#{acceptid},#{remark},#{serviceName},#{uploginName},#{assigneeName},#{broadband},#{status},#{statos},#{historyid},#{hang},#{verify},#{cancel},#{channels},#{completedtime},#{appointmenttime},#{financeverify},#{soundverify},#{timepayment},#{paymentamount},#{orderid},#{workserved},#{xdtime},#{jsonstr},#{prodjson},0,#{channl})
     </insert>
 
     <insert id="sgchar" parameterType="com.service.entity.Work" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-       INSERT INTO workinfo(`workid`,`custid`,`serviceName`,`acceptid`,`status`,`orderid`,`broadband`,`remark`,`appointmenttime`,`paymentamount`,`xdtime`,`reminder`,`channl`,`settlementstatus`,`workserved`,`paymentstate`,`businessnumber`,`region`,`existingpreferential`,`existingPackageTypes`,`terminaltype`,`changedPackagetype`,`vicecardnumber`,`custaddress`,`terminalseries`)
-       VALUES(#{workid},#{custid},#{serviceName},#{acceptid},#{status},#{orderid},#{broadband},#{remark},#{appointmenttime},#{paymentamount},#{xdtime},0,#{channl},#{settlementstatus},#{workserved},#{paymentstate},#{businessnumber},#{region},#{existingpreferential},#{existingPackageTypes},#{terminaltype},#{changedPackagetype},#{vicecardnumber},#{custaddress},#{terminalseries})
+       INSERT INTO workinfo(`workid`,`custid`,`serviceName`,`acceptid`,`status`,`orderid`,`broadband`,`remark`,`appointmenttime`,`paymentamount`,`xdtime`,`reminder`,`channl`,`channels`,`settlementstatus`,`workserved`,`paymentstate`,`businessnumber`,`region`,`existingpreferential`,`existingPackageTypes`,`terminaltype`,`changedPackagetype`,`vicecardnumber`,`custaddress`,`terminalseries`,`prodctsName`,`prodacceptthemethod`,`jsonstr`)
+       VALUES(#{workid},#{custid},#{serviceName},#{acceptid},#{status},#{orderid},#{broadband},#{remark},#{appointmenttime},#{paymentamount},#{xdtime},0,#{channl},#{channels},#{settlementstatus},#{workserved},#{paymentstate},#{businessnumber},#{region},#{existingpreferential},#{existingPackageTypes},#{terminaltype},#{changedPackagetype},#{vicecardnumber},#{custaddress},#{terminalseries},#{prodctsName},#{prodacceptthemethod},#{jsonstr})
     </insert>
 
     <select id="chaChong" resultType="int">
@@ -17,7 +17,7 @@
     </select>
 
     <select id="queryAll" resultMap="Works">
-        SELECT w.id,w.*,h.id,h.historys,p.id,p.*,c.id,c.cid,c.custname,c.custremark,c.custphone,c.custidcard,c.custaddress as addres,c.custarea,o.id,o.* FROM `workinfo` w
+        SELECT w.id,w.*,h.id,h.historys,p.id,p.*,c.id,c.cid,c.custname,c.custremark,c.custphone,c.custidcard,c.custaddress as addres,c.custarea,c.custareas,o.id,o.* FROM `workinfo` w
         INNER JOIN customerinfo c on w.custid=c.id
         INNER JOIN prod p on w.acceptid=p.id
         LEFT JOIN history h on w.historyid=h.id
@@ -74,6 +74,15 @@
             <if test="abnormal!=null and abnormal!=''">
                 and o.abnormal=#{abnormal}
             </if>
+            <if test="channels!=null and channels!=''">
+                and w.channels=#{channels}
+            </if>
+            <if test="custareas!=null and custareas!=''">
+                and `c`.custareas=#{custareas}
+            </if>
+            <if test="undistributed==9">
+               and w.assigneeName is null
+            </if>
         </trim>
     </select>
     <resultMap id="Works" type="com.service.entity.Work">
@@ -110,6 +119,8 @@
             <result column="prodctsName" property="prodctsName"></result>
             <result column="prodacceptthemethod" property="prodacceptthemethod"></result>
             <result column="terminalseries" property="terminalseries"></result>
+            <result column="channels" property="channels"></result>
+            <result column="jsonstr" property="jsonstr"></result>
         <association property="cid" javaType="com.service.entity.Cust">
             <id property="id" column="c.id"></id>
             <result column="custid" property="id"></result>
@@ -119,6 +130,7 @@
             <result column="addres" property="custaddress"></result>
             <result column="custarea" property="custarea"></result>
             <result column="custremark" property="custremark"></result>
+            <result column="custareas" property="custareas"></result>
         </association>
         <association property="pid" javaType="com.service.entity.Prod">
             <id property="id" column="p.id"></id>
@@ -213,6 +225,15 @@
             <if test="abnormal!=null and abnormal!=''">
                 and o.abnormal=#{abnormal}
             </if>
+            <if test="areas!=null and areas!=''">
+                and `c`.custareas=#{areas}
+            </if>
+            <if test="channels!=null and channels!=''">
+                and w.channels=#{channels}
+            </if>
+            <if test="undistributed==9">
+                and w.assigneeName is null
+            </if>
         </trim>
         GROUP BY status
     </select>
@@ -244,11 +265,11 @@
     </update>
 
     <update id="updateStatue">
-        UPDATE workinfo SET status=#{status} where workid=#{workid}
+        UPDATE workinfo SET status=#{status},orderid=#{orderid} where workid=#{workid}
     </update>
 
     <update id="Ustatosoid">
-        UPDATE workinfo SET statos=#{statos},status=#{status},orderid=#{orderid} where workid=#{workid}
+        UPDATE workinfo SET statos=#{statos},status=#{status} where workid=#{workid}
     </update>
 
     <update id="Reminder">
@@ -277,7 +298,7 @@
     </update>
 
     <update id="updateOrderId">
-        update workinfo set orderid=#{orderId} where workid=#{workid}
+        update workinfo set orderid=#{orderId},status=#{status},statos=#{status} where workid=#{workid}
     </update>
 
     <select id="chaWorkid" resultType="java.lang.String">

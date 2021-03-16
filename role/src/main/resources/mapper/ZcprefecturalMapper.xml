@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.role.mapper.ZcprefecturalMapper">
+
+    <insert id="insertZcpre" parameterType="com.role.entity.Zcprefectural">
+        insert zc_prefectural
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="areaname!=null and areaname!=''">
+                areaname,
+            </if>
+            <if test="pid!=-1">
+                pid,
+            </if>
+        </trim>
+        <trim prefix="value (" suffix=")" suffixOverrides=",">
+            <if test="areaname!=null and areaname!=''">
+                #{areaname},
+            </if>
+            <if test="pid!=-1">
+                #{pid},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="queryAll" resultMap="pids">
+        select z1.id as zid,z1.areaname as c2 from zc_prefectural z1 where z1.pid=0
+    </select>
+    <resultMap id="pids" type="com.role.entity.Zcprefectural">
+        <id column="zid" property="id"></id>
+        <result property="areaname" column="c2"></result>
+        <collection property="pcid"  ofType="com.role.entity.Zcprefectural" select="queryAlls" column="zid"></collection>
+    </resultMap>
+
+    <select id="queryAlls" resultMap="pidst">
+        select z2.id as zzid,z2.areaname as c3,z2.pid as p2id from zc_prefectural z2 where pid=#{zid}
+    </select>
+    <resultMap id="pidst" type="com.role.entity.Zcprefectural">
+        <id column="zzid" property="id"></id>
+        <result property="areaname" column="c3"></result>
+        <result property="pid" column="p2id"></result>
+    </resultMap>
+
+    <update id="updateZcpre">
+        update zc_prefectural set areaname=#{areaname} where id=#{id}
+    </update>
+
+    <delete id="deleteZcpre">
+        DELETE FROM zc_prefectural WHERE id=#{id} or pid=#{id}
+    </delete>
+
+</mapper>

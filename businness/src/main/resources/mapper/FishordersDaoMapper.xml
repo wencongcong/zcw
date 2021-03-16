@@ -63,8 +63,8 @@
 
 
     <insert id="insertOneEx" parameterType="com.businness.entity.FishordersEX">
-            insert fishorders(`workid`,`channel`,`phone`,`name`,`idcard`,`interior`,`accept`,`statos`,`amount`,`ordertime`,`payment`,`remark`,`toproomotelinks`,`nameofadvertiser`,`address`,`appointmentime`,`ok`,`trackingtime`,`failure`,`uplogintime`,`broadband`,`isitnew`,`whethertorepeat`,`wid`)
-            value (#{workid},#{channel},#{phone},#{name},#{idcard},#{interior},#{accept},#{statos},#{amount},#{ordertime},#{payment},#{remark},#{toproomotelinks},#{nameofadvertiser},#{address},null,0,null,#{failure},null,#{broadband},1,0,0)
+            insert fishorders(`workid`,`channels`,`channel`,`phone`,`name`,`idcard`,`interior`,`accept`,`statos`,`amount`,`ordertime`,`payment`,`remark`,`toproomotelinks`,`nameofadvertiser`,`areas`,`address`,`appointmentime`,`ok`,`trackingtime`,`failure`,`uplogintime`,`broadband`,`isitnew`,`whethertorepeat`,`wid`)
+            value (#{workid},#{channels},#{channel},#{phone},#{name},#{idcard},#{interior},#{accept},#{statos},#{amount},#{ordertime},#{payment},#{remark},#{toproomotelinks},#{nameofadvertiser},#{areas},#{address},null,0,null,#{failure},null,#{broadband},1,0,0)
     </insert>
 
     <select id="fishcount" resultType="java.util.Map">

@@ -77,6 +77,22 @@ public class TamllController {
     public Result updatetamll(@RequestParam Map map){
         int result=tamllService.updateTmall(map);
         if (result>0){
+            Date date=new Date();
+            SimpleDateFormat sfs=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            History history=new History();
+            String sj=sfs.format(date);
+            history.setWorkid(Integer.parseInt(map.get("workid").toString()));
+            history.setUplogintime(sj);
+            history.setUplognno(map.get("uploginno").toString());
+            history.setOldname(map.get("oldname").toString());
+            history.setCurentname(map.get("curentname").toString());
+            history.setStatosname(map.get("oldstatus").toString());
+            history.setState(map.get("status").toString());
+            history.setSevenstatus("");
+            history.setHistorys(map.get("historys").toString());
+            history.setIsitright(Integer.parseInt(map.get("isitright").toString()));
+            history.setUpdatemotion("修改");
+            historyInfoService.insertOneHistory(history);
             return Result.success(1,"修改成功");
         }else{
             return Result.success(0,"修改失败");

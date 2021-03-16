@@ -7,7 +7,7 @@
     </select>
 
     <insert id="insertOneConfig" parameterType="java.util.Map">
-        insert configuration(`area`,`prodctname`,`servicename`)values(#{area},#{prodctname},#{servicename})
+        insert configuration(`area`,`prodctname`,`servicename`,`areas`)values(#{area},#{prodctname},#{servicename},#{areas})
     </insert>
     <update id="updateConfig">
         update configuration
@@ -20,6 +20,9 @@
             </if>
             <if test="servicename!=null and servicename!=''">
                servicename=#{servicename},
+            </if>
+            <if test="areas!=null and areas!=''">
+                areas=#{areas},
             </if>
         </trim>
         where id = #{id}

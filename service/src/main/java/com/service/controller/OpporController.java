@@ -82,6 +82,7 @@ public class OpporController {
         String sj=sfs.format(date);
         Fishorders fishorders=new Fishorders();
         fishorders.setChannel(map.get("channel").toString());
+        fishorders.setChannels(map.get("channels").toString());
         fishorders.setPhone(map.get("phone").toString());
         fishorders.setName(map.get("name").toString());
         fishorders.setRemark(map.get("remark").toString());
@@ -116,6 +117,7 @@ public class OpporController {
         JSONObject datas= data.getJSONObject("data");
         int length=Integer.parseInt(data.get("length").toString());
         String servicename=data.get("servicename").toString();
+        String historys=data.getString("historys");
         if (length <=50) {
             for (int i = 0; i < length; i++) {
                 String uplogin = datas.get(i).toString();
@@ -128,9 +130,10 @@ public class OpporController {
                 history.setUplogintime(sfs.format(new Date()));
                 history.setUplognno(uploginname);
                 history.setWorkid(id);
-                history.setHistorys("");
+                history.setHistorys(historys);
                 history.setCurentname(servicename);
                 history.setIsitright(1);
+                history.setUpdatemotion("分配");
                 historyService.insertrighthistory(history);
                 int resul = flyIngService.chastatos("营销成功", id);
                 if (resul == 1) {
@@ -216,11 +219,12 @@ public class OpporController {
             history.setStatosname(flyIngService.chaStotus(Integer.parseInt(map.get("id").toString())));
             history.setState(map.get("statos").toString());
             history.setUplogintime(sj);
-            history.setUplognno(flyIngService.chaServicename(Integer.parseInt(map.get("id").toString())));
+            history.setUplognno(map.get("uploginno").toString());
             history.setWorkid(Integer.parseInt(map.get("id").toString()));
-            history.setHistorys("");
-            history.setCurentname(flyIngService.chaServicename(Integer.parseInt(map.get("id").toString())));
+            history.setHistorys(map.get("historys").toString());
+            history.setCurentname(map.get("curentname").toString());
             history.setIsitright(1);
+            history.setUpdatemotion("修改");
             historyService.insertrighthistory(history);
             return Result.success(1,"修改成功");
         }else {

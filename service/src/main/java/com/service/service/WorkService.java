@@ -31,7 +31,7 @@ public interface WorkService {
     //修改工单属性
     public int Reminder(int reminder,int workid);
     //根据工单ID修改7工单状态和关联ID
-    public int Ustatosoid(String statos,String status,int oid,String workid);
+    public int Ustatosoid(String statos,String status,String workid);
     //分配修改
     public int updateassign(Map map);
     //根据ID查询状态
@@ -39,11 +39,11 @@ public interface WorkService {
     //修改备注
     public int uodateRemark(String remark, String workid);
     //修改7工单ID
-    public int updateOrderId(int orderId, String workid);
+    public int updateOrderId(int orderId, String workid,String statos,String status);
     //根据orderID查询工单ID
     public String  chaWorkid(int orderId);
     //人工修改状态
-    public int updateStatue(String status,String workid);
+    public int updateStatue(String status,String workid,String orderid);
     //修改结算状态
     public int updatesettle(String settlementstatus,String verify,String completedtime,String workid);
     //查询自动反刷状态状态

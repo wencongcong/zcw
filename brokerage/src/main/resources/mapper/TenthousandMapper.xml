@@ -38,6 +38,18 @@
             <if test="businessnumberone!=null and businessnumberone!=''">
                 and t.businessnumberone like concat('%',#{businessnumberone},'%')
             </if>
+            <if test="areas!=null and areas!=''">
+                and t.areas like concat('%',#{areas},'%')
+            </if>
+            <if test="channels!=null and channels!=''">
+                and t.channels like concat('%',#{channels},'%')
+            </if>
+            <if test="marketing!=null and marketing!=''">
+                and t.marketing like concat('%',#{marketing},'%')
+            </if>
+            <if test="undistributed==9">
+                and w.status is null or w.status=''
+            </if>
         </trim>
     </select>
     <resultMap id="coms" type="com.brokerage.entity.Tenthousand">
@@ -68,6 +80,9 @@
         <result column="broadband" property="broadband"></result>
         <result column="secondaryCard" property="secondaryCard"></result>
         <result column="address" property="address"></result>
+        <result column="areas" property="areas"></result>
+        <result column="channl" property="channl"></result>
+        <result column="channels" property="channels"></result>
         <association property="wid" javaType="com.brokerage.entity.Work">
             <id property="id" column="w.id"></id>
             <result column="id" property="id"></result>
@@ -111,6 +126,18 @@
             <if test="businessnumberone!=null and businessnumberone!=''">
                 and t.businessnumberone like concat('%',#{businessnumberone},'%')
             </if>
+            <if test="areas!=null and areas!=''">
+                and t.areas like concat('%',#{areas},'%')
+            </if>
+            <if test="channels!=null and channels!=''">
+                and t.channels like concat('%',#{channels},'%')
+            </if>
+            <if test="marketing!=null and marketing!=''">
+                and t.marketing like concat('%',#{marketing},'%')
+            </if>
+            <if test="undistributed==9">
+                and w.status is null or w.status=''
+            </if>
         </trim>
     </select>
     <resultMap id="comss" type="com.brokerage.entity.Tenthousand">
@@ -141,7 +168,9 @@
         <result column="broadband" property="broadband"></result>
         <result column="secondaryCard" property="secondaryCard"></result>
         <result column="address" property="address"></result>
+        <result column="areas" property="areas"></result>
         <result column="channl" property="channl"></result>
+        <result column="channels" property="channels"></result>
         <association property="wid" javaType="com.brokerage.entity.Work">
             <id property="id" column="w.id"></id>
             <result column="id" property="id"></result>
@@ -150,8 +179,8 @@
     </resultMap>
 
     <insert id="insertTenth">
-        insert tenthousand(`businessname`,`businessidcard`,`businessphone`,`businessarea`,`marketing`,`createtime`,`servicename`,`broadband`,`businessnumberone`,`template`,`secondaryCard`,`prodctone`,`remark`,`wid`,`channl`)
-        values(#{username},#{idCard},#{phone},#{city},#{marketing},#{createtime},#{serviceName},#{broadband},#{mainCard},#{template},#{secondaryCard},#{product},#{remark},0,#{channl})
+        insert tenthousand(`businessname`,`businessidcard`,`businessphone`,`businessarea`,`areas`,`marketing`,`createtime`,`servicename`,`broadband`,`businessnumberone`,`template`,`secondaryCard`,`prodctone`,`remark`,`wid`,`channl`,`channels`)
+        values(#{username},#{idCard},#{phone},#{area},#{areas},#{marketing},#{createtime},#{serviceName},#{broadband},#{mainCard},#{template},#{secondaryCard},#{product},#{remark},0,#{channl},#{channels})
     </insert>
     <update id="updateTenth">
         update tenthousand
@@ -218,6 +247,12 @@
             </if>
             <if test="secondaryCard!=null and secondaryCard!=''">
                 secondaryCard=#{secondaryCard},
+            </if>
+            <if test="areas!=null and areas!=''">
+                areas=#{areas},
+            </if>
+            <if test="channels!=null and channels!=''">
+                channels=#{channels},
             </if>
         </trim>
         where id = #{id}

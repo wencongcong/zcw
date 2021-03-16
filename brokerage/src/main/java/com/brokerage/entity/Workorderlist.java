@@ -21,6 +21,8 @@ public class Workorderlist implements Serializable {
     String endtime;
     String prodctsName;
     String channl;
+    String channels;
+    String areas;
     String orderon;
     String custname;
     String orderstatus;

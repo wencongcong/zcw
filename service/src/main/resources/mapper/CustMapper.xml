@@ -3,8 +3,8 @@
 <mapper namespace="com.service.mapper.CustMapper">
 
     <insert id="insertOneCust" parameterType="com.service.entity.Cust" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-        insert customerinfo(`cid`,`custname`,`custphone`,`custidcard`,`custaddress`,`custarea`,`custremark`,`custcreater`,`custcreatertime`,`custreserved`)
-        value (#{cid},#{custname},#{custphone},#{custidcard},#{custaddress},#{custarea},#{custremark},#{custcreater},#{custcreatertime},#{custreserved})
+        insert customerinfo(`cid`,`custname`,`custphone`,`custidcard`,`custaddress`,`custareas`,`custarea`,`custremark`,`custcreater`,`custcreatertime`,`custreserved`)
+        value (#{cid},#{custname},#{custphone},#{custidcard},#{custaddress},#{custareas},#{custarea},#{custremark},#{custcreater},#{custcreatertime},#{custreserved})
     </insert>
 
     <select id="chaChong" resultType="int">
@@ -24,8 +24,8 @@
     </select>
 
     <insert id="sgchars" parameterType="com.service.entity.Cust" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-        INSERT customerinfo(`cid`,`custname`,`custidcard`,`custphone`,`custaddress`,`custarea`,`custremark`,`custcreater`,`custcreatertime`,`custreserved`)
-        VALUES(#{cid},#{custname},#{custidcard},#{custphone},#{custaddress},#{custarea},#{custremark},#{custcreater},#{custcreatertime},#{custreserved})
+        INSERT customerinfo(`cid`,`custname`,`custidcard`,`custphone`,`custaddress`,`custareas`,`custarea`,`custremark`,`custcreater`,`custcreatertime`,`custreserved`)
+        VALUES(#{cid},#{custname},#{custidcard},#{custphone},#{custaddress},#{custareas},#{custarea},#{custremark},#{custcreater},#{custcreatertime},#{custreserved})
     </insert>
     <select id="chachongname" resultType="int">
         select id from customerinfo where custname=#{custname} and custphone=#{custphone} and custidcard=#{custidcard}

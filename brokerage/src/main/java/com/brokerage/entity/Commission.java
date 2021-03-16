@@ -20,7 +20,9 @@ import java.io.Serializable;
 public class Commission implements Serializable {
 
     int id;
-    @Excel(name = "区域")
+    @Excel(name = "省份")
+    String areas;
+    @Excel(name = "市级")
     String area;
     @Excel(name = "账期")
     String payment;

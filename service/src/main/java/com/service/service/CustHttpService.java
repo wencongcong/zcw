@@ -6,4 +6,6 @@ public interface CustHttpService {
 
     public Result Timeupda() throws Exception;
 
+
+    public Result Timehistory()throws Exception;
 }

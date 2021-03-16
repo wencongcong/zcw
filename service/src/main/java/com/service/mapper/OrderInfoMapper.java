@@ -38,4 +38,6 @@ public interface OrderInfoMapper extends BaseMapper<OrderInfo> {
     public int deleteOrderinfo(@Param("orderid")String orderid);
 
     public int queryMarkId(@Param("orderid")String orderid);
+
+    public List<Map<String,String>> queryAllOrderNo();
 }

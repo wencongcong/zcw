@@ -50,6 +50,7 @@
         <result column="assigneeName" property="assigneeName"></result>
         <result column="broadband" property="broadband"></result>
         <result column="channl" property="channl"></result>
+        <result column="channels" property="channels"></result>
         <result column="remark" property="remark"></result>
         <result column="paymentamount" property="paymentamount"></result>
         <result column="reminder" property="reminder"></result>
@@ -68,6 +69,8 @@
         <result column="prodctsName" property="prodctsName"></result>
         <result column="prodacceptthemethod" property="prodacceptthemethod"></result>
         <result column="terminalseries" property="terminalseries"></result>
+        <result column="areas" property="areas"></result>
+        <result column="jsonstr" property="jsonstr"></result>
         <association property="cid" javaType="com.brokerage.entity.Cust">
             <id property="id" column="c.id"></id>
             <result column="custid" property="id"></result>
@@ -77,6 +80,7 @@
             <result column="addres" property="custaddress"></result>
             <result column="custarea" property="custarea"></result>
             <result column="custremark" property="custremark"></result>
+            <result column="custareas" property="custareas"></result>
         </association>
         <association property="pid" javaType="com.brokerage.entity.Prod">
             <id property="id" column="p.id"></id>
@@ -121,8 +125,8 @@
     </update>
 
     <insert id="Autocontrolledwork" parameterType="com.brokerage.entity.Work" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-        INSERT INTO workinfo(`workid`,`custid`,`serviceName`,`acceptid`,`status`,`orderid`,`broadband`,`remark`,`appointmenttime`,`paymentamount`,`xdtime`,`reminder`,`channl`,`settlementstatus`,`workserved`,`paymentstate`,`soundverify`,`businessnumber`,`region`,`existingpreferential`,`existingPackageTypes`,`terminaltype`,`changedPackagetype`,`vicecardnumber`,`custaddress`,`terminalseries`)
-       VALUES(#{workid},#{custid},#{serviceName},#{acceptid},#{status},#{orderid},#{broadband},#{remark},#{appointmenttime},#{paymentamount},#{xdtime},0,#{channl},#{settlementstatus},#{workserved},#{paymentstate},#{soundverify},#{businessnumber},#{region},#{existingpreferential},#{existingPackageTypes},#{terminaltype},#{changedPackagetype},#{vicecardnumber},#{custaddress},#{terminalseries})
+        INSERT INTO workinfo(`workid`,`custid`,`serviceName`,`acceptid`,`status`,`orderid`,`broadband`,`remark`,`appointmenttime`,`paymentamount`,`xdtime`,`reminder`,`channl`,`channels`,`settlementstatus`,`workserved`,`paymentstate`,`soundverify`,`businessnumber`,`region`,`existingpreferential`,`existingPackageTypes`,`terminaltype`,`changedPackagetype`,`vicecardnumber`,`custaddress`,`terminalseries`,`prodctsName`,`prodacceptthemethod`,`jsonstr`)
+       VALUES(#{workid},#{custid},#{serviceName},#{acceptid},#{status},#{orderid},#{broadband},#{remark},#{appointmenttime},#{paymentamount},#{xdtime},0,#{channl},#{channels},#{settlementstatus},#{workserved},#{paymentstate},#{soundverify},#{businessnumber},#{region},#{existingpreferential},#{existingPackageTypes},#{terminaltype},#{changedPackagetype},#{vicecardnumber},#{custaddress},#{terminalseries},#{prodctsName},#{prodacceptthemethod},#{jsonstr})
     </insert>
 
     <select id="chacountw" resultType="int">
@@ -161,6 +165,7 @@
         <result column="assigneeName" property="assigneeName"></result>
         <result column="broadband" property="broadband"></result>
         <result column="channl" property="channl"></result>
+        <result column="channels" property="channels"></result>
         <result column="remark" property="remark"></result>
         <result column="paymentamount" property="paymentamount"></result>
         <result column="reminder" property="reminder"></result>
@@ -179,6 +184,8 @@
         <result column="prodctsName" property="prodctsName"></result>
         <result column="prodacceptthemethod" property="prodacceptthemethod"></result>
         <result column="terminalseries" property="terminalseries"></result>
+        <result column="areas" property="areas"></result>
+        <result column="jsonstr" property="jsonstr"></result>
         <association property="cid" javaType="com.brokerage.entity.Cust">
             <id property="id" column="c.id"></id>
             <result column="custid" property="id"></result>
@@ -187,6 +194,7 @@
             <result column="custidcard" property="custidcard"></result>
             <result column="addres" property="custaddress"></result>
             <result column="custarea" property="custarea"></result>
+            <result column="custareas" property="custareas"></result>
             <result column="custremark" property="custremark"></result>
         </association>
         <association property="pid" javaType="com.brokerage.entity.Prod">

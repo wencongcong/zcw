@@ -5,8 +5,10 @@ import com.role.entity.Inform;
 import com.role.entity.Terrain;
 import com.role.enums.ErrorEnum;
 import com.role.result.Result;
+import com.role.service.ChannelService;
 import com.role.service.InformService;
 import com.role.service.TerrainService;
+import com.role.service.ZcprefecturalService;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.web.bind.annotation.*;
 
@@ -88,6 +90,7 @@ public class InController {
             return Result.fail(0,"添加失败");
         }
     }
+
     @RequestMapping(value = "/queryatree",method = RequestMethod.POST)
     public Result treeAll(@RequestParam Map map) {
         List<Terrain> list=terrainService.queryAll(map.get("areaname").toString());
@@ -105,5 +108,42 @@ public class InController {
         }else {
             return Result.fail(0,"添加失败");
         }
+    }
+
+    @Resource
+    private ZcprefecturalService zcprefecturalService;
+    @RequestMapping(value = "/prefectural",method = RequestMethod.POST)
+    public Result prefectural(@RequestParam Map map) {
+        return Result.success(1,zcprefecturalService.queryAll());
+    }
+    @RequestMapping(value = "/prefecturalin",method = RequestMethod.POST)
+    public Result prefecturalin(@RequestParam Map map) {
+        return zcprefecturalService.insertZcpre(map);
+    }
+
+    @Resource
+    private ChannelService channelService;
+    @RequestMapping(value = "/channelquery",method = RequestMethod.POST)
+    public Result channelquery(@RequestParam Map map) {
+        return Result.success(1,channelService.queryAll());
+    }
+
+    @RequestMapping(value = "/channelinsert",method = RequestMethod.POST)
+    public Result channelinsert(@RequestParam Map map) {
+        return Result.success(1,channelService.insertChannel(map));
+    }
+    @RequestMapping(value = "/channeldelete",method = RequestMethod.POST)
+    public Result channeldelete(@RequestParam(value = "id",defaultValue = "0")int id) {
+        return Result.success(1,channelService.deleteChaneel(id));
+    }
+
+    @RequestMapping(value = "/zcpredelete",method = RequestMethod.POST)
+    public Result zcpredelete(@RequestParam(value = "id",defaultValue = "0")int id) {
+        return Result.success(1,zcprefecturalService.deleteZcpre(id));
+    }
+
+    @RequestMapping(value = "/zcpreupdate",method = RequestMethod.POST)
+    public Result zcpreupdate(@RequestParam Map map) {
+        return Result.success(1,zcprefecturalService.updateZcpre(map));
     }
 }

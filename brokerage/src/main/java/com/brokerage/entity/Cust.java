@@ -20,6 +20,7 @@ public class Cust implements Serializable {
     String custphone;
     String custidcard;
     String custaddress;
+    String custareas;
     String custarea;
     String custremark;
     String custcreater;

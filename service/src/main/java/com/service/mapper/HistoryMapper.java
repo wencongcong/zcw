@@ -12,7 +12,7 @@ import java.util.List;
 public interface HistoryMapper extends BaseMapper<History> {
     public int insertOneHistory(History history);
 
-    public List<History> queryAll(@Param("workid")int workid);
+    public List<History> queryAll(@Param("workid")int workid,@Param("isitright")int isitright);
 
     public int insertrighthistory(History history);
  }

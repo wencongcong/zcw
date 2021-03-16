@@ -70,6 +70,7 @@ public class SettlementAnalusisServiceImpl implements SettlementAnalusisService 
                         settlementAnalusis.setCommissiontype(comm.getRemunerationtype());
                         settlementAnalusis.setNetworkname(comm.getNetworkname());
                         settlementAnalusis.setAdjustAccountReason(comm.getReconciliationreason());
+                        settlementAnalusis.setChannels(workorderlist.getChannels());
                         if (settlementAnalusisMapper.queryOneassetnumberormonths(comm.getNumberphone(),comm.getPayment())==0){
                             settlementAnalusisMapper.insertSett(settlementAnalusis);
                         }else{

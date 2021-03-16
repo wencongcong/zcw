@@ -27,8 +27,10 @@ public class Tenthousand implements Serializable {
     String businessphone;
     @Excel(name="业务号码",width = 30,orderNum = "1")
     String businessnumberone;
-    @Excel(name="订单地市",width = 30,orderNum = "1")
+    @Excel(name="市级",width = 30,orderNum = "1")
     String businessarea;
+    @Excel(name="省份",width = 30,orderNum = "1")
+    String areas;
     @Excel(name="业务人员",width = 30,orderNum = "1")
     String servicename;
     @Excel(name="产品名称",width = 30,orderNum = "1")
@@ -67,6 +69,8 @@ public class Tenthousand implements Serializable {
     Work wid;
     @Excel(name="安装地址",width = 30,orderNum = "1")
     String address;
-    @Excel(name="渠道",width = 30,orderNum = "1")
+    @Excel(name="二级渠道",width = 30,orderNum = "1")
     String channl;
+    @Excel(name="一级渠道",width = 30,orderNum = "1")
+    String channels;
 }

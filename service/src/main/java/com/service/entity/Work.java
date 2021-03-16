@@ -59,4 +59,5 @@ public class Work implements Serializable {
     String prodctsName;
     String prodacceptthemethod;
     String terminalseries;
+    String channels;
 }

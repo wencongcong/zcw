@@ -33,6 +33,7 @@ public class SettlementAnalusis implements Serializable {
     String T213;
     String commission;
     String channl;
+    String channels;
     String orderno;
     String productsName;
     String acceptthechannel;

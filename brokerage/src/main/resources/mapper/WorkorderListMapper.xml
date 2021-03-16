@@ -46,6 +46,8 @@
         <result column="automatilmarking" property="automatilmarking"></result>
         <result column="paymoney" property="paymoney"></result>
         <result column="orderdetailsid" property="orderdetailsid"></result>
+        <result column="channels" property="channels"></result>
+        <result column="areas" property="areas"></result>
         <collection property="orderdetailsInfoid"  ofType="com.brokerage.entity.OrderdetailsInfo" select="queryOrderdetails" column="orderdetailsid">
 <!--            <id column="oid" property="id"></id>-->
 <!--            <result column="oid" property="id"></result>-->
@@ -97,8 +99,8 @@
 
 
     <insert id="insertWorkorderlist" parameterType="com.brokerage.entity.Workorderlist">
-        insert workorderlist(`acceptid`,`channl`,`orderon`,`custname`,`orderstatus`,`chargemanner`,`acceptchannel`,`orderdetailsid`,`markid`,`prodctsName`,`createtime`,`remark`,`automatilmarking`,`paymoney`,`firstdeveloppeople`,`firstdeveloppeopleno`)
-        values (#{acceptid},#{channl},#{orderon},#{custname},#{orderstatus},#{chargemanner},#{acceptchannel},#{orderdetailsid},#{markid},#{prodctsName},#{createtime},#{remark},#{automatilmarking},#{paymoney},#{firstdeveloppeople},#{firstdeveloppeopleno})
+        insert workorderlist(`acceptid`,`channl`,`channels`,`areas`,`orderon`,`custname`,`orderstatus`,`chargemanner`,`acceptchannel`,`orderdetailsid`,`markid`,`prodctsName`,`createtime`,`remark`,`automatilmarking`,`paymoney`,`firstdeveloppeople`,`firstdeveloppeopleno`)
+        values (#{acceptid},#{channl},#{channels},#{areas},#{orderon},#{custname},#{orderstatus},#{chargemanner},#{acceptchannel},#{orderdetailsid},#{markid},#{prodctsName},#{createtime},#{remark},#{automatilmarking},#{paymoney},#{firstdeveloppeople},#{firstdeveloppeopleno})
     </insert>
 
     <select id="oneOrderno" resultType="int">

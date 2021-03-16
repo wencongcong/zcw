@@ -29,9 +29,10 @@ public class CustEX implements Serializable {
     String custidcard;
     @Excel(name="地址",width = 30,orderNum = "1")
     String custaddress;
-    @Excel(name="地势",width = 30,orderNum = "1")
+    @Excel(name="省份",width = 30,orderNum = "1")
+    String custareas;
+    @Excel(name="市级",width = 30,orderNum = "1")
     String custarea;
-    @Excel(name="客户备注",width = 30,orderNum = "1")
     String custremark;
     @Excel(name="创建人",width = 30,orderNum = "1")
     String custcreater;

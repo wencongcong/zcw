@@ -156,7 +156,7 @@ public class DaoExController {
         params.setTitleRows(0);
         params.setHeadRows(1);
         params.setNeedVerify(true);
-        params.setLastOfInvalidRow(1);
+        params.setLastOfInvalidRow(0);
         List<FishordersEX> list=null;
         try {
             list= ExcelImportUtil.importExcel(empFile.getInputStream(), FishordersEX.class, params);
@@ -255,6 +255,7 @@ public class DaoExController {
                                 workEX.setBroadband(worksEX.getBroadband() == null ? "" : worksEX.getBroadband());
                                 workEX.setRemark(worksEX.getRemark());
                                 workEX.setPaymentamount(worksEX.getPaymentamount());
+                                workEX.setChannels(worksEX.getChannels());
                                 workEX.setChannl(worksEX.getChannl());
                                 workEX.setOrderid(String.valueOf(oid));
                                 workEX.setXdtime(worksEX.getXdtime());
@@ -280,6 +281,7 @@ public class DaoExController {
                     custEX.setCustphone(worksEX.getCustphone());
                     custEX.setCustidcard(worksEX.getCustidcard());
                     custEX.setCustaddress(worksEX.getCustaddress());
+                    custEX.setCustareas(worksEX.getCustareas());
                     custEX.setCustarea(worksEX.getCustarea() == null ? "其他" : worksEX.getCustarea());
                     custEX.setCustcreatertime(sj);
                     int result = custDaoService.insertOne(custEX);
@@ -312,6 +314,7 @@ public class DaoExController {
                                     workEX.setStatus(worksEX.getStatus().trim());
                                     workEX.setBroadband(worksEX.getBroadband() == null ? "" : worksEX.getBroadband());
                                     workEX.setRemark(worksEX.getRemark());
+                                    workEX.setChannels(worksEX.getChannels());
                                     workEX.setChannl(worksEX.getChannl());
                                     workEX.setOrderid(String.valueOf(oid));
                                     workEX.setPaymentamount(worksEX.getPaymentamount());

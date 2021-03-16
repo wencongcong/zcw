@@ -3,8 +3,8 @@
 <mapper namespace="com.brokerage.mapper.ZcdistributorMapper">
 
     <insert id="insertOneDistributor" parameterType="java.util.Map">
-        insert zc_distributor(`workid`,`channel`,`phone`,`name`,`idcard`,`interior`,`payment`,`paymentmethod`,`remark`,`address`,`servicename`,`product`,`commodity`,`toproomotelinks`,`isitnew`,`whethertorepeat`,`wid`,`statos`,`ordertime`)
-        values ('','分销',#{phone},#{name},#{idCard},#{address},#{payAmount},#{payMethod},#{remark},#{area},#{devName},#{product},#{commodity},#{bottomImg},1,0,0,'营销成功',#{ordertime})
+        insert zc_distributor(`workid`,`channel`,`channels`,`phone`,`name`,`idcard`,`interior`,`payment`,`paymentmethod`,`remark`,`address`,`areas`,`servicename`,`product`,`commodity`,`toproomotelinks`,`isitnew`,`whethertorepeat`,`wid`,`statos`,`ordertime`)
+        values ('','分销','分销',#{phone},#{name},#{idCard},#{address},#{payAmount},#{payMethod},#{remark},#{area},'浙江省',#{devName},#{product},#{commodity},#{bottomImg},1,0,0,'营销成功',#{ordertime})
     </insert>
 
 
@@ -44,6 +44,15 @@
             <if test="broadband!=null and broadband!=''">
                 and t.broadband like concat('%',#{broadband},'%')
             </if>
+            <if test="areas!=null and areas!=''">
+                and t.areas like concat('%',#{areas},'%')
+            </if>
+            <if test="channels!=null and channels!=''">
+                and t.channels like concat('%',#{channels},'%')
+            </if>
+            <if test="undistributed==9">
+                and w.status is null or w.status=''
+            </if>
         </trim>
         </select>
     <resultMap id="zcdis" type="com.brokerage.entity.Zcdistributor">
@@ -72,6 +81,8 @@
             <result column="uplogintime" property="uplogintime"></result>
             <result column="broadband" property="broadband"></result>
             <result column="whethertorepeat" property="whethertorepeat"></result>
+            <result column="channels" property="channels"></result>
+            <result column="areas" property="areas"></result>
             <association property="wid" javaType="com.brokerage.entity.Work">
                 <id property="id" column="w.id"></id>
                 <result column="id" property="id"></result>
@@ -123,6 +134,12 @@
             </if>
             <if test="0==0">
                 whethertorepeat=0,
+            </if>
+            <if test="areas!=null and areas!=''">
+                areas=#{areas},
+            </if>
+            <if test="channels!=null and channels!=''">
+                channels=#{channels},
             </if>
         </trim>
     </update>

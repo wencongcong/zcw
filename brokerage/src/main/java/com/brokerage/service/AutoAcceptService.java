@@ -14,8 +14,6 @@ public interface AutoAcceptService {
 
     public Result autoaccepts(ISaleHttpUtil iSaleHttpUtil, Map map) throws Exception;
 
-    public String sss(ISaleHttpUtils iSaleHttpUtil);
-
     public Result sc(Map map);
 
     public Result sctent(Map map);

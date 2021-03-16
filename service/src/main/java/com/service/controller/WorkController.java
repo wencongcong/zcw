@@ -12,6 +12,7 @@ import com.service.service.*;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -73,15 +74,17 @@ public class WorkController {
         history.setWorkid(Integer.parseInt(map.get("workid").toString()));
         history.setUplogintime(sj);
         history.setStatosname(map.get("statosname").toString());
-        history.setUplognno(map.get("servicename").toString()+"-"+map.get("oldname").toString());
+        history.setUplognno(map.get("servicename").toString());
+        history.setOldname(map.get("oldname").toString());
         history.setState(map.get("status").toString());
         history.setHistorys(map.get("historys").toString());
+        history.setIsitright(Integer.parseInt(map.get("isitright").toString()));
             switch (map.get("status").toString()){
                 case "废弃":
-                    if (workService.chaorderno(Integer.parseInt(map.get("orderid").toString()))>0||map.get("statosname").toString().equals("待核实")){
+                    if (workService.chaorderno(Integer.parseInt(map.get("orderid").toString()))>0||map.get("statosname").toString().equals("待核实")||map.get("statosname").toString().equals("业务员挂起")){
                         workService.Updateremark(map);
                     }else {
-                        return Result.fail(0,"不是已撤单/已取消订单,不可废弃");
+                        return Result.fail(0,"当前工单无法废弃,请联系当前处理人");
                     }
                     break;
                 case "取消办理":
@@ -111,8 +114,8 @@ public class WorkController {
     }
 
     @RequestMapping(value = "/historyqueryll",method = RequestMethod.POST)
-    public Result history(@RequestParam String id){
-        List<History>lists= historyService.queryAll(Integer.parseInt(id));
+    public Result history(@RequestParam Map map){
+        List<History>lists= historyService.queryAll(Integer.parseInt(map.get("id").toString()),Integer.parseInt(map.get("isitright").toString()));
         return Result.success(1,lists);
     }
 
@@ -125,6 +128,8 @@ public class WorkController {
         JSONObject data= JSON.parseObject(map.get("data").toString().trim());
         int length=Integer.parseInt(data.get("length").toString());
         JSONObject datad=data.getJSONObject("data");
+        int isit=0;
+        String fp="分配";
         for (int i=0;i<length;i++){
             JSONObject datas=datad.getJSONObject(String.valueOf(i));
             String workid=datas.getString("workid");
@@ -142,12 +147,15 @@ public class WorkController {
                     String sj=sfs.format(date);
                     history.setWorkid(Integer.parseInt(workid));
                     history.setUplogintime(sj);
-                    history.setUplognno(uploginno+"-"+oldname);
+                    history.setUplognno(uploginno);
+                    history.setOldname(oldname);
                     history.setCurentname(curentname);
                     history.setStatosname(status);
                     history.setState("待受理");
                     history.setSevenstatus("");
-                    history.setHistorys("");
+                    history.setHistorys(datas.getString("historys"));
+                    history.setIsitright(isit);
+                    history.setUpdatemotion(fp);
                     historyService.insertOneHistory(history);
                     continue;
                 }else{
@@ -163,12 +171,15 @@ public class WorkController {
                     String sj=sfs.format(date);
                     history.setWorkid(Integer.parseInt(workid));
                     history.setUplogintime(sj);
-                    history.setUplognno(uploginno+"-"+oldname);
+                    history.setUplognno(uploginno);
+                    history.setOldname(oldname);
                     history.setCurentname(curentname);
                     history.setStatosname(status);
                     history.setState(status);
-                    history.setHistorys("");
+                    history.setHistorys(datas.getString("historys"));
                     history.setSevenstatus("");
+                    history.setIsitright(isit);
+                    history.setUpdatemotion(fp);
                     historyService.insertOneHistory(history);
                     continue;
                 }else{
@@ -215,4 +226,6 @@ public class WorkController {
             return Result.success(0,"修改失败");
         }
     }
+
+
 }

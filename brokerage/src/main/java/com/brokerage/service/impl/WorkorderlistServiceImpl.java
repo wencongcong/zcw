@@ -52,6 +52,8 @@ public class WorkorderlistServiceImpl implements WorkorderlistService {
             workorderlist.setRemark(work.getRemark());
             workorderlist.setAutomatilmarking(work.getOid().getAutomatilmarking());
             workorderlist.setPaymoney(work.getPid().getRate());
+            workorderlist.setChannels(work.getChannels());
+            workorderlist.setAreas(work.getCid().getCustareas());
             String monety=MathUtil.add(work.getPid().getRate(),work.getPid().getIntegral());
             String st=MathUtil.multiply(monety,work.getPid().getSettlementratio(),2);
             workorderlist.setMarkid(st);

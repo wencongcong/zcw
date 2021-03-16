@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.xml.soap.SAAJResult;
 import java.io.Serializable;
 
 @Entity
@@ -20,9 +21,11 @@ public class History implements Serializable {
     String state;
     String uplogintime;
     String uplognno;
+    String oldname;
     int workid;
     String sevenstatus;
     String historys;
     String curentname;
     int isitright;
+    String updatemotion;
 }

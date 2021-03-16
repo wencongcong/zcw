@@ -20,9 +20,11 @@ public class History implements Serializable {
     String state;
     String uplogintime;
     String uplognno;
+    String oldname;
     int workid;
     String sevenstatus;
     String historys;
     String curentname;
     int isitright;
+    String updatemotion;
 }

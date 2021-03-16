@@ -44,6 +44,15 @@
             <if test="marketingresults!=null and marketingresults!=''">
                 and t.marketingresults like concat('%',#{marketingresults},'%')
             </if>
+            <if test="areas!=null and areas!=''">
+                and t.areas like concat('%',#{areas},'%')
+            </if>
+            <if test="channels!=null and channels!=''">
+                and t.channels like concat('%',#{channels},'%')
+            </if>
+            <if test="undistributed==9">
+                and w.status is null or w.status=''
+            </if>
         </trim>
     </select>
     <resultMap id="coms" type="com.brokerage.entity.Tmall">
@@ -72,6 +81,8 @@
         <result column="marketingresults" property="marketingresults"></result>
         <result column="servicename" property="servicename"></result>
         <result column="area" property="area"></result>
+        <result column="areas" property="areas"></result>
+        <result column="channels" property="channels"></result>
         <association property="wid" javaType="com.brokerage.entity.Work">
             <id property="id" column="w.id"></id>
             <result column="id" property="id"></result>
@@ -121,6 +132,9 @@
             <if test="marketingresults!=null and marketingresults!=''">
                 and t.marketingresults like concat('%',#{marketingresults},'%')
             </if>
+            <if test="undistributed==9">
+                and w.status is null or w.status=''
+            </if>
         </trim>
     </select>
     <resultMap id="comss" type="com.brokerage.entity.Tmall">
@@ -149,6 +163,8 @@
         <result column="marketingresults" property="marketingresults"></result>
         <result column="servicename" property="servicename"></result>
         <result column="area" property="area"></result>
+        <result column="areas" property="areas"></result>
+        <result column="channels" property="channels"></result>
         <association property="wid" javaType="com.brokerage.entity.Work">
             <id property="id" column="w.id"></id>
             <result column="id" property="id"></result>
@@ -157,12 +173,12 @@
     </resultMap>
 
     <insert id="insertOneTmall">
-        insert tmall(`custname`,`phone`,`idcard`,`businessnumber`,`address`,`tmallordernumber`,`channl`,`advertiser`,`remark`,`createtime`,`servicename`,`area`,`marketingresults`)
-        values(#{custname},#{phone},#{idcard},#{businessnumber},#{address},#{tmallordernumber},#{channl},#{advertiser},#{remark},#{createtime},#{servicename},#{area},'待确认')
+        insert tmall(`custname`,`phone`,`idcard`,`businessnumber`,`address`,`tmallordernumber`,`channl`,`channels`,`advertiser`,`remark`,`createtime`,`servicename`,`area`,`areas`,`marketingresults`)
+        values(#{custname},#{phone},#{idcard},#{businessnumber},#{address},#{tmallordernumber},#{channl},#{channels},#{advertiser},#{remark},#{createtime},#{servicename},#{area},#{areas},'待确认')
     </insert>
     <insert id="insertTmallExcel" parameterType="com.brokerage.entity.Tmall">
-        insert tmall(`custname`,`phone`,`idcard`,`businessnumber`,`address`,`tmallordernumber`,`channl`,`advertiser`,`servicename`,`area`)
-        values(#{custname},#{phone},#{idcard},#{businessnumber},#{address},#{tmallordernumber},#{channl},#{advertiser},#{servicename},#{area})
+        insert tmall(`custname`,`phone`,`idcard`,`businessnumber`,`address`,`tmallordernumber`,`channl`,`advertiser`,`servicename`,`area`,`areas`,`channels`)
+        values(#{custname},#{phone},#{idcard},#{businessnumber},#{address},#{tmallordernumber},#{channl},#{advertiser},#{servicename},#{area},#{areas},#{channels})
     </insert>
     <update id="updatewid">
         update tmall set wid=#{wid} where id=#{id}
@@ -256,6 +272,12 @@
             </if>
             <if test="area!=null and area!=''">
                 area=#{area},
+            </if>
+            <if test="areas!=null and areas!=''">
+                areas=#{areas},
+            </if>
+            <if test="channels!=null and channels!=''">
+                channels=#{channels},
             </if>
         </trim>
         where id = #{id}
