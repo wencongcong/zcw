@@ -118,7 +118,7 @@
     </select>
 
     <update id="uploginno">
-        update fishorders set servicename=#{servicename},isitnew=0, whethertorepeat=0 where id=#{id}
+        update fishorders set servicename=#{servicename},isitnew=0 where id=#{id}
     </update>
 
     <update id="upstatos">
@@ -176,9 +176,6 @@
             </if>
             <if test="0==0">
                 isitnew=0,
-            </if>
-            <if test="0==0">
-                whethertorepeat=0,
             </if>
             <if test="paymentstate!=null and paymentstate!=''">
                 paymentstate=#{paymentstate},

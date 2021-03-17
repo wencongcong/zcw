@@ -265,7 +265,7 @@
     </update>
 
     <update id="updateStatue">
-        UPDATE workinfo SET status=#{status},orderid=#{orderid} where workid=#{workid}
+        UPDATE workinfo SET status=#{status},orderid=#{orderid},reminder=0 where workid=#{workid}
     </update>
 
     <update id="Ustatosoid">

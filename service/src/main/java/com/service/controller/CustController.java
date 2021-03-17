@@ -49,7 +49,6 @@ public class CustController {
 
     @RequestMapping(value = "/cha", method = RequestMethod.POST)
     public Result creat(@RequestParam Map map) throws Exception {
-
         Date date=new Date();
         SimpleDateFormat sfs = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String sj = sfs.format(date);
