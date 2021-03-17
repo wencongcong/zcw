@@ -69,7 +69,7 @@ public class FlyIngServiceimpl implements FlyIngService {
 
     @Override
     @Transactional
-   //@Scheduled(cron=" 0 0/5 * * * ? ")
+   @Scheduled(cron=" 0 0/5 * * * ? ")
     public Result queryFlyTime() throws Exception {
 
         Fishorders fishorders=new Fishorders();

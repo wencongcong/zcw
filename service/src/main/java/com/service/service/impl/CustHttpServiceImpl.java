@@ -43,7 +43,7 @@ public class CustHttpServiceImpl implements CustHttpService {
     SimpleDateFormat qsfs = new SimpleDateFormat("yyyy-MM-dd");
 
     @Override
-    //@Scheduled(cron = "0 0 10,12,14,16,18,20 * * ? ")
+    @Scheduled(cron = "0 0 10,12,14,16,18,20 * * ? ")
    // @Scheduled(cron=" 0 0/5 * * * ? ")
     public Result Timeupda() throws Exception {
 
@@ -300,7 +300,7 @@ public class CustHttpServiceImpl implements CustHttpService {
     }
 
     @Override
-    //@Scheduled(cron = "0 0 7,13,15,17 * * ? ")
+    @Scheduled(cron = "0 0 7,13,15,17 * * ? ")
     //@Scheduled(cron=" 0 0/50 * * * ? ")
     public Result Timehistory() throws Exception {
         JSONObject saleoreder = null;
