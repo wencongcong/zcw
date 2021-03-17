@@ -44,7 +44,6 @@ public class FishordersEX implements Serializable {
     String statos;
     @Excel(name="数量",width = 30,orderNum = "1")
     String amount;
-    @Excel(name="下单时间",width = 30,orderNum = "1",databaseFormat = "yyyyMMddHHmmss", format = "")
     String ordertime;
     @Excel(name="金额",width = 30,orderNum = "1")
     String payment;

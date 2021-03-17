@@ -152,6 +152,9 @@ public class DaoExController {
     @ResponseBody
     public Result  daoruexcele(@RequestParam("empFile") MultipartFile empFile, HttpServletRequest request) throws Exception{
         MultipartRequest multipartRequest=(MultipartRequest) request;
+        Date date = new Date();
+        SimpleDateFormat sfs = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String sj = sfs.format(date);
         ImportParams  params=new ImportParams();
         params.setTitleRows(0);
         params.setHeadRows(1);
@@ -161,6 +164,7 @@ public class DaoExController {
         try {
             list= ExcelImportUtil.importExcel(empFile.getInputStream(), FishordersEX.class, params);
             for (FishordersEX fishorders:list){
+                fishorders.setOrdertime(sj);
                 int result=fishordersDaoService.insertOneEx(fishorders);
                 if (result==0){
                     return Result.fail(0,"插入失败");

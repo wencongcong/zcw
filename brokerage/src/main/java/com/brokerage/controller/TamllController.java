@@ -218,7 +218,7 @@ public class TamllController {
                 history.setWorkid(id);
                 history.setHistorys("");
                 history.setCurentname(servicename);
-                history.setIsitright(1);
+                history.setIsitright(3);
                 historyInfoService.insertOneHistory(history);
                 int resul = terminalService.chastatos("营销成功", id);
                 if (resul == 1) {
@@ -261,7 +261,7 @@ public class TamllController {
                 history.setWorkid(id);
                 history.setHistorys("");
                 history.setCurentname(servicename);
-                history.setIsitright(1);
+                history.setIsitright(2);
                 historyInfoService.insertOneHistory(history);
                 int resul = tamllService.chastatos("营销成功", id);
                 if (resul == 1) {

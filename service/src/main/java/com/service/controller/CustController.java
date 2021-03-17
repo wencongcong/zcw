@@ -53,7 +53,7 @@ public class CustController {
         SimpleDateFormat sfs = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String sj = sfs.format(date);
         OrderInfo orderInfo=new OrderInfo();
-        orderInfo.setOrderNo(map.get("orderNo").toString());
+        orderInfo.setOrderNo(map.get("orderNo").toString().trim());
         orderInfo.setOstats("待反刷");
         orderInfo.setAcceptancetime(sj);
         orderInfo.setOrderdetailsId("0");
